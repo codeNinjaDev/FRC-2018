@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
+
+import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 public class RobotModel {
 	
@@ -65,18 +67,18 @@ public class RobotModel {
 	public void setWheelSpeed(Wheels w, double speed) {
 		switch (w) {
 		case LeftWheels:
-			leftDriveMotorA.set(speed);
-			leftDriveMotorB.set(speed);
+			leftDriveMotorA.set(speed * Params.MAX_SPEED);
+			leftDriveMotorB.set(speed * Params.MAX_SPEED);
 			break;
 		case RightWheels:
-			rightDriveMotorA.set(-speed); //negative value since wheels are inverted on robot
-			rightDriveMotorB.set(-speed); //negative value since wheels are inverted on robot
+			rightDriveMotorA.set(-speed * Params.MAX_SPEED); //negative value since wheels are inverted on robot
+			rightDriveMotorB.set(-speed * Params.MAX_SPEED); //negative value since wheels are inverted on robot
 			break;
 		case AllWheels:
-			leftDriveMotorA.set(speed);
-			leftDriveMotorB.set(speed);
-			rightDriveMotorA.set(-speed); //negative value since wheels are inverted on robot
-			rightDriveMotorB.set(-speed); //negative value since wheels are inverted on robot
+			leftDriveMotorA.set(speed * Params.MAX_SPEED);
+			leftDriveMotorB.set(speed * Params.MAX_SPEED);
+			rightDriveMotorA.set(-speed * Params.MAX_SPEED); //negative value since wheels are inverted on robot
+			rightDriveMotorB.set(-speed * Params.MAX_SPEED); //negative value since wheels are inverted on robot
 			break;
 		}
 	}

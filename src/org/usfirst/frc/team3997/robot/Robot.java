@@ -55,6 +55,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
 		lights.setEnabledLights();
 		auto.reset();
 		auto.listOptions();
@@ -122,6 +123,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
+
 		auto.stop();
 		robot.resetTimer();
 		robot.resetEncoders();
@@ -138,6 +141,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
+
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
