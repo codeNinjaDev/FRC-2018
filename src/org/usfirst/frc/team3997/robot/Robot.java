@@ -20,6 +20,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -55,7 +56,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
 		lights.setEnabledLights();
 		auto.reset();
 		auto.listOptions();
@@ -123,7 +123,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
-		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
 
 		auto.stop();
 		robot.resetTimer();
@@ -141,8 +140,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
-
+		if(DriverStation.getInstance().isBrownedOut()) {
+			Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
+		}
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
@@ -150,7 +150,6 @@ public class Robot extends IterativeRobot {
 		humanControl.readControls();
 		driveController.update(currTimeSec, deltaTimeSec);
 		visionController.disable();
-		
 		lights.setEnabledLights();
 
 	}
