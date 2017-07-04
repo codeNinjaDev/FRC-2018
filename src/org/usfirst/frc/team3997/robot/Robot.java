@@ -7,7 +7,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3997.robot.auto.Auto;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutineRunner;
+import org.usfirst.frc.team3997.robot.controllers.ClimberController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
+import org.usfirst.frc.team3997.robot.controllers.GearController;
 import org.usfirst.frc.team3997.robot.controllers.LightController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.feed.DashboardInput;
@@ -44,8 +46,10 @@ public class Robot extends IterativeRobot {
 	LightController lights = new LightController();
 	DashboardLogger dashboardLogger = new DashboardLogger(robot, humanControl);
 	DashboardInput input = new DashboardInput();
+	GearController gearController = new GearController(robot, humanControl);
+	ClimberController climberController = new ClimberController(robot, humanControl);
 	
-	MasterController masterController = new MasterController(driveController, robot, visionController, lights);
+	MasterController masterController = new MasterController(driveController, robot, gearController, visionController, lights);
 
 	Auto auto = new Auto(masterController);
 	Timer timer = new Timer();
@@ -127,9 +131,10 @@ public class Robot extends IterativeRobot {
 		auto.stop();
 		robot.resetTimer();
 		robot.resetEncoders();
-
+		gearController.reset();
 		driveController.reset();
 		visionController.enable();
+		climberController.reset();
 		currTimeSec = 0.0;
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
@@ -150,7 +155,10 @@ public class Robot extends IterativeRobot {
 		humanControl.readControls();
 		driveController.update(currTimeSec, deltaTimeSec);
 		visionController.disable();
+
+		gearController.update();
 		lights.setEnabledLights();
+		climberController.update();
 
 	}
 

@@ -19,8 +19,8 @@ public class DriveController {
 
 	private RobotDrive drive;
 	private RemoteControl humanControl;
-	private int m_stateVal;
-	private int nextState;
+	private DriveState m_stateVal;
+	private DriveState nextState;
 
 	public PIDOutput leftPIDOutput;
 	public PIDController leftPID;
@@ -81,8 +81,8 @@ public class DriveController {
 		straightPID.setAbsoluteTolerance(1);
 		straightPID.disable();
 		// TODO ???? enum kInitialize
-		m_stateVal = kInitialize;
-		nextState = kInitialize;
+		m_stateVal = DriveState.kInitialize;
+		nextState = DriveState.kInitialize;
 
 	}
 
@@ -91,7 +91,7 @@ public class DriveController {
 		case kInitialize:
 			leftPID.disable();
 			rightPID.disable();
-			nextState = kTeleopDrive;
+			nextState = DriveState.kTeleopDrive;
 			break;
 		case kTeleopDrive:
 			double driverLeftX;
@@ -114,7 +114,7 @@ public class DriveController {
 				tankDrive(driverLeftY, driverRightY);
 			}
 
-			nextState = kTeleopDrive;
+			nextState = DriveState.kTeleopDrive;
 			break;
 		}
 		m_stateVal = nextState;
@@ -133,8 +133,8 @@ public class DriveController {
 				Params.SQUARE_DRIVE_AXIS_INPUT = true;
 			}
 
-			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.HARDSET_DRIVE_SPEED_MAX,
-					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.HARDSET_DRIVE_SPEED_MAX,
+			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
+					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
 					Params.SQUARE_DRIVE_AXIS_INPUT);
 		} else {
 			drive.arcadeDrive(myY, myX, false);
@@ -147,7 +147,7 @@ public class DriveController {
 	}
 
 	public void reset() {
-		m_stateVal = kInitialize;
+		m_stateVal = DriveState.kInitialize;
 	}
 
 	public void stop() {
