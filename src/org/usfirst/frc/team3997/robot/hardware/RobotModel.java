@@ -182,7 +182,7 @@ public class RobotModel {
 	}
 	
 	public void setGearIntakeSpeed(double speed) {
-		gearIntakeMotor.set(speed * Params.MAX_SPEED);
+		gearIntakeMotor.set(speed);
 	}
 	
 	public double getGearIntakeSpeed() {
@@ -190,7 +190,7 @@ public class RobotModel {
 	}
 	
 	public void setGearTilterSpeed(double speed) {
-		gearTilterMotor.set(speed * Params.MAX_SPEED);
+		gearTilterMotor.set(speed);
 	}
 	
 	public double getGearTilterSpeed() {
@@ -198,7 +198,7 @@ public class RobotModel {
 	}
 	
 	public void setClimberSpeed(double speed) {
-		climberMotor.set(speed * Params.MAX_SPEED);
+		climberMotor.set(speed);
 	}
 	
 	public double getClimberSpeed() {

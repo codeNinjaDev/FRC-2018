@@ -14,7 +14,7 @@ public class Params {
 	public static double X_ARCADE_DRIVE_LEFT_RIGHT = 6.25;
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
 
-	public static double MAX_SPEED = 0.95;
+	public static double MAX_SPEED = 1.0;
 
 	public static final double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 
