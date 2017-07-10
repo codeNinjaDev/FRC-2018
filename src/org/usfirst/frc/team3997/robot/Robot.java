@@ -147,6 +147,8 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		if(DriverStation.getInstance().isBrownedOut()) {
 			Params.MAX_SPEED = robot.getVoltage() * Params.BATTERY_SLOPE;
+		} else {
+			Params.MAX_SPEED = 1.0;
 		}
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;

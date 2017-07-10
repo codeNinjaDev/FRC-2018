@@ -142,8 +142,8 @@ public class DriveController {
 	}
 
 	public void tankDrive(double myLeft, double myRight) {
-		drive.tankDrive(myLeft * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER,
-				myRight * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER, Params.SQUARE_DRIVE_AXIS_INPUT);
+		drive.tankDrive(myLeft * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
+				myRight * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED, Params.SQUARE_DRIVE_AXIS_INPUT);
 	}
 
 	public void reset() {
