@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.hardware;
-
 import edu.wpi.first.wpilibj.Joystick;
+
+//Registers triggers as buttons
 
 public class TriggerReader {
 	private Joystick joystick;

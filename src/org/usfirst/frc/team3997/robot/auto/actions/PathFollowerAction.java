@@ -16,7 +16,6 @@ public class PathFollowerAction extends Action{
 		this.motion = controllers.getMotionController();
 		this.robot = controllers.getRobotModel();
 		this.timeout = timeout;
-		
 		this.motion.setUp(points);
 	}
 	@Override

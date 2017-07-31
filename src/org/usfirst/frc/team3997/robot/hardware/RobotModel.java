@@ -21,7 +21,7 @@ public class RobotModel {
 
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
-		// Init drive motors
+		// Init motors
 		leftDriveMotorA = new Spark(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new Spark(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
 		rightDriveMotorA = new Spark(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
@@ -29,22 +29,7 @@ public class RobotModel {
 		climberMotor = new VictorSP(Ports.CLIMBER_MOTOR_PWM_PORT);
 		gearTilterMotor = new Talon(Ports.GEAR_TILTER_MOTOR_PWM_PORT);
 		gearIntakeMotor = new Talon(Ports.GEAR_INTAKE_MOTOR_PWM_PORT);
-
-		gearPot = new AnalogPotentiometer(Ports.GEAR_POT);
-		// TODO add real input channel
-		// gyro = new AnalogGyro(channel);
-		gyro.reset();
-
-		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
-		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
-
-		leftDriveEncoder.setReverseDirection(false);
-		leftDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
-		leftDriveEncoder.setSamplesToAverage(1);
-		rightDriveEncoder.setReverseDirection(false);
-		rightDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
-		rightDriveEncoder.setSamplesToAverage(1);
-
+		
 		leftDriveMotorA.setSafetyEnabled(false);
 		leftDriveMotorB.setSafetyEnabled(false);
 		rightDriveMotorA.setSafetyEnabled(false);
@@ -54,15 +39,31 @@ public class RobotModel {
 		leftDriveMotorB.setInverted(false);
 		rightDriveMotorA.setInverted(false);
 		rightDriveMotorB.setInverted(false);
-
+		
 		leftDriveACurrent = 0;
 		leftDriveBCurrent = 0;
 		rightDriveACurrent = 0;
 		rightDriveBCurrent = 0;
+		
+		//Init gearPot 
+		gearPot = new AnalogPotentiometer(Ports.GEAR_POT);
+		// TODO add real input channel
+		// gyro = new AnalogGyro(channel);
+		gyro.reset();
+		//Set up Encoder
+		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
+		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
 
+		leftDriveEncoder.setReverseDirection(false);
+		leftDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
+		leftDriveEncoder.setSamplesToAverage(1);
+		rightDriveEncoder.setReverseDirection(false);
+		rightDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
+		rightDriveEncoder.setSamplesToAverage(1);
+		//Timer
 		timer = new Timer();
 		timer.start();
-		// TODO add real url
+		//Camera TODO add real url
 		camera.addServer("Server");
 
 	}
@@ -170,59 +171,59 @@ public class RobotModel {
 		return timer.get();
 	}
 
-	// encoders
+	// resets encoders
 	public void resetEncoders() {
 		leftDriveEncoder.reset();
 		rightDriveEncoder.reset();
 	}
-
+	// gets encoder error
 	public double getEncoderError() {
 		return leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance();
 	}
-
+	// resets gyro
 	public void resetGyro() {
 		gyro.reset();
 	}
-
+	// returns gyro angle
 	public double getAngle() {
 		return gyro.getAngle();
 	}
-
+	// drives left side
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);
 
 	}
-
+	// drives right side
 	public void setRightMotors(double output) {
 		rightDriveMotorA.set(output);
 		rightDriveMotorB.set(output);
 	}
-
+	// set gear intake speed
 	public void setGearIntakeSpeed(double speed) {
 		gearIntakeMotor.set(speed);
 	}
-
+	// get gear intake speed
 	public double getGearIntakeSpeed() {
 		return gearIntakeMotor.get();
 	}
-
+	// set gear tilter speed
 	public void setGearTilterSpeed(double speed) {
 		gearTilterMotor.set(speed);
 	}
-
+	// get gear tilter speed
 	public double getGearTilterSpeed() {
 		return gearTilterMotor.get();
 	}
-
+	// set climber speed
 	public void setClimberSpeed(double speed) {
 		climberMotor.set(speed);
 	}
-
+	// get climber speed
 	public double getClimberSpeed() {
 		return climberMotor.get();
 	}
-
+	// get gearpot position
 	public double getGearPotReading() {
 		return gearPot.get();
 	}

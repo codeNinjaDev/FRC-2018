@@ -3,6 +3,7 @@ package org.usfirst.frc.team3997.robot.pid;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+//Mainly for gear pot 
 
 public class AnalogPIDSource implements PIDSource {
 

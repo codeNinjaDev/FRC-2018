@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3997.robot.feed;
 
 import edu.wpi.first.wpilibj.Preferences;
-
+//Uses robot Prefrences to add input from dashboard.
 public class DashboardInput {
 	private Preferences prefs;
 	public DashboardInput() {

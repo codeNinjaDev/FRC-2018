@@ -1,7 +1,8 @@
 package org.usfirst.frc.team3997.robot.hardware;
+//Button constants for human control
 
 public class XInput {
-
+	
 	static final int XINPUT_WIN_LEFT_X_AXIS = 0;
 	static final int XINPUT_WIN_LEFT_Y_AXIS = 1;
 	static final int XINPUT_WIN_RIGHT_X_AXIS = 4;

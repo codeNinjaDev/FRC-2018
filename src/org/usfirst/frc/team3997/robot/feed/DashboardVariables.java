@@ -1,5 +1,5 @@
 package org.usfirst.frc.team3997.robot.feed;
-
+//Custom variables from dashboard. default zero.	
 public class DashboardVariables {
 
 	public static double firstAutoDistance = 0.0;

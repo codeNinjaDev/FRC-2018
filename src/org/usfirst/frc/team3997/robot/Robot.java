@@ -39,21 +39,31 @@ public class Robot extends IterativeRobot {
 	double lastTimeSec = 0;
 	double deltaTimeSec = 0;
 
+	// Hardware of robot e.g motors and sensors
 	RobotModel robot;
+	// Using Abstract class but setting equal to controlboard
 	RemoteControl humanControl;
+	// Drive Controllers handles
 	DriveController driveController;
+	//Vision Controller TODO need to implement vision
 	VisionController visionController;
+	//LightController sends pattern to arduino based on actions
 	LightController lights;
+	//Logs import values for debugging and info
 	DashboardLogger dashboardLogger;
+	//Lets us input to program.
 	DashboardInput input;
-
+	//Uses jacinonsense pathfinder library to find and follow a motion-profile
 	MotionController motion;
+	//Controls gear apparatus functionality
 	GearController gearController;
+	//Controls climber very simple
 	ClimberController climberController;
-
+	//Gets all controllers and packages them up for autonomous
 	MasterController masterController;
-
+	//Autonomous 
 	Auto auto;
+	//TImer
 	Timer timer;
 
 	/**
@@ -62,6 +72,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		//Initializes all classes
 		robot = new RobotModel();
 		humanControl = new ControlBoard();
 		driveController = new DriveController(robot, humanControl);
@@ -76,14 +87,15 @@ public class Robot extends IterativeRobot {
 				lights);
 		auto = new Auto(masterController);
 		timer = new Timer();
-		
-		
+
 		lights.setEnabledLights();
+		//Resets auto timer
 		auto.reset();
+		//List routines in dashboard
 		auto.listOptions();
-
+		//Updates Dashboard
 		input.updateInput();
-
+		//Toggles tank and arcade drive.
 		if (humanControl.getArcadeDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = true;
 		} else if (humanControl.getTankDriveDesired()) {
@@ -92,6 +104,7 @@ public class Robot extends IterativeRobot {
 		currTimeSec = 0.0;
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
+		//Draws a line in camera stream
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 			camera.setResolution(640, 480);
@@ -117,6 +130,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		//Resets auto timer and executes auton
 		AutoRoutineRunner.getTimer().reset();
 		auto.stop();
 
@@ -136,8 +150,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		visionController.update();
-		lights.setAutoLights();
 		dashboardLogger.updateData();
+		lights.setAutoLights();
+
 	}
 
 	/**
@@ -146,6 +161,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		//Stops autonomous reset all controllers
 		auto.stop();
 		robot.resetTimer();
 		robot.resetEncoders();
@@ -163,6 +179,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		//Updates all controllers
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
@@ -195,6 +212,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledInit() {
+		//resets controllers, lets user toggle arcade or tank, and updates input 
 		AutoRoutineRunner.getTimer().reset();
 		visionController.disable();
 		driveController.reset();
@@ -208,6 +226,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledPeriodic() {
+		//resets controllers, lets user toggle arcade or tank, and updates input
 		input.updateInput();
 		dashboardLogger.updateData();
 

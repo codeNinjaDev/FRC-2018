@@ -6,7 +6,7 @@ import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+//Logs to dashboard in bulk.
 public class DashboardLogger {
 	private RemoteControl humanControl;
 	private RobotModel robot;

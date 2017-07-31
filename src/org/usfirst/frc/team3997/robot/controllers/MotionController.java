@@ -20,7 +20,7 @@ public class MotionController {
 		this.robot = robot;
 		isEnabled = false;
 	}
-
+	// Sets up path with points
 	public void setUp(Waypoint[] points) {
 		this.points = points;
 		config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, Params.maximum_velocity,
@@ -32,7 +32,7 @@ public class MotionController {
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 	}
-
+	// starts to follow path
 	public void enable() {
 		// TODO get max velocity
 		// TODO find ticks_per_revolution
@@ -65,6 +65,7 @@ public class MotionController {
 			robot.setRightMotors(r - turn);
 		}
 	}
+	// Stops drive motor
 	public void disable() {
 		isEnabled = false;
 		robot.setLeftMotors(0);
