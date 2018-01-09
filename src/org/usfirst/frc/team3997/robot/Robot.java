@@ -46,6 +46,7 @@ public class Robot extends IterativeRobot {
 	DriveController driveController;
 	VisionController visionController;
 	LightController lights;
+	
 	DashboardLogger dashboardLogger;
 	DashboardInput input;
 
@@ -158,6 +159,7 @@ public class Robot extends IterativeRobot {
 		robot.resetEncoders();
 		driveController.reset();
 		visionController.enable();
+		
 		currTimeSec = 0.0;
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
@@ -176,6 +178,7 @@ public class Robot extends IterativeRobot {
 		deltaTimeSec = currTimeSec - lastTimeSec;
 		humanControl.readControls();
 		driveController.update(currTimeSec, deltaTimeSec);
+		
 		visionController.disable();
 		lights.setEnabledLights();
 
