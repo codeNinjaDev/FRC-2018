@@ -42,7 +42,7 @@ public class Ports {
 	// ***************** BUTTONS *****************
 
 	//Controller button ports
-
+	public static final Port gyroPort = Port.kOnboard;
 	public static final int DRIVE_DIRECTION_BUTTON_PORT           = 9;
 	public static final int SHOOTER_RUN_BUTTON_PORT               = 1;
 	public static final int GYRO_PORT = 0;

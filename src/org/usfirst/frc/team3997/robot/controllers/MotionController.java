@@ -81,13 +81,13 @@ public void setUp(Trajectory trajectoryInput) {
 	}
 	// TODO Put this in control loop
 	public void update() {
-		robot.updateGyro();
+		//robot.updateGyro();
 		if(isEnabled) {
 			double l = left.calculate(robot.leftDriveEncoder.get());
 			double r = left.calculate(robot.rightDriveEncoder.get());
 			
 			
-			double gyro_heading = robot.getAngle();
+			double gyro_heading = 0;
 			double desired_heading = Pathfinder.r2d(left.getHeading());
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
 			double turn = 0.8 * (-1.0 / 80) * angleDifference;
