@@ -60,14 +60,14 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 		
-		gyro = new MPU9250Gyro();
+		//gyro = new MPU9250Gyro();
 		// TODO add real url
 		//camera.addServer("Server");
 
 	}
 
 	public void updateGyro() {
-		gyro.update();
+		//gyro.update();
 	}
 
 	public enum Wheels {
