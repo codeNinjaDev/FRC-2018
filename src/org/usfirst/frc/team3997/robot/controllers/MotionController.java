@@ -72,10 +72,6 @@ public void setUp(Trajectory trajectoryInput) {
 		left.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
 		right.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
 
-		right.configureEncoder(robot.leftDriveEncoder.get(), 100, .1016);
-		right.configureEncoder(robot.rightDriveEncoder.get(), 100, .1016);
-		right.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
-		right.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
 		robot.resetGyro();
 		
 	}
