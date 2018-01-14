@@ -221,21 +221,6 @@ public class MPU9250Gyro extends GyroBase {
 	double eInt[] = { 0.0f, 0.0f, 0.0f }; // vector to hold integral error for Mahony method
 	// Set initial input parameters
 
-	enum Ascale {
-		// TODO add correct address
-		AFS_2G((byte) 0x00), AFS_4G((byte) 0x02), AFS_8G((byte) 0x04), AFS_16G((byte) 0x02);
-
-		/**
-		 * The integer value representing this enumeration.
-		 */
-		@SuppressWarnings("MemberName")
-		public final byte value;
-
-		Ascale(byte value) {
-			this.value = value;
-		}
-
-	};
 
 	enum Gscale {
 		// TODO add correct address
@@ -252,29 +237,19 @@ public class MPU9250Gyro extends GyroBase {
 		}
 
 	};
+	
+	final int GFS_250DPS = 0x00;
+	final int GFS_500DPS = 0x02;
+	final int GFS_1000DPS = 0x04;
+	final int GFS_2000DPS = 0x06;
 
-	enum Mscale {
-		// TODO add correct address
-		MFS_14BITS((byte) 0x00), // 0.6 mG per LSB
-		MFS_16BITS((byte) 0x02); // 0.15 mG per LSB(
-
-		/**
-		 * The integer value representing this enumeration.
-		 */
-		@SuppressWarnings("MemberName")
-		public final byte value;
-
-		Mscale(byte value) {
-			this.value = value;
-		}
-
-	};
+	
 
 	I2C i2c;
-	Gscale gScale;
+	int gScale;
 
 	public MPU9250Gyro(Port port, int deviceAddress) {
-		gScale = Gscale.GFS_250DPS;
+		gScale = GFS_250DPS;
 		if (ADO == 1) {
 			MPU9250_ADDRESS = 0x69; // Device address when ADO = 1
 			AK8963_ADDRESS = 0x0C; // Address of magnetometer
@@ -310,7 +285,7 @@ public class MPU9250Gyro extends GyroBase {
 		return i2c.write(registerAddress, data);
 	}
 
-	void getGyroRes(Gscale gScale) {
+	void getGyroRes(int gScale) {
 		final byte value;
 		// Possible gyro scales (and their register bit settings) are:
 		// 250 DPS (00), 500 DPS (01), 1000 DPS (10), and 2000 DPS (11).
@@ -371,8 +346,8 @@ public class MPU9250Gyro extends GyroBase {
 		// into positions 4:3
 		int c = readByte(GYRO_CONFIG); // get current GYRO_CONFIG register value
 		// c = c & ~0xE0; // Clear self-test bits [7:5]
-		c = c & ~0x03; // Clear Fchoice bits [1:0]
-		c = c & ~0x18; // Clear GFS bits [4:3]
+		c = (c & ~0x03); // Clear Fchoice bits [1:0]
+		c =  (c & ~0x18); // Clear GFS bits [4:3]
 		c = c | gScale << 3; // Set full scale range for the gyro
 		// c =| 0x00; // Set Fchoice for the gyro to 11 by writing its inverse to bits
 		// 1:0 of GYRO_CONFIG
@@ -490,6 +465,7 @@ public class MPU9250Gyro extends GyroBase {
 
 	@Override
 	public double getAngle() {
+		update();
 		return yaw;
 	}
 
