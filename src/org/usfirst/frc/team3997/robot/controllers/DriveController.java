@@ -106,7 +106,7 @@ public class DriveController {
 			}
 
 			if (Params.USE_ARCADE_DRIVE) {
-				arcadeDrive(driverLeftY, -driverRightX, true);
+				arcadeDrive(driverLeftY, driverRightX, true);
 			} else {
 				tankDrive(driverLeftY, driverRightY);
 			}

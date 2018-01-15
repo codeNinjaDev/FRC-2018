@@ -110,7 +110,8 @@ public class Robot extends IterativeRobot {
                 outputStream.putFrame(output);
             }
         }).start();
-		
+		dashboardLogger.updateEssentialData();
+
 	}
 
 	/**
@@ -145,6 +146,8 @@ public class Robot extends IterativeRobot {
 		visionController.update();
 		lights.setAutoLights();
 		dashboardLogger.updateData();
+		dashboardLogger.updateEssentialData();
+
 	}
 
 	/**
@@ -178,6 +181,7 @@ public class Robot extends IterativeRobot {
 		driveController.update(currTimeSec, deltaTimeSec);
 		visionController.disable();
 		lights.setEnabledLights();
+		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -203,6 +207,7 @@ public class Robot extends IterativeRobot {
 		}
 		robot.reset();
 		input.updateInput();
+		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -211,7 +216,7 @@ public class Robot extends IterativeRobot {
 
 		input.updateInput();
 		dashboardLogger.updateData();
-
+		dashboardLogger.updateEssentialData();
 		AutoRoutineRunner.getTimer().reset();
 		humanControl.readControls();
 		visionController.update();
