@@ -261,10 +261,15 @@ public class MPU9250Gyro extends GyroBase {
 		}
 		i2c = new I2C(port, deviceAddress);
 		setName("MPU9250Gyro", port.value);
+		if(i2c.addressOnly()) {
+			getGyroRes(gScale);
+			calibrate();
+			init();
+			SmartDashboard.putString("GYRO", "FOUND");
 
-		getGyroRes(gScale);
-		calibrate();
-		init();
+		} else {
+			SmartDashboard.putString("GYRO", "NOTFOUND");
+		}
 
 	}
 
