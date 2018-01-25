@@ -3,25 +3,33 @@ package org.usfirst.frc.team3997.robot.hardware;
 
 import org.usfirst.frc.team3997.robot.Params;
 import edu.wpi.first.wpilibj.*;
-
+/** Handles inputs from controller 
+ * @category hardware
+ * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
+ *         Friedlander
+ * 
+ * **/
 public class ControlBoard extends RemoteControl {
-	//Driver Buttons
+	/** Driver Buttons **/
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
-	//Operator Buttons
+	/** Operator Buttons **/
 	public ButtonReader gearWheelOuttakeButton, gearWheelIntakeButton, toggleDisabledGearTilter, toggleGearManual, gearTilterRampButton, gearTotalIntakeButton;
-	//Driver Triggers
+	/** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
-	//Operator Triggers
+	/** Operator Triggers **/
 	public TriggerReader gearTilterDownButton, gearTilterUpButton;
-	
+	/** Actions Desired **/
 	private boolean tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
 			driveBackDesired, driveBackOtherDesired, gearTilterDownDesired, gearWheelOuttakeDesired, gearWheelIntakeDesired, toggleGearManualDesired, gearTilterRampDesired, gearTilterUpDesired, gearTotalIntakeDesired;
 
+	/** Driver joystick axes **/
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
+	/** Operator joystick axes **/
 	private double operatorLeftJoyX, operatorLeftJoyY, operatorRightJoyX, operatorRightJoyY;
-
+	/** Joystick **/
 	private Joystick driverJoy, operatorJoy;
 
+	/** Initializes all controller inputs **/
 	public ControlBoard() {
 		driverJoy = new Joystick(Ports.DRIVER_JOY_USB_PORT);
 		operatorJoy = new Joystick(Ports.OPERATOR_JOY_USB_PORT);
@@ -72,7 +80,7 @@ public class ControlBoard extends RemoteControl {
 		gearTilterDownDesired = false;
 		gearTilterUpDesired = false;
 	}
-
+	/** Reads all controller inputs **/
 	public void readControls() {
 		readAllButtons();
 		if (Ports.USING_WIN_DRIVER_STATION) {
@@ -106,7 +114,7 @@ public class ControlBoard extends RemoteControl {
 		gearTilterDownDesired = gearTilterDownButton.isDown();
 		gearTilterUpDesired = gearTilterUpButton.isDown();
 	}
-
+	/** Reads all controller buttons **/
 	public void readAllButtons() {
 		//Driver
 		arcadeDriveButton.readValue();
@@ -124,7 +132,12 @@ public class ControlBoard extends RemoteControl {
 		toggleGearManual.readValue();
 		gearTotalIntakeButton.readValue();
 	}
-
+	/** Gets joystick value given joystick  and axe 
+	 * 
+	 * @param j A Joystick
+	 * @param a An Axis
+	 * 
+	 * **/
 	public double getJoystickValue(Joysticks j, Axes a) {
 		switch (j) {
 		case kDriverJoy:
@@ -154,57 +167,31 @@ public class ControlBoard extends RemoteControl {
 		}
 		return 0.0;
 	}
-
+	/** Checks if driver wants tank drive **/
 	public boolean getTankDriveDesired() {
 		return tankDriveDesired;
 	}
 
-	// Returns true if arcade drive is desired
+	/** Checks if driver wants arcade drive **/
 	public boolean getArcadeDriveDesired() {
 		return arcadeDriveDesired;
 	}
-
+	/** Checks if driver wants first brake **/
 	public boolean getSlowDriveTier1Desired() {
 		return slowDriveTier1Desired;
 	}
-
+	/** Checks if driver wants second brake **/
 	public boolean getSlowDriveTier2Desired() {
 		return slowDriveTier2Desired;
 	}
-
+	/** Checks if driver wants inverse drive **/
 	public boolean getDriveBackDesired() {
 		return driveBackDesired;
 	}
-
+	/** I have no clue **/
 	public boolean getDriveBackOtherDesired() {
 		return driveBackOtherDesired;
 	}
 	
-	public boolean getGearTilterDownDesired() {
-		return gearTilterDownDesired;
-	}
 	
-	public boolean getGearTilterUpDesired() {
-		return gearTilterUpDesired;
-	}
-	
-	public boolean getGearTilterRampDesired() {
-		return gearTilterRampDesired;
-	}
-	
-	public boolean getGearWheelOuttakeDesired() {
-		return gearWheelOuttakeDesired;
-	}
-	
-	public boolean getGearWheelIntakeDesired() {
-		return gearWheelIntakeDesired;
-	}
-	
-	public boolean getGearIntakeDesired() {
-		return gearTotalIntakeDesired;
-	}
-	
-	public boolean getManualGearDesired() {
-		return toggleGearManualDesired;
-	}
 }
