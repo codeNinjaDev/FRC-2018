@@ -48,7 +48,7 @@ public class AutoSelector {
 		autoChooser.addObject("Left Auto Routine", 5);
 		autoChooser.addObject("Center Auto Routine", 6);
 		autoChooser.addObject("Right Auto Routine", 7);
-
+		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		SmartDashboard.putData("Autonomous: ", autoChooser);
 	}
 	

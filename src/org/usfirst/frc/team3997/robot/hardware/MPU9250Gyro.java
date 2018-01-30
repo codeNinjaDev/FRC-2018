@@ -220,35 +220,19 @@ public class MPU9250Gyro extends GyroBase {
 	double q[] = { 1.0f, 0.0f, 0.0f, 0.0f }; // vector to hold quaternion
 	double eInt[] = { 0.0f, 0.0f, 0.0f }; // vector to hold integral error for Mahony method
 	// Set initial input parameters
-
-
-	enum Gscale {
-		// TODO add correct address
-		GFS_250DPS((byte) 0x00), GFS_500DPS((byte) 0x02), GFS_1000DPS((byte) 0x04), GFS_2000DPS((byte) 0x02);
-
-		/**
-		 * The integer value representing this enumeration.
-		 */
-		@SuppressWarnings("MemberName")
-		public final byte value;
-
-		Gscale(byte value) {
-			this.value = value;
-		}
-
-	};
-	
-	final int GFS_250DPS = 0x00;
+	double currentTime = 0;
+	double lastTime = 0;
+	final int GFS_250DPS = 0;
 	final int GFS_500DPS = 0x02;
 	final int GFS_1000DPS = 0x04;
 	final int GFS_2000DPS = 0x06;
 
-	
-
 	I2C i2c;
 	int gScale;
 
-	public MPU9250Gyro(Port port, int deviceAddress) {
+	public MPU9250Gyro(Port port) {
+		yaw = 0;
+		gz = 0;
 		gScale = GFS_250DPS;
 		if (ADO == 1) {
 			MPU9250_ADDRESS = 0x69; // Device address when ADO = 1
@@ -259,9 +243,9 @@ public class MPU9250Gyro extends GyroBase {
 			AK8963_ADDRESS = 0x0C; // Address of magnetometer
 			MS5637_ADDRESS = 0x76; // Address of altimeter
 		}
-		i2c = new I2C(port, deviceAddress);
+		i2c = new I2C(port, MPU9250_ADDRESS);
 		setName("MPU9250Gyro", port.value);
-		if(i2c.addressOnly()) {
+		if (i2c.addressOnly()) {
 			getGyroRes(gScale);
 			calibrate();
 			init();
@@ -291,7 +275,6 @@ public class MPU9250Gyro extends GyroBase {
 	}
 
 	void getGyroRes(int gScale) {
-		final byte value;
 		// Possible gyro scales (and their register bit settings) are:
 		// 250 DPS (00), 500 DPS (01), 1000 DPS (10), and 2000 DPS (11).
 		// Here's a bit of an algorith to calculate DPS/(ADC tick) based on that 2-bit
@@ -313,9 +296,16 @@ public class MPU9250Gyro extends GyroBase {
 	}
 
 	void readGyroData(int[] destination) {
+		SmartDashboard.putBoolean("Raw Boolean", true);
+
 		byte[] rawData = new byte[6]; //// x/y/z gyro register data stored here
 		readBytes(GYRO_XOUT_H, 6, rawData); // Read the six raw data registers sequentially into data array
-
+		double[] dashboardData = new double[rawData.length];
+		for (int i = 0; i < rawData.length; i++) {
+			dashboardData[i] = (double) rawData[i];
+		}
+		System.out.println("This is raw data: " + rawData);
+		SmartDashboard.putNumberArray("Raw Data", dashboardData);
 		destination[0] = ((rawData[0] << 8) | rawData[1]); // Turn the MSB and LSB into a signed 16-bit value
 		destination[1] = ((rawData[2] << 8) | rawData[3]);
 		destination[2] = ((rawData[4] << 8) | rawData[5]);
@@ -352,7 +342,7 @@ public class MPU9250Gyro extends GyroBase {
 		int c = readByte(GYRO_CONFIG); // get current GYRO_CONFIG register value
 		// c = c & ~0xE0; // Clear self-test bits [7:5]
 		c = (c & ~0x03); // Clear Fchoice bits [1:0]
-		c =  (c & ~0x18); // Clear GFS bits [4:3]
+		c = (c & ~0x18); // Clear GFS bits [4:3]
 		c = c | gScale << 3; // Set full scale range for the gyro
 		// c =| 0x00; // Set Fchoice for the gyro to 11 by writing its inverse to bits
 		// 1:0 of GYRO_CONFIG
@@ -487,23 +477,37 @@ public class MPU9250Gyro extends GyroBase {
 		Timer.delay(0.1);
 	}
 
-	
-
 	public void update() {
+		//Making sure the gyro updates every 20 millis
+		// Multiply timer.getTimestamp * 1000 to get millis
+		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
+		
+		// TODO change to account for drift
+		double rotation_threshold = 0;
+		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
+		System.out.println("This is gyro data: " + gyroData);
+
 		gx = gyroData[0] * gRes;
 		gy = gyroData[1] * gRes;
 		gz = gyroData[2] * gRes;
-		a12 = 2.0f * (q[1] * q[2] + q[0] * q[3]);
-		a22 = q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3];
-		a31 = 2.0f * (q[0] * q[1] + q[2] * q[3]);
-		a32 = 2.0f * (q[1] * q[3] - q[0] * q[2]);
-		a33 = q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3];
-		pitch = -Math.asin(a32);
-	    roll  = Math.atan2(a31, a33);
-	    yaw   = Math.atan2(a12, a22);
-	    pitch *= 180.0f / Math.PI;
-	    yaw   *= 180.0f / Math.PI; 
+		
+		System.out.println("Gyro Z: " + gz);
+		double deltaTime = currentTimestamp - currentTime;
+		//I have a bad feeling about having it exactly equal to 20
+		if (((gz >= rotation_threshold) || (gz <= -rotation_threshold)) && (deltaTime == 20)) {
+			/**
+			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
+			 */
+			gz /= (1000 / 20);
+			yaw += gz;
+			currentTime = Timer.getFPGATimestamp() * 1000;
+		}
+		
+		if (yaw < 0)
+			yaw += 360;
+		else if (yaw > 359)
+			yaw -= 360;
 
 	}
 

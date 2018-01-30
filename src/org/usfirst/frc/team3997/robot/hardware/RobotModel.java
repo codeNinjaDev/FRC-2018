@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 import org.usfirst.frc.team3997.robot.hardware.Ports;
@@ -60,16 +61,13 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 		
-		//gyro = new MPU9250Gyro();
+		gyro = new MPU9250Gyro(Port.kOnboard);
 		// TODO add real url
 		//camera.addServer("Server");
 
 	}
 
-	public void updateGyro() {
-		//gyro.update();
-	}
-
+	
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
 	};
@@ -192,6 +190,9 @@ public class RobotModel {
 		return gyro.getAngle();
 	}
 
+	public void updateGyro() {
+		gyro.update();
+	}
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);

@@ -21,7 +21,6 @@ public class DashboardLogger {
 		putDriverMotorOutputs();
 		putDriveEncoderData();
 		putGamePadButtonPress();
-		putGameData();
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
 	}
 	
@@ -75,7 +74,5 @@ public class DashboardLogger {
 		SmartDashboard.putNumber("MOTOR_rightDriveMotorA", robot.rightDriveMotorA.get());
 		SmartDashboard.putNumber("MOTOR_rightDriveMotorB", robot.rightDriveMotorB.get());
 	}
-	public void putGameData() {
-		SmartDashboard.putString(String.valueOf(PlateDetector.getPlateColor()), null);
-	}
+	
 }
