@@ -21,7 +21,7 @@ public class ArmController {
 	private PIDController armPIDController;
 	private PIDOutput armPIDOutput;
 	private PIDSource armPIDSource;
-	
+
 	private ArmState m_stateVal;
 	private ArmState nextState;
 	private boolean toggleArmManual;

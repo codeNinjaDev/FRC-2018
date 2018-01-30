@@ -28,11 +28,13 @@ public class Ports {
 
 	// ******************* ANALOG IN PORTS*******************
 	public static final int ARM_ENCODER                              = 0;
+	
 
 	// ***************** MISC *****************
 
 	// ***************** SOLENOID PORTS *****************
-
+	public static final int COMPRESSOR_MODULE = 9;
+	public static final int[] SOLENOID_MODULE_CHANNEL = {10, 2};
 	// ***************** JOYSTICK USB PORTS *****************
 	//MAKE SURE JOYSTICKS ARE SET TO "D" position on back
 

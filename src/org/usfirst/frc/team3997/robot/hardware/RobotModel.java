@@ -8,21 +8,26 @@ import org.usfirst.frc.team3997.robot.hardware.Ports;
 
 public class RobotModel {
 
-	public Spark leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB, leftIntake, rightIntake;
+	public Spark leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB, leftIntakeMotor, rightIntakeMotor;
 	public Victor leftArmMotor, rightArmMotor;
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
 	public AbsoluteEncoder armEncoder;
 	public MPU9250Gyro gyro;
-
+	public Compressor compressor;
+	public Solenoid solenoid;
 	//public CameraServer camera;
 	public Timer timer;
 
 	private PowerDistributionPanel pdp;
 	private double leftDriveACurrent, leftDriveBCurrent, rightDriveACurrent, rightDriveBCurrent;
-
+	/*TODO boolean enabled = c.enabled();
+	boolean pressureSwitch = c.getPressureSwitchValue();
+	double current = c.getCompressorCurrent();*/
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
+		compressor = new Compressor(Ports.COMPRESSOR_MODULE);
+		solenoid = new Solenoid(Ports.SOLENOID_MODULE_CHANNEL[0], Ports.SOLENOID_MODULE_CHANNEL[1]);
 		// Init drive motors
 		leftDriveMotorA = new Spark(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new Spark(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
@@ -236,11 +241,15 @@ public class RobotModel {
 	}
 	
 	public void intakeBlock(double speed) {
-		leftIntake.set(speed);
-		rightIntake.set(-speed);
+		leftIntakeMotor.set(speed);
+		rightIntakeMotor.set(-speed);
+		Timer.delay(1.5);
+		solenoid.set(true);
 	}
 	public void outtakeBlock(double speed) {
-		leftIntake.set(-speed);
-		rightIntake.set(speed);
+		solenoid.set(false);
+		leftIntakeMotor.set(-speed);
+		rightIntakeMotor.set(speed);
+		Timer.delay(1.5);
 	}
 }
