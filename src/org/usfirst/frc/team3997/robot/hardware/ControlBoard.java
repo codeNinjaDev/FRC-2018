@@ -9,12 +9,13 @@ public class ControlBoard extends RemoteControl {
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
+	TriggerReader collapseButton;
 	//Driver Triggers
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	//Operator Triggers
 	public TriggerReader gearTilterDownButton, gearTilterUpButton;
 	
-	private boolean tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+	private boolean collapseIntakeDesired, tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
 			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired;
 
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
@@ -45,6 +46,7 @@ public class ControlBoard extends RemoteControl {
 			
 			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
 			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
+			collapseButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
 		}
 
 		driverLeftJoyX = 0;
@@ -70,7 +72,7 @@ public class ControlBoard extends RemoteControl {
 		
 		intakeDesired = false;
 		outtakeDesired = false;
-		
+		collapseIntakeDesired = false;
 	}
 
 	public void readControls() {
@@ -102,7 +104,7 @@ public class ControlBoard extends RemoteControl {
 		armClimbDesired = armClimbButton.isDown();
 		armFeedDesired = armFeedButton.isDown();
 		toggleArmManualDesired = armManualButton.isDown();
-		
+		collapseIntakeDesired = collapseButton.isDown();
 		intakeDesired = intakeButton.isDown();
 		outtakeDesired = outtakeButton.isDown();
 		
@@ -123,6 +125,7 @@ public class ControlBoard extends RemoteControl {
 		armScaleButton.readValue();
 		armFeedButton.readValue();
 		armManualButton.readValue();
+		collapseButton.readValue();
 	}
 
 	//Axes to get joystick value
@@ -219,4 +222,9 @@ public class ControlBoard extends RemoteControl {
 		// TODO Auto-generated method stub
 		return outtakeDesired;
 	}
+	@Override
+	public boolean toggleCollapseIntake() {
+		return collapseIntakeDesired;
+	}
+	
 }

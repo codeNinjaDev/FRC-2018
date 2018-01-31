@@ -15,7 +15,9 @@ public class RobotModel {
 	public AbsoluteEncoder armEncoder;
 	public MPU9250Gyro gyro;
 	public Compressor compressor;
-	public Solenoid solenoid;
+	public DoubleSolenoid leftSolenoid;
+	public DoubleSolenoid rightSolenoid;
+
 	//public CameraServer camera;
 	public Timer timer;
 
@@ -27,7 +29,8 @@ public class RobotModel {
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
 		compressor = new Compressor(Ports.COMPRESSOR_MODULE);
-		solenoid = new Solenoid(Ports.SOLENOID_MODULE_CHANNEL[0], Ports.SOLENOID_MODULE_CHANNEL[1]);
+		leftSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[0], Ports.SOLENOID_CHANNEL[0], Ports.SOLENOID_CHANNEL[1]);
+		rightSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[1], Ports.SOLENOID_CHANNEL[2], Ports.SOLENOID_CHANNEL[3]);
 		// Init drive motors
 		leftDriveMotorA = new Spark(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new Spark(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
@@ -243,13 +246,19 @@ public class RobotModel {
 	public void intakeBlock(double speed) {
 		leftIntakeMotor.set(speed);
 		rightIntakeMotor.set(-speed);
-		Timer.delay(1.5);
-		solenoid.set(true);
+		
 	}
 	public void outtakeBlock(double speed) {
-		solenoid.set(false);
 		leftIntakeMotor.set(-speed);
 		rightIntakeMotor.set(speed);
-		Timer.delay(1.5);
+	}
+	
+	public void openIntake() {
+		leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+		rightSolenoid.set(DoubleSolenoid.Value.kReverse);	
+	}
+	public void closeIntake() {
+		leftSolenoid.set(DoubleSolenoid.Value.kForward);
+		rightSolenoid.set(DoubleSolenoid.Value.kForward);	
 	}
 }
