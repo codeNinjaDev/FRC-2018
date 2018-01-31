@@ -472,8 +472,9 @@ public class MPU9250Gyro extends GyroBase {
 
 	@Override
 	public void reset() {
-
+		
 		writeByte(PWR_MGMT_1, 0x80); // Write a one to bit 7 reset bit; toggle reset device
+		yaw = 0;
 		Timer.delay(0.1);
 	}
 
@@ -483,7 +484,7 @@ public class MPU9250Gyro extends GyroBase {
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
 		
 		// TODO change to account for drift
-		double rotation_threshold = 0;
+		double rotation_threshold = 1;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
 		System.out.println("This is gyro data: " + gyroData);
@@ -495,19 +496,20 @@ public class MPU9250Gyro extends GyroBase {
 		System.out.println("Gyro Z: " + gz);
 		double deltaTime = currentTimestamp - currentTime;
 		//I have a bad feeling about having it exactly equal to 20
-		if (((gz >= rotation_threshold) || (gz <= -rotation_threshold)) && (deltaTime == 20)) {
+		if (((gz >= rotation_threshold) || (gz <= -rotation_threshold)) && (deltaTime >= 20)) {
 			/**
 			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
 			 */
-			gz /= (1000 / 20);
+			gz /= (1000 / deltaTime);
 			yaw += gz;
+			if (yaw < 0)
+				yaw += 360;
+			else if (yaw > 359)
+				yaw -= 360;
 			currentTime = Timer.getFPGATimestamp() * 1000;
-		}
+		} 
 		
-		if (yaw < 0)
-			yaw += 360;
-		else if (yaw > 359)
-			yaw -= 360;
+		
 
 	}
 

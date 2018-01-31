@@ -154,6 +154,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		auto.stop();
+		robot.resetGyro();
 		robot.resetTimer();
 		robot.resetEncoders();
 		driveController.reset();
@@ -207,8 +208,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledPeriodic() {
-		robot.reset();
-
+		//robot.reset();
+		SmartDashboard.putNumber("gyro", robot.getAngle());
+		robot.updateGyro();
 		input.updateInput();
 		dashboardLogger.updateData();
 
