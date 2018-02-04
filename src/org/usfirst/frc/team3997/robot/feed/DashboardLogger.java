@@ -26,6 +26,7 @@ public class DashboardLogger {
 		} catch (Exception E) {
 
 		}
+
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
 	}
 
@@ -90,4 +91,5 @@ public class DashboardLogger {
 		SmartDashboard.putString("Plate Colors", String.valueOf(PlateDetector.getPlateColor()));
 
 	}
+
 }

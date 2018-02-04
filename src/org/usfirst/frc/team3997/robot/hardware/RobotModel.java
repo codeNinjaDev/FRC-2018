@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 import org.usfirst.frc.team3997.robot.hardware.Ports;
@@ -75,13 +76,8 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 
-		gyro = new MPU9250Gyro();
-
-		// TODO add real url
-		// camera.addServer("Server");
-
+		gyro = new MPU9250Gyro(Port.kOnboard);
 	}
-
 	/**
 	 * Updates Gyro yaw interface
 	 **/
