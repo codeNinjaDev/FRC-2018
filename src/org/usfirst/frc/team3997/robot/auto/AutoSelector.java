@@ -39,7 +39,6 @@ public class AutoSelector {
 	
 	public void listOptions() {
 		autoChooser = new SendableChooser<Integer>();
-		
 		autoChooser.addDefault("Nothing (Default)", 0);
 		autoChooser.addObject("Drive (3s)", 1);
 		autoChooser.addObject("Pass Auto Line and back (Drive 100)", 2);
@@ -49,7 +48,9 @@ public class AutoSelector {
 		autoChooser.addObject("Center Auto Routine", 6);
 		autoChooser.addObject("Right Auto Routine", 7);
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
-		SmartDashboard.putData("Autonomous: ", autoChooser);
+		//SmartDashboard.putData("Autonomous: ", autoChooser);
+		SmartDashboard.putData("Autonomous", autoChooser);
+		System.out.println("AUTO SELECTOR " + autoChooser);
 	}
 	
 	public AutoRoutine pick() {

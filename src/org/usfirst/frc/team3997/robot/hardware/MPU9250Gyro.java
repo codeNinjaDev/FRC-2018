@@ -304,8 +304,8 @@ public class MPU9250Gyro extends GyroBase {
 		for (int i = 0; i < rawData.length; i++) {
 			dashboardData[i] = (double) rawData[i];
 		}
-		System.out.println("This is raw data: " + rawData);
-		SmartDashboard.putNumberArray("Raw Data", dashboardData);
+		//System.out.println("This is raw data: " + rawData);
+		//SmartDashboard.putNumberArray("Raw Data", dashboardData);
 		destination[0] = ((rawData[0] << 8) | rawData[1]); // Turn the MSB and LSB into a signed 16-bit value
 		destination[1] = ((rawData[2] << 8) | rawData[3]);
 		destination[2] = ((rawData[4] << 8) | rawData[5]);
@@ -479,7 +479,6 @@ public class MPU9250Gyro extends GyroBase {
 	}
 
 	public void update() {
-		//Making sure the gyro updates every 20 millis
 		// Multiply timer.getTimestamp * 1000 to get millis
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
 		
@@ -487,13 +486,11 @@ public class MPU9250Gyro extends GyroBase {
 		double rotation_threshold = 1;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
-		System.out.println("This is gyro data: " + gyroData);
 
 		gx = gyroData[0] * gRes;
 		gy = gyroData[1] * gRes;
 		gz = gyroData[2] * gRes;
 		
-		System.out.println("Gyro Z: " + gz);
 		double deltaTime = currentTimestamp - currentTime;
 		//I have a bad feeling about having it exactly equal to 20
 		if (((gz >= rotation_threshold) || (gz <= -rotation_threshold)) && (deltaTime >= 20)) {

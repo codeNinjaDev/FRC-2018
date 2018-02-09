@@ -21,11 +21,8 @@ public class DashboardLogger {
 		putDriverMotorOutputs();
 		putDriveEncoderData();
 		putGamePadButtonPress();
-		try {
-			putGameData();
-		} catch (Exception E) {
-
-		}
+		putGameData();
+		
 
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
 	}

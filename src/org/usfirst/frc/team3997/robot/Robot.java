@@ -214,8 +214,8 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 		//robot.reset();
-		SmartDashboard.putNumber("gyro", robot.getAngle());
-		robot.updateGyro();
+		//SmartDashboard.putNumber("gyro", robot.getAngle());
+		//robot.updateGyro();
 		input.updateInput();
 		dashboardLogger.updateData();
 		dashboardLogger.updateEssentialData();
@@ -227,7 +227,7 @@ public class Robot extends IterativeRobot {
 		} else if (humanControl.getTankDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = false;
 		}
-
+		auto.listOptions();
 		lights.setDisabledLights();
 	}
 
