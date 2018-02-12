@@ -17,6 +17,6 @@ public class PassAutoLineRoutine extends AutoRoutine {
 
 	@Override
 	protected void routine() {
-		driveDistanceStraight(controllers, 100, .8, 4.0, false);
+		driveDistanceStraight(controllers, 100, .8, 10.0, false);
 	}
 }

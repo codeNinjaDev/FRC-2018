@@ -14,10 +14,10 @@ public class Params {
 	public static double X_ARCADE_DRIVE_OUT = 0.0;
 	public static double X_ARCADE_DRIVE_LEFT_RIGHT = 6.25;
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
-	public static double MAX_SPEED = DashboardVariables.max_speed;
-	public static final double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
+	public static double MAX_SPEED = 1;
+	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
 
-	public static final double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
+	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 
 	// GEAR HOLDER PARAMS
 	public static final double GEAR_WHEELS_RESTING_MOTOR_SPEED = 0.0;
@@ -64,15 +64,15 @@ public class Params {
 	// [DEBUGGING]
 
 	// [DRIVE_PID]
-	public static final double drive_p = 0.4;
-	public static final double drive_i = 0.0;
-	public static final double drive_d = 0.05;
+	public static double drive_p = 0.4;
+	public static double drive_i = 0.0;
+	public static double drive_d = 0.05;
 
-	// [NEW_DRIVE_PID]
+	/*// [NEW_DRIVE_PID]
 	public static final double new_drive_p = DashboardVariables.DRIVE_P;
 	public static final double new_drive_i = DashboardVariables.DRIVE_I;
 	public static final double new_drive_d = DashboardVariables.DRIVE_D;
-
+	*/
 	// [GEAR_PID]
 	public static final double gear_p = DashboardVariables.GEAR_P;
 	public static final double gear_i = DashboardVariables.GEAR_I;

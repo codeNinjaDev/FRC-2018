@@ -41,7 +41,7 @@ public class AutoSelector {
 		autoChooser = new SendableChooser<Integer>();
 		autoChooser.addDefault("Nothing (Default)", 0);
 		autoChooser.addObject("Drive (3s)", 1);
-		autoChooser.addObject("Pass Auto Line and back (Drive 100)", 2);
+		autoChooser.addObject("Pass Auto Line (Drive 100)", 2);
 		autoChooser.addObject("Turn 90 degrees", 3);
 		autoChooser.addObject("Custom Routine (check preferences)", 4);
 		autoChooser.addObject("Left Auto Routine", 5);

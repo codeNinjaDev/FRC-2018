@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** TODO make this comment better: Handles both teleoperated and autonomus driving 
  *  
  * @category controllers
@@ -157,9 +158,11 @@ public class DriveController {
 				Params.SQUARE_DRIVE_AXIS_INPUT = true;
 			}
 
-			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.HARDSET_DRIVE_SPEED_MAX,
-					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.HARDSET_DRIVE_SPEED_MAX,
+			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
+					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
 					Params.SQUARE_DRIVE_AXIS_INPUT);
+			SmartDashboard.putNumber("Prefs MAXSPEED", Params.MAX_SPEED);
+
 		} else {
 			drive.arcadeDrive(myY, myX, false);
 		}

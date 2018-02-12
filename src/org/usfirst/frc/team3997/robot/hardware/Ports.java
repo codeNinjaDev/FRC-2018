@@ -24,6 +24,7 @@ public class Ports {
 	// ***************** DIGITAL I/O PORTS *****************
 	public static final int LIGHTS_DIO_PORTS[]                    = {2, 3, 4, 5};
 	public static final int LEFT_DRIVE_ENCODER_PORTS[]            = {9, 8};
+	//Top Ports
 	public static final int RIGHT_DRIVE_ENCODER_PORTS[]           = {7, 6};
 
 	// ******************* ANALOG IN PORTS*******************

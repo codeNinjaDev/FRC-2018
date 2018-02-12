@@ -20,8 +20,10 @@ public class CustomDistanceRoutine extends AutoRoutine {
 
 	@Override
 	protected void routine() {
+		driveDistanceStraight(controllers, DashboardVariables.firstAutoDistance, .8, 5, false);
+		driveRotate(controllers, DashboardVariables.nextAutoAngle, .8, 5, false);
+		driveDistanceStraight(controllers, DashboardVariables.lastAutoDistance, .8, 5, false);
 
-		
 	}
 
 }
