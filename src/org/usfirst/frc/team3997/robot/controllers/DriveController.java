@@ -80,7 +80,6 @@ public class DriveController {
 		this.robot.rightDriveEncoder.setSamplesToAverage(Params.DRIVE_Y_PID_SAMPLES_AVERAGE);
 		// TODO I think that this is wrong
 		leftPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.LeftWheels, this.robot);
-
 		leftPID = new PIDController(0, 0, 0, this.robot.leftDriveEncoder, leftPIDOutput);
 		// TODO Might change this to max power variable
 		leftPID.setOutputRange(-1.0, 1.0);

@@ -79,7 +79,7 @@ public class DriveDistanceAction extends Action{
 
 		robot.leftDriveEncoder.reset();
 		robot.rightDriveEncoder.reset();
-		
+
 		leftEncoderStartDistance = robot.leftDriveEncoder.getDistance();
 		leftEncoderStartDistance = robot.rightDriveEncoder.getDistance();
 		
