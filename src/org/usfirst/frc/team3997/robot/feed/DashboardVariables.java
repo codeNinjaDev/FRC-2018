@@ -33,8 +33,7 @@ public class DashboardVariables {
 	public static double max_speed = 1;
 	
 	//Paths
-	public static double redLeftGearWaypoints[][] = {{-4, -1, Pathfinder.d2r(-45)}, {-2, -2, 0}, {0, 0, 0}};
-	public static Waypoint redLeftGear[];
+	
 	
 
 }

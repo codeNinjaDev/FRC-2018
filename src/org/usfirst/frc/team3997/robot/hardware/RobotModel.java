@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
+import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 
 /**
@@ -52,10 +53,12 @@ public class RobotModel {
 		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
 
 		leftDriveEncoder.setReverseDirection(false);
-		leftDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
+		//Distance Per Encoder Pulse - how far it goes for one tick of encoder
+		leftDriveEncoder.setDistancePerPulse(Params.WHEEL_CIRCUMFERENCE / Params.PULSES_PER_ROTATION);
 		leftDriveEncoder.setSamplesToAverage(1);
 		rightDriveEncoder.setReverseDirection(false);
-		rightDriveEncoder.setDistancePerPulse(((1.0) / (250.0)) * ((4.0) * (Math.PI)));
+		//Distance Per Encoder Pulse - how far it goes for one tick of encoder
+		rightDriveEncoder.setDistancePerPulse(Params.WHEEL_CIRCUMFERENCE / Params.PULSES_PER_ROTATION);
 		rightDriveEncoder.setSamplesToAverage(1);
 
 		leftDriveMotorA.setSafetyEnabled(false);

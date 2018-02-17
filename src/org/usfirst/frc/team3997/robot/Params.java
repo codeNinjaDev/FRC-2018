@@ -16,22 +16,13 @@ public class Params {
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
 	public static double MAX_SPEED = 1;
 	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
-
+	//Wheel diameter in inches
+	public static double WHEEL_DIAMETER = 6;
+	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 
-	// GEAR HOLDER PARAMS
-	public static final double GEAR_WHEELS_RESTING_MOTOR_SPEED = 0.0;
-	public static final double GEAR_WHEELS_ACTIVE_MOTOR_SPEED = 0.75;
-	public static final double GEAR_WHEELS_OUT_MOTOR_SPEED = 0.35; // 0.575
-	public static final double GEAR_TILTER_MAX_MOTOR_SPEED = 0.4;
-
-	public static final double GEAR_POT_MAX_DOWN_UP[] = { 0.56, 0.45 };
-	public static final double GEAR_POT_UP_POSITION = 0.425;
-	public static final double GEAR_POT_RAMP_POSITION = 0.399;
-	public static final double GEAR_POT_FORCE_DOWN_THRESHOLD = 0.464;
-	public static final double GEAR_POT_FORCE_DOWN_SPEED = 0.15;
-
-	public static final double GEAR_POT_FORCE_REST_THRESHOLD = 0.396;
+	// ENCODER PARAMS
+	public static final double PULSES_PER_ROTATION = 250;
 
 	// DRIVE PID PARAMS
 

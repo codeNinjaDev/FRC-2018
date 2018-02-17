@@ -85,7 +85,8 @@ public class DashboardLogger {
 	}
 
 	public void putGameData() {
-		SmartDashboard.putString("Plate Colors", String.valueOf(PlateDetector.getPlateColor()));
+		SmartDashboard.putString("Switch Colors", String.valueOf(PlateDetector.getSwitchColor()));
+		SmartDashboard.putString("Scale Colors", String.valueOf(PlateDetector.getScaleColor()));
 
 	}
 

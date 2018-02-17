@@ -227,7 +227,7 @@ public class Robot extends IterativeRobot {
 		} else if (humanControl.getTankDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = false;
 		}
-		auto.listOptions();
+		//auto.listOptions();
 		lights.setDisabledLights();
 	}
 

@@ -23,10 +23,23 @@ public class RightAutoRoutine extends AutoRoutine{
 
 	@Override
 	public void prestart() {
-		boolean isLeftSwitch = (PlateDetector.getPlateColor() == 'L');
+		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
 		if(isLeftSwitch) {
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			if(isLeftScale) {
+				
+			} else {
+				
+			}
+			
 			// trajectory = MotionController.generateTrajectory(rightLeftPath);
 		} else {
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			if(isLeftScale) {
+				
+			} else {
+				
+			}
 			// trajectory = MotionController.generateTrajectory(rightRightPath);
 		}
 	}
