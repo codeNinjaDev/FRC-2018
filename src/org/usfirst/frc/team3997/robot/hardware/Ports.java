@@ -7,10 +7,10 @@ public class Ports {
 	// ***************** PWM PORTS *****************
 
 	public static final int CLIMBER_MOTOR_PWM_PORT                 = 6;
-	public static final int LEFT_ARM_MOTOR_PWM_PORT                = 3;
-	public static final int RIGHT_ARM_MOTOR_PWM_PORT               = 8;
-	public static final int LEFT_INTAKE_MOTOR_PWM_PORT             = 2;
-	public static final int RIGHT_INTAKE_MOTOR_PWM_PORT            = 9;
+	public static final int LEFT_ARM_MOTOR_PWM_PORT                = 8;
+	public static final int RIGHT_ARM_MOTOR_PWM_PORT               = 3;
+	public static final int LEFT_INTAKE_MOTOR_PWM_PORT             = 9;
+	public static final int RIGHT_INTAKE_MOTOR_PWM_PORT            = 2;
 	//public static final int CLIMBER_LOCKER_SERVO_PWM_PORT          = 7;
 	public static final int LEFT_DRIVE_MOTOR_A_PWM_PORT            = 6; //front left
 	public static final int LEFT_DRIVE_MOTOR_B_PWM_PORT            = 7; //back left
