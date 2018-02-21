@@ -14,19 +14,25 @@ public class Params {
 	public static double X_ARCADE_DRIVE_OUT = 0.0;
 	public static double X_ARCADE_DRIVE_LEFT_RIGHT = 6.25;
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
-	public static double MAX_SPEED = DashboardVariables.max_speed;
 
-	public static final double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
 
-	public static final double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 
 	// ARM PARAMS
-	public static final double ARM_FEED_SETPOINT = DashboardVariables.SCALE_ARM_ANGLE;
-	public static final double ARM_SWITCH_SETPOINT 	= DashboardVariables.SWITCH_ARM_ANGLE;
-	public static final double ARM_SCALE_SETPOINT = DashboardVariables.SCALE_ARM_ANGLE; // 0.575
-	public static final double ARM_CLIMB_SETPOINT = DashboardVariables.CLIMB_ARM_ANGLE;
-	public static final double ARM_REST_SETPOINT = DashboardVariables.FEED_ARM_ANGLE; 
+	public static double ARM_FEED_SETPOINT = 0;
+	public static double ARM_SWITCH_SETPOINT 	= 30;
+	public static double ARM_SCALE_SETPOINT = 120; // 0.575
+	public static double ARM_CLIMB_SETPOINT = 150;
+	public static double ARM_REST_SETPOINT = 0; 
 
+	public static double MAX_SPEED = 1;
+	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
+	//Wheel diameter in inches
+	public static double WHEEL_DIAMETER = 6;
+	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
+
+	// ENCODER PARAMS
+	public static final double PULSES_PER_ROTATION = 250;
 
 	// DRIVE PID PARAMS
 
@@ -59,9 +65,9 @@ public class Params {
 	// [DEBUGGING]
 
 	// [DRIVE_PID]
-	public static final double drive_p = 0.4;
-	public static final double drive_i = 0.0;
-	public static final double drive_d = 0.05;
+	public static double drive_p = 0.4;
+	public static double drive_i = 0.0;
+	public static double drive_d = 0.05;
 
 	// [NEW_DRIVE_PID]
 	public static double new_drive_p = DashboardVariables.DRIVE_P;
@@ -69,13 +75,14 @@ public class Params {
 	public static double new_drive_d = DashboardVariables.DRIVE_D;
 
 	// [ARM_PID]
-	public static double arm_p = DashboardVariables.ARM_P;
-	public static double arm_i = DashboardVariables.ARM_I;
-	public static double arm_d = DashboardVariables.ARM_D;
-	public static double arm_f = DashboardVariables.ARM_F;
+	public static double arm_p = 0;
+	public static double arm_i = 0;
+	public static double arm_d = 0;
+	public static double arm_f = 0;
 
 	
 	
+
 
 	// [GEAR_DOWN_PID]
 	public static final double gear_down_p = 0.0;
@@ -91,9 +98,9 @@ public class Params {
 	public static final double v_high = 255;
 	
 	//[MOTION PROFILING] meters
-	public static final double wheel_diameter = 4;
-	public static final double maximum_velocity = 150; //TODO add maximum velocity in inches/s
-	public static final double maximum_acceleration = 450; //TODO add maximum velocity in inches/s/s
-	public static final double maximum_jerk = 4500; //TODO add maximum velocity in a/s
+	public static final double wheel_diameter = .1;
+	public static final double maximum_velocity = 3; //TODO add maximum velocity in inches/s
+	public static final double maximum_acceleration = 10; //TODO add maximum velocity in inches/s/s
+	public static final double maximum_jerk = 30; //TODO add maximum velocity in a/s
 
 }

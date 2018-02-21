@@ -114,7 +114,8 @@ public class Robot extends IterativeRobot {
                 outputStream.putFrame(output);
             }
         }).start();
-		
+		dashboardLogger.updateEssentialData();
+
 	}
 
 	/**
@@ -149,6 +150,8 @@ public class Robot extends IterativeRobot {
 		visionController.update();
 		lights.setAutoLights();
 		dashboardLogger.updateData();
+		dashboardLogger.updateEssentialData();
+
 	}
 
 	/**
@@ -158,6 +161,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		auto.stop();
+		robot.resetGyro();
 		robot.resetTimer();
 		robot.resetEncoders();
 		driveController.reset();
@@ -175,7 +179,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-
+		robot.updateGyro();
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
@@ -186,6 +190,7 @@ public class Robot extends IterativeRobot {
 		
 		visionController.disable();
 		lights.setEnabledLights();
+		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -211,15 +216,17 @@ public class Robot extends IterativeRobot {
 		}
 		robot.reset();
 		input.updateInput();
+		dashboardLogger.updateEssentialData();
 
 	}
 
 	public void disabledPeriodic() {
-		robot.reset();
-
+		//robot.reset();
+		//SmartDashboard.putNumber("gyro", robot.getAngle());
+		//robot.updateGyro();
 		input.updateInput();
 		dashboardLogger.updateData();
-
+		dashboardLogger.updateEssentialData();
 		AutoRoutineRunner.getTimer().reset();
 		humanControl.readControls();
 		visionController.update();
@@ -228,7 +235,7 @@ public class Robot extends IterativeRobot {
 		} else if (humanControl.getTankDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = false;
 		}
-
+		//auto.listOptions();
 		lights.setDisabledLights();
 	}
 

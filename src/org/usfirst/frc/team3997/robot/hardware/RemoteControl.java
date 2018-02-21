@@ -36,5 +36,6 @@ public abstract class RemoteControl {
 	public abstract boolean getOuttakeDesired();
 	public abstract boolean toggleCollapseIntake();
 
+
 	
 }

@@ -79,9 +79,9 @@ public class DriveDistanceAction extends Action{
 
 		robot.leftDriveEncoder.reset();
 		robot.rightDriveEncoder.reset();
-		
+
 		leftEncoderStartDistance = robot.leftDriveEncoder.getDistance();
-		leftEncoderStartDistance = robot.rightDriveEncoder.getDistance();
+		rightEncoderStartDistance = robot.rightDriveEncoder.getDistance();
 		
 		driveTrain.leftPID.setOutputRange(-maxSpeed, maxSpeed);
 		driveTrain.leftPID.setPID(P, I, D);

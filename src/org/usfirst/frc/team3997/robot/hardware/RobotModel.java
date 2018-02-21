@@ -8,8 +8,9 @@ import org.usfirst.frc.team3997.robot.hardware.Ports;
 
 public class RobotModel {
 
-	public Spark leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB, leftIntakeMotor, rightIntakeMotor;
-	public Victor leftArmMotor, rightArmMotor;
+
+	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
+	public Spark leftArmMotor, rightArmMotor, leftIntakeMotor, rightIntakeMotor;
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
 	public AbsoluteEncoder armEncoder;
@@ -32,16 +33,20 @@ public class RobotModel {
 		leftSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[0], Ports.SOLENOID_CHANNEL[0], Ports.SOLENOID_CHANNEL[1]);
 		rightSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[1], Ports.SOLENOID_CHANNEL[2], Ports.SOLENOID_CHANNEL[3]);
 		// Init drive motors
-		leftDriveMotorA = new Spark(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
-		leftDriveMotorB = new Spark(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
-		rightDriveMotorA = new Spark(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
-		rightDriveMotorB = new Spark(Ports.RIGHT_DRIVE_MOTOR_B_PWM_PORT);
+		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
+		leftDriveMotorB = new VictorSP(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
+		rightDriveMotorA = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
+		rightDriveMotorB = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_B_PWM_PORT);
 		
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
 
-		leftArmMotor = new Victor(Ports.LEFT_ARM_MOTOR_PWM_PORT);
-		rightArmMotor = new Victor(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
+		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
+		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
+		leftIntakeMotor = new Spark(Ports.LEFT_INTAKE_MOTOR_PWM_PORT);
+		rightIntakeMotor = new Spark(Ports.RIGHT_INTAKE_MOTOR_PWM_PORT);
+
+				
 		// TODO add real input channel
 		// gyro = new AnalogGyro(channel);
 		AnalogInput.setGlobalSampleRate(62500);
@@ -75,7 +80,7 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 		
-		gyro = new MPU9250Gyro();
+		gyro = new MPU9250Gyro(Ports.gyroPort);
 		// TODO add real url
 		//camera.addServer("Server");
 
