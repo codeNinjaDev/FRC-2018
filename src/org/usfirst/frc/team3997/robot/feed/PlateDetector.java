@@ -15,9 +15,13 @@ public class PlateDetector {
 	 */
 	
 	
-	public static char getPlateColor() {
+	public static char getSwitchColor() {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		return gameData.charAt(0);
+	}
+	public static char getScaleColor() {
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		return gameData.charAt(1);
 	}
 	
 	

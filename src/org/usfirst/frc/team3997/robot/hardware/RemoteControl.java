@@ -32,5 +32,6 @@ public abstract class RemoteControl {
 	public abstract boolean getFeedArmDesired();
 	public abstract boolean getClimbArmDesired();
 
+
 	
 }

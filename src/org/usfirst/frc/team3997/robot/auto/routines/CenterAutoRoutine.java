@@ -23,11 +23,24 @@ public class CenterAutoRoutine extends AutoRoutine{
 
 	@Override
 	public void prestart() {
-		boolean isLeftSwitch = (PlateDetector.getPlateColor() == 'L');
+		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
 		if(isLeftSwitch) {
-			//trajectory = MotionController.generateTrajectory(centerLeftPath);
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			if(isLeftScale) {
+				
+			} else {
+				
+			}
+			
+			// trajectory = MotionController.generateTrajectory(rightLeftPath);
 		} else {
-			// trajectory = MotionController.generateTrajectory(centerRightPath);
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			if(isLeftScale) {
+				
+			} else {
+				
+			}
+			// trajectory = MotionController.generateTrajectory(rightRightPath);
 		}
 	}
 
