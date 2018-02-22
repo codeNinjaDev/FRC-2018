@@ -15,30 +15,35 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-/** TODO make this comment better: Handles both teleoperated and autonomus driving 
- *  
+
+/**
+ * TODO make this comment better: Handles both teleoperated and autonomus
+ * driving
+ * 
  * @category controllers
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
  *         Friedlander
  * 
- * **/
+ **/
 public class DriveController {
 
 	private RobotModel robot;
-	//Handles the math for arcade, curvature, and tank drive
+	// Handles the math for arcade, curvature, and tank drive
 	private DifferentialDrive drive;
 	private RemoteControl humanControl;
-	/** Current drive state**/
+	/** Current drive state **/
 	private DriveState m_stateVal;
-	/** Next drive state**/
+	/** Next drive state **/
 	private DriveState nextState;
-	/** Left PID Output 
-	 * <i>Uses {@link WheelsPIDOutput}</i>**/
+	/**
+	 * Left PID Output <i>Uses {@link WheelsPIDOutput}</i>
+	 **/
 	public PIDOutput leftPIDOutput;
-	
+
 	public PIDController leftPID;
-	/** Left Right PID Output 
-	 * <i>Uses {@link WheelsPIDOutput}</i>**/
+	/**
+	 * Left Right PID Output <i>Uses {@link WheelsPIDOutput}</i>
+	 **/
 	public PIDOutput rightPIDOutput;
 	public PIDController rightPID;
 
@@ -46,26 +51,36 @@ public class DriveController {
 	// TODO public PIDController visionPID;
 	// TODO public VisionPIDSource visionPIDSource
 
-	/** Staight PID Output 
-	 * <i>Uses {@link ArcadeStraightPIDOutput}</i>**/
+	/**
+	 * Staight PID Output <i>Uses {@link ArcadeStraightPIDOutput}</i>
+	 **/
 	public PIDOutput straightPIDOutput;
 	public PIDController straightPID;
-	/** Averages Encoder values PID Source 
-	 * <i>Uses {@link DriveEncodersPIDSource}</i>**/
+	/**
+	 * Averages Encoder values PID Source <i>Uses {@link DriveEncodersPIDSource}</i>
+	 **/
 	public PIDSource avgEncodersPIDSource;
 
-	/** Different types of drive state
-	 * @param kInitialize Initial DriveState
-	 * @param kTeleopDrive Teleop DriveState
-	 * **/
+	/**
+	 * Different types of drive state
+	 * 
+	 * @param kInitialize
+	 *            Initial DriveState
+	 * @param kTeleopDrive
+	 *            Teleop DriveState
+	 **/
 	enum DriveState {
 		kInitialize, kTeleopDrive
 	};
 
-	/** Initalizes all drive variables
-	 * @param robot Robot Model to get encoders and motors
-	 * @param humanControl Get inputs from controllers
-	 * **/
+	/**
+	 * Initalizes all drive variables
+	 * 
+	 * @param robot
+	 *            Robot Model to get encoders and motors
+	 * @param humanControl
+	 *            Get inputs from controllers
+	 **/
 	public DriveController(RobotModel robot, RemoteControl humanControl) {
 		this.robot = robot;
 		this.humanControl = humanControl;
@@ -94,7 +109,7 @@ public class DriveController {
 		rightPID.setOutputRange(-1.0, 1.0);
 		rightPID.setAbsoluteTolerance(0.25);
 		rightPID.disable();
-		
+
 		avgEncodersPIDSource = new DriveEncodersPIDSource(this.robot);
 
 		straightPIDOutput = new ArcadeStraightPIDOutput(drive, this.robot);
@@ -108,9 +123,15 @@ public class DriveController {
 		nextState = DriveState.kInitialize;
 
 	}
-	/** Updates inputs and drive in teleopPeriodic
-	 * @param currTimeSec Does absolutely nothing
-	 * @param deltaTimeSec Does absolutely nothing **/
+
+	/**
+	 * Updates inputs and drive in teleopPeriodic
+	 * 
+	 * @param currTimeSec
+	 *            Does absolutely nothing
+	 * @param deltaTimeSec
+	 *            Does absolutely nothing
+	 **/
 	public void update(double currTimeSec, double deltaTimeSec) {
 		switch (m_stateVal) {
 		case kInitialize:
@@ -119,10 +140,14 @@ public class DriveController {
 			nextState = DriveState.kTeleopDrive;
 			break;
 		case kTeleopDrive:
-			double driverLeftX = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kLX);
-			double driverLeftY = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kLY);
-			double driverRightX = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kRX);
-			double driverRightY = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kRY);
+			double driverLeftX = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy,
+					RemoteControl.Axes.kLX);
+			double driverLeftY = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy,
+					RemoteControl.Axes.kLY);
+			double driverRightX = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy,
+					RemoteControl.Axes.kRX);
+			double driverRightY = humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy,
+					RemoteControl.Axes.kRY);
 
 			if (leftPID.isEnabled() || rightPID.isEnabled()) {
 				leftPID.disable();
@@ -140,10 +165,17 @@ public class DriveController {
 		}
 		m_stateVal = nextState;
 	}
-	/** Arcade Drive function, adds brake functionality
-	 * @param myY moveValue
-	 * @param myX rotateValue
-	 * @param teleOp boolean inTeleop? **/
+
+	/**
+	 * Arcade Drive function, adds brake functionality
+	 * 
+	 * @param myY
+	 *            moveValue
+	 * @param myX
+	 *            rotateValue
+	 * @param teleOp
+	 *            boolean inTeleop?
+	 **/
 	public void arcadeDrive(double myY, double myX, boolean teleOp) {
 		if (teleOp) {
 			if ((humanControl.getSlowDriveTier1Desired() && !humanControl.getSlowDriveTier2Desired())
@@ -158,20 +190,24 @@ public class DriveController {
 			}
 
 			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
-					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
-					Params.SQUARE_DRIVE_AXIS_INPUT);
+					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED, Params.SQUARE_DRIVE_AXIS_INPUT);
 			SmartDashboard.putNumber("Prefs MAXSPEED", Params.MAX_SPEED);
 
 		} else {
 			drive.arcadeDrive(myY, myX, false);
 		}
 	}
+
 	/** Tank Drive Function with multipliers **/
 	public void tankDrive(double myLeft, double myRight) {
 		if ((humanControl.getSlowDriveTier1Desired() && !humanControl.getSlowDriveTier2Desired())
 				|| (!humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
 			Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.65;
 			Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.65;
+			Params.SQUARE_DRIVE_AXIS_INPUT = false;
+		} else if ((humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
+			Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.35;
+			Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.35;
 			Params.SQUARE_DRIVE_AXIS_INPUT = false;
 		} else {
 			Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 1.0;
@@ -181,10 +217,12 @@ public class DriveController {
 		drive.tankDrive(myLeft * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER,
 				myRight * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER, Params.SQUARE_DRIVE_AXIS_INPUT);
 	}
+
 	/** Changes current DriveState to initalize **/
 	public void reset() {
 		m_stateVal = DriveState.kInitialize;
 	}
+
 	/** Stops driveTrain **/
 	public void stop() {
 		drive.arcadeDrive(0, 0, false);
