@@ -23,6 +23,7 @@ public class DashboardInput {
 		Params.drive_d = preferences.getDouble("Drive D Value", 0);
 
 		Params.MAX_SPEED = preferences.getDouble("Max Speed", 1);
+		System.out.println("PREFS: " + preferences.getDouble("Max Speed", 1));
 	}
 
 	public void updateInput() {

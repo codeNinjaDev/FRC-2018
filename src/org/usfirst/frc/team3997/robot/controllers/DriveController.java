@@ -183,14 +183,19 @@ public class DriveController {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.65;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.65;
 				Params.SQUARE_DRIVE_AXIS_INPUT = false;
+			} else if ((humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
+				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.35;
+				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.35;
+				Params.SQUARE_DRIVE_AXIS_INPUT = false;
 			} else {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 1.0;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 1.0;
 				Params.SQUARE_DRIVE_AXIS_INPUT = true;
 			}
 
-			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED,
-					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Params.MAX_SPEED, Params.SQUARE_DRIVE_AXIS_INPUT);
+			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Math.pow(Params.MAX_SPEED, .5),
+					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Math.pow(Params.MAX_SPEED, .5),
+					Params.SQUARE_DRIVE_AXIS_INPUT);
 			SmartDashboard.putNumber("Prefs MAXSPEED", Params.MAX_SPEED);
 
 		} else {

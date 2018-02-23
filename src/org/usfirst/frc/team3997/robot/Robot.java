@@ -165,6 +165,7 @@ public class Robot extends IterativeRobot {
 		currTimeSec = 0.0;
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
+		input.updateInput();
 	}
 
 	/**
