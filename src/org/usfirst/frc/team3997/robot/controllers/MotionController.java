@@ -5,6 +5,7 @@ import java.io.File;
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.*;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
@@ -19,6 +20,8 @@ import jaci.pathfinder.modifiers.TankModifier;
  **/
 public class MotionController {
 	private RobotModel robot;
+	boolean isProfileFinished = false;
+
 	/**
 	 * A single waypoint used for Trajectory Generation.
 	 *
@@ -87,12 +90,12 @@ public class MotionController {
 	/** Sets up config, trajectory, tank modifier, and encoderFollowers using an array of Waypoints **/
 	public void setUp(Waypoint[] points) {
 		this.points = points;
-		config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05,
+		config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, Params.dt,
 				Params.maximum_velocity, Params.maximum_acceleration, Params.maximum_jerk);
 		trajectory = Pathfinder.generate(points, config);
 
 		// TODO find distance between front and rear axles of a vehicle
-		modifier = new TankModifier(trajectory).modify(0.5);
+		modifier = new TankModifier(trajectory).modify(Params.wheel_base_width);
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 	}
@@ -104,7 +107,7 @@ public class MotionController {
 		trajectory = trajectoryInput;
 
 		// TODO find distance between front and rear axles of a vehicle
-		modifier = new TankModifier(trajectory).modify(0.5);
+		modifier = new TankModifier(trajectory).modify(Params.wheel_base_width);
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 	}
@@ -115,14 +118,14 @@ public class MotionController {
 		trajectory = Pathfinder.readFromCSV(trajectoryCSV);
 
 		// TODO find distance between front and rear axles of a vehicle
-		modifier = new TankModifier(trajectory).modify(0.5);
+		modifier = new TankModifier(trajectory).modify(Params.wheel_base_width);
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 	}
 	/** Static function that returns a trajectory given an array of waypoints **/
 	public static Trajectory generateTrajectory(Waypoint[] points) {
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, Params.maximum_velocity, Params.maximum_acceleration,
+				Trajectory.Config.SAMPLES_HIGH, Params.dt, Params.maximum_velocity, Params.maximum_acceleration,
 				Params.maximum_jerk);
 		return Pathfinder.generate(points, config);
 	}
@@ -133,21 +136,25 @@ public class MotionController {
 		// .1016 meters = 4 inch wheel diameter
 		isEnabled = true;
 		robot.resetGyro();
-		left.configureEncoder(robot.leftDriveEncoder.get(), 100, .1016);
-		right.configureEncoder(robot.rightDriveEncoder.get(), 100, .1016);
-		left.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
-		right.configurePIDVA(1.0, 0.0, 0.0, (1 / Params.maximum_velocity), 0);
+		left.configureEncoder(robot.leftDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
+		right.configureEncoder(robot.rightDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
+		left.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
+		right.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 
 		robot.resetGyro();
 
+	}
+	
+	public boolean isProfileFinished() {
+		return isProfileFinished;
 	}
 
 	// TODO Put this in control loop
 	/** Runs motion profiling **/
 	public void update() {
-		
+
 		robot.updateGyro();
-		if (isEnabled) {
+		if (isEnabled || (!left.isFinished() && !right.isFinished())) {
 			double l = left.calculate(robot.leftDriveEncoder.get());
 			double r = right.calculate(robot.rightDriveEncoder.get());
 
@@ -158,6 +165,22 @@ public class MotionController {
 			double turn = 0.8 * (-1.0 / 80) * angleDifference;
 			robot.setLeftMotors(l + turn);
 			robot.setRightMotors(r - turn);
+			if (left != null && !left.isFinished()) {
+
+	            SmartDashboard.putNumber("Left diff", left.getSegment().x);
+	            SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
+	            SmartDashboard.putNumber("Left set pos", left.getSegment().x);
+	            SmartDashboard.putNumber("Left calc voltage", l);
+	            SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
+	            SmartDashboard.putNumber("Left + turn", l + turn);
+	            SmartDashboard.putNumber("Left seg acceleration", left.getSegment().acceleration);
+	            SmartDashboard.putNumber("Angle offset w/ new path angle offset", angleDifference);
+	        }
+	        
+
+	        if (left.isFinished() && right.isFinished()) {
+	            isProfileFinished = true;
+	        }
 		}
 	}
 	/** Stops motion profiling **/
