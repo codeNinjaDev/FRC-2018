@@ -17,7 +17,7 @@ public class Params {
 	public static double MAX_SPEED = 1;
 	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
 	//Wheel diameter in inches
-	public static double WHEEL_DIAMETER = 6;
+	public static double WHEEL_DIAMETER = 4;
 	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 
@@ -87,10 +87,10 @@ public class Params {
 	public static final double v_high = 255;
 	
 	//[MOTION PROFILING] inches
-	public static final double wheel_diameter = .1;
-	public static final double maximum_velocity = 3; //TODO add maximum velocity in inches/s
-	public static final double maximum_acceleration = 10; //TODO add maximum velocity in inches/s/s
-	public static final double maximum_jerk = 30; //TODO add maximum velocity in a/s
+	public static final double wheel_diameter = 4;
+	public static final double maximum_velocity = 86; //TODO add maximum velocity in inches/s
+	public static final double maximum_acceleration = 0.12; //TODO add maximum velocity in inches/s/s
+	public static final double maximum_jerk = 0.0001728; //TODO add maximum velocity in a/s
     public static final double dt = 0.02; // Calculated - Confirmed
 
     public static final double kp = 0.8; //1.2;
@@ -100,8 +100,9 @@ public class Params {
     public static final double kv = 1.0 / maximum_velocity; // Calculated for test Drivetrain
     public static final double ka = 0.05; //0.015
     //Center of front wheel to center of back wheel
-    public static final double wheel_base_width = 0.72;
+    //public static final double wheel_base_width = 0.72;
+    public static final double wheel_base_width = 24.5;
     //Center of front left wheel to center of front right wheel
-    public static final double track_base_width = 0.72;
+    public static final double track_base_width = 25;
 
 }
