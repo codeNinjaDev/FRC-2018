@@ -5,15 +5,24 @@ import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DashboardLogger {
 	private RemoteControl humanControl;
 	private RobotModel robot;
+	private Timer statTimer;
+	
+	private double max_velocity;
+	private double max_acceleration;
+	private double max_jerk;
 
 	public DashboardLogger(RobotModel robot, RemoteControl humanControl) {
 		this.robot = robot;
 		this.humanControl = humanControl;
+		statTimer = new Timer();
+		statTimer.start();
+
 	}
 
 	public void updateData() {
@@ -22,7 +31,7 @@ public class DashboardLogger {
 		putDriveEncoderData();
 		putGamePadButtonPress();
 		putGameData();
-		
+		putStats();
 
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
 	}
@@ -87,6 +96,38 @@ public class DashboardLogger {
 	public void putGameData() {
 		SmartDashboard.putString("Switch Colors", String.valueOf(PlateDetector.getSwitchColor()));
 		SmartDashboard.putString("Scale Colors", String.valueOf(PlateDetector.getScaleColor()));
+
+	}
+	
+	public void startTeleop() {
+		max_velocity = 0;
+		max_acceleration = 0;
+		max_jerk = 0;
+	}
+	
+	public void putStats() {
+		double position = robot.leftDriveEncoder.getDistance();
+		double velocity = position/statTimer.get();
+		double acceleration = velocity/statTimer.get();
+		double jerk = acceleration/statTimer.get();
+		
+		SmartDashboard.putNumber("Position", position);
+		SmartDashboard.putNumber("Velocity", velocity);
+		SmartDashboard.putNumber("Acceleration", acceleration);
+		SmartDashboard.putNumber("Jerk", jerk);
+
+		if(velocity > max_velocity) {
+			max_velocity = velocity;
+		} else if(acceleration > max_acceleration) {
+			max_acceleration = acceleration;
+		} else if(jerk > max_jerk) {
+			max_jerk = jerk;
+		}
+		
+		SmartDashboard.putNumber("Max Velocity", max_velocity);
+		SmartDashboard.putNumber("Max Acceleration", max_acceleration);
+		SmartDashboard.putNumber("Max Jerk", max_jerk);
+
 
 	}
 

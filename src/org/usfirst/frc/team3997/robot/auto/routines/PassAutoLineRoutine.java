@@ -1,9 +1,13 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
+import java.io.File;
+
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
@@ -22,12 +26,17 @@ public class PassAutoLineRoutine extends AutoRoutine {
 	@Override
 	public void prestart() {
 		// TODO Auto-generated method stub
+		File myFile = new File("/home/lvuser/mytrajectory.csv");
+		SmartDashboard.putString("MOTIONPROFILING", "CALCULATING");
 		traj = MotionController.generateTrajectory(point);
+		
+		//Pathfinder.writeToCSV(myFile, traj);
+		SmartDashboard.putString("MOTIONPROFILING", "DONE");
 	}
 
 	@Override
 	protected void routine() {
-		pathFollower(controllers, traj, 10);
+		//pathFollower(controllers, traj, 10);
 	}
 }
 /*latform: /Linux/arm/
