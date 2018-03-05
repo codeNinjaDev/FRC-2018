@@ -15,7 +15,7 @@ public class PassAutoLineRoutine extends AutoRoutine {
 	private MasterController controllers;
 	Waypoint[] point = new Waypoint[] {
 			new Waypoint(0,0,0),
-			new Waypoint(10,0,0)
+			new Waypoint(100,0,0)
 	};
 	Trajectory traj;
 	public PassAutoLineRoutine(MasterController controllers) {
@@ -26,17 +26,20 @@ public class PassAutoLineRoutine extends AutoRoutine {
 	@Override
 	public void prestart() {
 		// TODO Auto-generated method stub
-		File myFile = new File("/home/lvuser/mytrajectory.csv");
-		SmartDashboard.putString("MOTIONPROFILING", "CALCULATING");
-		traj = MotionController.generateTrajectory(point);
+		File myFile = new File("/home/lvuser/mynewtrajectory.csv");
+		traj = Pathfinder.readFromCSV(myFile);
+		//System.out.println(traj);
 		
-		//Pathfinder.writeToCSV(myFile, traj);
-		SmartDashboard.putString("MOTIONPROFILING", "DONE");
 	}
 
 	@Override
 	protected void routine() {
-		//pathFollower(controllers, traj, 10);
+		SmartDashboard.putString("MOTIONPROFILING", "RUNNING");
+
+		pathFollower(controllers, traj, 10);
+		SmartDashboard.putString("MOTIONPROFILING", "FINISHED_RUNNING");
+
+
 	}
 }
 /*latform: /Linux/arm/

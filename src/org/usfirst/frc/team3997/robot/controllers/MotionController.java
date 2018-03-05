@@ -86,6 +86,7 @@ public class MotionController {
 	public MotionController(RobotModel robot) {
 		this.robot = robot;
 		isEnabled = false;
+		
 	}
 	/** Sets up config, trajectory, tank modifier, and encoderFollowers using an array of Waypoints **/
 	public void setUp(Waypoint[] points) {
@@ -103,13 +104,22 @@ public class MotionController {
 	/** Sets up tank modifier, and encoderFollowers using an already made trajectory **/
 
 	public void setUp(Trajectory trajectoryInput) {
+		SmartDashboard.putString("MOTION_PROFILING", "SETUPSTART");
 
 		trajectory = trajectoryInput;
+		SmartDashboard.putString("MOTION_PROFILING", "trajectory");
+		SmartDashboard.putString("Modifier", "STARTING");
 
 		// TODO find distance between front and rear axles of a vehicle
 		modifier = new TankModifier(trajectory).modify(Params.wheel_base_width);
+		SmartDashboard.putString("Modifier", "Done");
+
 		left = new EncoderFollower(modifier.getLeftTrajectory());
+		SmartDashboard.putString("Modifier", "Left");
+
 		right = new EncoderFollower(modifier.getRightTrajectory());
+		SmartDashboard.putString("Modifier", "Right");
+
 	}
 	/** Sets up trajectory, tank modifier, and encoderFollowers using a CSV file **/
 
@@ -124,9 +134,12 @@ public class MotionController {
 	}
 	/** Static function that returns a trajectory given an array of waypoints **/
 	public static Trajectory generateTrajectory(Waypoint[] points) {
+		SmartDashboard.putString("MOTIONPROFILINGCONFIG", "CALCULATING");
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, Params.dt, Params.maximum_velocity, Params.maximum_acceleration,
 				Params.maximum_jerk);
+		SmartDashboard.putString("MOTIONPROFILINGCONFIG", "DONE");
+
 		return Pathfinder.generate(points, config);
 	}
 	/** Enables motion profiling **/

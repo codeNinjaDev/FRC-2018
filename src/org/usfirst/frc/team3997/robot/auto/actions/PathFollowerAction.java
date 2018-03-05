@@ -6,6 +6,7 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
@@ -17,8 +18,11 @@ public class PathFollowerAction extends Action{
 		this.motion = controllers.getMotionController();
 		this.robot = controllers.getRobotModel();
 		this.timeout = timeout;
-		
+		SmartDashboard.putString("MOTIONPROFILING", "SETTING_UP");
+
 		this.motion.setUp(trajectory);
+		SmartDashboard.putString("MOTIONPROFILING", "FINISHED_SETTING_UP");
+
 	}
 	@Override
 	public boolean isFinished() {

@@ -10,6 +10,7 @@ public class AutoRoutineRunner {
 	private Thread routine_thread;
 
 	public void setAutoRoutine(AutoRoutine new_auto_routine) {
+		
 		autoTimer.reset();
 		autoStarted = false;
 		this.new_auto_routine = new_auto_routine;

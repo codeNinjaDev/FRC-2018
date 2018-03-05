@@ -90,8 +90,8 @@ public class Params {
 	public static final double wheel_diameter = 4;
 	public static final double maximum_velocity = 86; //TODO add maximum velocity in inches/s
 	public static final double maximum_acceleration = 0.12; //TODO add maximum velocity in inches/s/s
-	public static final double maximum_jerk = 0.0001728; //TODO add maximum velocity in a/s
-    public static final double dt = 0.02; // Calculated - Confirmed
+	public static final double maximum_jerk = .23; //TODO add maximum velocity in a/s
+    public static final double dt = .02; 
 
     public static final double kp = 0.8; //1.2;
     public static final double kd = 0.0;
