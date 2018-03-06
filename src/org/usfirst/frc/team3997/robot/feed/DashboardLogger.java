@@ -43,6 +43,9 @@ public class DashboardLogger {
 				humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kRX));
 
 		SmartDashboard.putNumber("LEFT_ENC_DISTANCE", robot.leftDriveEncoder.getDistance());
+		//Distance in miles
+		SmartDashboard.putNumber("LEFT_ENC_DISTANCE_MILES", ((robot.leftDriveEncoder.getDistance())/12)/5280);
+
 		SmartDashboard.putNumber("RIGHT_ENC_DISTANCE", robot.rightDriveEncoder.getDistance());
 		// putGamePadButtonPress();
 

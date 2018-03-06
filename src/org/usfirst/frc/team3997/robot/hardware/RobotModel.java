@@ -18,7 +18,7 @@ import org.usfirst.frc.team3997.robot.hardware.Ports;
  */
 public class RobotModel {
 
-	public Spark leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
+	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
 	public MPU9250Gyro gyro;
@@ -38,10 +38,10 @@ public class RobotModel {
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
 		// Init drive motors
-		leftDriveMotorA = new Spark(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
-		leftDriveMotorB = new Spark(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
-		rightDriveMotorA = new Spark(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
-		rightDriveMotorB = new Spark(Ports.RIGHT_DRIVE_MOTOR_B_PWM_PORT);
+		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
+		leftDriveMotorB = new VictorSP(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
+		rightDriveMotorA = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
+		rightDriveMotorB = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_B_PWM_PORT);
 
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
@@ -85,7 +85,7 @@ public class RobotModel {
 	 * Updates Gyro yaw interface
 	 **/
 	public void updateGyro() {
-		gyro.update();
+		//gyro.update();
 	}
 
 	/**
@@ -230,12 +230,13 @@ public class RobotModel {
 
 	/** Resets gyro yaw value **/
 	public void resetGyro() {
-		gyro.reset();
+		//gyro.reset();
 	}
 
 	/** Gets gyro yaw value **/
 	public double getAngle() {
-		return gyro.getAngle();
+		//return gyro.getAngle();
+		return 0;
 	}
 
 	/**
