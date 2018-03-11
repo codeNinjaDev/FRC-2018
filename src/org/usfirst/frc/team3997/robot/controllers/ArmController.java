@@ -60,7 +60,7 @@ public class ArmController {
 		switch(m_stateVal) {
 		case kInitialize:
 			
-			
+			//Intitalize Variables and PId
 			armPIDController.setPID(Params.arm_p,Params.arm_i,Params.arm_d,Params.arm_f);
 			armPIDController.setOutputRange(-1, 1);
 			armPIDController.setSetpoint(Params.ARM_REST_SETPOINT);
@@ -69,6 +69,7 @@ public class ArmController {
 			nextState = ArmState.kTeleop;
 			break;
 		case kTeleop:
+			//Toggle the arm override
 			if(humanControl.toggleManualArmDesired())
 				toggleArmManual = !toggleArmManual;
 			if(humanControl.toggleCollapseIntake()) {
@@ -76,36 +77,16 @@ public class ArmController {
 			}
 			//Arm Behavior
 			if (toggleArmManual) {
+				//Move arm based off of the Right Y of Operator Joystick
 				robot.moveArm(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY));
-				if(humanControl.getIntakeDesired()) {
-					intakeBlock();
-				} else if(humanControl.getOuttakeDesired()) {
-					robot.openIntake();
-					outtakeBlock();
-				}
-				if(toggleCollapse) {
-					robot.closeIntake();
-				} else {
-					robot.openIntake();
-				}
+				intakeFunctions();
 				
 			} else {
 				if (armPIDController.isEnabled()) {
 					armPIDController.disable();
 				}
 				
-				if(humanControl.getIntakeDesired()) {
-					intakeBlock();
-				} else if(humanControl.getOuttakeDesired()) {
-					robot.openIntake();
-					outtakeBlock();
-				}
-				if(toggleCollapse) {
-					robot.closeIntake();
-				} else {
-					robot.openIntake();
-				}
-				
+				intakeFunctions();
 				if(humanControl.getClimbArmDesired()) {
 					goToClimbPosition();
 				} else if(humanControl.getScaleArmDesired()) {
@@ -117,8 +98,6 @@ public class ArmController {
 				}
 			}
 			
-			/* The else {} section above will just disable the PID controller every single loop if not in manual control.
-			Have you just not added in logic for the functions below yet?  -Aaron  */
 			
 			nextState = ArmState.kTeleop;
 			break;
@@ -166,6 +145,27 @@ public class ArmController {
 	public void stop() {
 		armPIDController.disable();
 		robot.moveArm(0);
+	}
+	
+	public void intakeFunctions() {
+		//If intake button pressed run intake wheels
+		if(humanControl.getIntakeDesired()) {
+			intakeBlock();
+			robot.closeIntake();
+	    //If outtake button pressed openIntake and run outtake wheels
+		} else if(humanControl.getOuttakeDesired()) {
+			outtakeBlock();
+			robot.openIntake();
+			
+		} else {
+			robot.intakeBlock(0);
+		}
+		// If toggle collapsed is desired then it shifts the pneumatics to the next position
+		if(toggleCollapse) {
+			robot.closeIntake();
+		} else {
+			robot.openIntake();
+		}
 	}
 
 }
