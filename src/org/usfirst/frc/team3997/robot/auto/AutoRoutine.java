@@ -12,6 +12,8 @@ import org.usfirst.frc.team3997.robot.auto.actions.VisionAction;
 import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
@@ -69,9 +71,13 @@ public abstract class AutoRoutine {
 	public void runAction(Action action) {
 		action.start();
 		//TODO maybe add timer test this first
+		double deltaTime = Timer.getFPGATimestamp();
 		while((isActive()) && !(action.isFinished()) && (AutoRoutineRunner.getTimer().get() <= 15) && RobotState.isAutonomous() && !RobotState.isDisabled()) {
 			action.update();
+			deltaTime = Timer.getFPGATimestamp() - deltaTime;
+
 		}
+		SmartDashboard.putNumber("Control Loop Interation", deltaTime);
 		action.finish();
 	}
 	
