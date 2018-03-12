@@ -47,7 +47,6 @@ public class RobotModel {
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
 
 		// TODO add real input channel
-		// gyro = new AnalogGyro(channel);
 
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
 		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
@@ -230,13 +229,12 @@ public class RobotModel {
 
 	/** Resets gyro yaw value **/
 	public void resetGyro() {
-		//gyro.reset();
+		gyro.reset();
 	}
 
 	/** Gets gyro yaw value **/
 	public double getAngle() {
-		//return gyro.getAngle();
-		return 0;
+		return gyro.getAngle();
 	}
 
 	/**
