@@ -29,6 +29,8 @@ public class Ports {
 	public static final int LEFT_DRIVE_ENCODER_PORTS[]            = {9, 8};
 	//Top Ports
 	public static final int RIGHT_DRIVE_ENCODER_PORTS[]           = {7, 6};
+	public static final int LIMIT_SWITCH                              = 0;
+
 
 	// ******************* ANALOG IN PORTS*******************
 	public static final int ARM_ENCODER                              = 0;

@@ -18,6 +18,7 @@ public class RobotModel {
 	public Compressor compressor;
 	public DoubleSolenoid leftSolenoid;
 	public DoubleSolenoid rightSolenoid;
+	public DigitalInput limitSwitch;
 
 	//public CameraServer camera;
 	public Timer timer;
@@ -46,7 +47,7 @@ public class RobotModel {
 		leftIntakeMotor = new Spark(Ports.LEFT_INTAKE_MOTOR_PWM_PORT);
 		rightIntakeMotor = new Spark(Ports.RIGHT_INTAKE_MOTOR_PWM_PORT);
 
-				
+		limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
 		// gyro = new AnalogGyro(channel);
 		AnalogInput.setGlobalSampleRate(62500);
@@ -265,5 +266,8 @@ public class RobotModel {
 	public void closeIntake() {
 		leftSolenoid.set(DoubleSolenoid.Value.kForward);
 		rightSolenoid.set(DoubleSolenoid.Value.kForward);	
+	}
+	public boolean getBlockTouching() {
+		return limitSwitch.get();
 	}
 }
