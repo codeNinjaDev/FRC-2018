@@ -85,7 +85,7 @@ public class RobotModel {
 	 * Updates Gyro yaw interface
 	 **/
 	public void updateGyro() {
-		gyro.update();
+		//gyro.update();
 	}
 
 	/**
@@ -230,12 +230,13 @@ public class RobotModel {
 
 	/** Resets gyro yaw value **/
 	public void resetGyro() {
-		gyro.reset();
+		//gyro.reset();
 	}
 
 	/** Gets gyro yaw value **/
 	public double getAngle() {
-		return gyro.getAngle();
+		//return gyro.getAngle();
+		return 0;
 	}
 
 	/**

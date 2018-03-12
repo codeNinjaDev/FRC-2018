@@ -5,6 +5,7 @@ import java.io.File;
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.*;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -139,8 +140,12 @@ public class MotionController {
 				Trajectory.Config.SAMPLES_HIGH, Params.dt, Params.maximum_velocity, Params.maximum_acceleration,
 				Params.maximum_jerk);
 		SmartDashboard.putString("MOTIONPROFILINGCONFIG", "DONE");
+		double deltaTime = Timer.getFPGATimestamp();
+		Trajectory traj = Pathfinder.generate(points, config);;
+		deltaTime = Timer.getFPGATimestamp() - deltaTime;
+		SmartDashboard.putNumber("Delta Generate Time", deltaTime);
 
-		return Pathfinder.generate(points, config);
+		return traj;
 	}
 	/** Enables motion profiling **/
 	public void enable() {
@@ -165,6 +170,7 @@ public class MotionController {
 	// TODO Put this in control loop
 	/** Runs motion profiling **/
 	public void update() {
+		double deltaTime = Timer.getFPGATimestamp();
 
 		robot.updateGyro();
 		if (isEnabled || (!left.isFinished() && !right.isFinished())) {
@@ -195,6 +201,9 @@ public class MotionController {
 	            isProfileFinished = true;
 	        }
 		}
+		deltaTime = Timer.getFPGATimestamp() - deltaTime;
+		SmartDashboard.putNumber("Update Interation", deltaTime);
+
 	}
 	/** Stops motion profiling **/
 	public void disable() {
