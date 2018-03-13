@@ -15,8 +15,8 @@ public class RobotModel {
 	public AbsoluteEncoder armEncoder;
 	public MPU9250Gyro gyro;
 	public Compressor compressor;
-	public DoubleSolenoid leftSolenoid;
-	public DoubleSolenoid rightSolenoid;
+	public DoubleSolenoid leftSolenoid, rightSolenoid;
+	public Solenoid armShifter;
 	public DigitalInput limitSwitch;
 
 	// public CameraServer camera;
@@ -38,7 +38,8 @@ public class RobotModel {
 				Ports.SOLENOID_CHANNEL[1]);
 		rightSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[1], Ports.SOLENOID_CHANNEL[2],
 				Ports.SOLENOID_CHANNEL[3]);
-
+		armShifter = new Solenoid(Ports.SOLENOID_MODULE[2], Ports.SOLENOID_CHANNEL[3]);
+		
 		// Init drive motors
 		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new VictorSP(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
@@ -302,5 +303,12 @@ public class RobotModel {
 	}
 	public void stopIntake() {
 		intakeWheels(0);
+	}
+	
+	public void setArmHighGear() {
+		armShifter.set(true);
+	}
+	public void setArmLowGear() {
+		armShifter.set(false);
 	}
 }

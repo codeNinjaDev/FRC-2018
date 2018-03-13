@@ -16,6 +16,7 @@ import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.feed.DashboardInput;
 import org.usfirst.frc.team3997.robot.feed.DashboardLogger;
+import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 import org.usfirst.frc.team3997.robot.hardware.ControlBoard;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -136,6 +137,7 @@ public class Robot extends IterativeRobot {
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
 
+	
 		auto.start();
 		
 	}

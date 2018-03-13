@@ -40,8 +40,8 @@ public class Ports {
 
 	// ***************** SOLENOID PORTS *****************
 	public static final int COMPRESSOR_MODULE = 9;
-	public static final int[] SOLENOID_MODULE = {0, 1};
-	public static final int[] SOLENOID_CHANNEL = {0, 1, 2, 3};
+	public static final int[] SOLENOID_MODULE = {0, 1, 2};
+	public static final int[] SOLENOID_CHANNEL = {0, 1, 2, 3, 4};
 
 	// ***************** JOYSTICK USB PORTS *****************
 	//MAKE SURE JOYSTICKS ARE SET TO "D" position on back

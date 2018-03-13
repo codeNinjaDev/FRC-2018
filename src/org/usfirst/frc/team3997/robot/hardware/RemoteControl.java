@@ -35,6 +35,7 @@ public abstract class RemoteControl {
 	public abstract boolean getIntakeDesired();
 	public abstract boolean getOuttakeDesired();
 	public abstract boolean toggleCollapseIntake();
+	public abstract boolean toggleArmShifter();
 
 
 	

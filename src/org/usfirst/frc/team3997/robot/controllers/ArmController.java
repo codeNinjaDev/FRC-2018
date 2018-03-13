@@ -26,6 +26,7 @@ public class ArmController {
 	private ArmState nextState;
 	private boolean toggleArmManual;
 	private boolean toggleCollapse;
+	private boolean toggleArmShifter;
 
 	public enum ArmState {
 		kInitialize, kTeleop
@@ -36,6 +37,8 @@ public class ArmController {
 		this.humanControl = humanControl;
 		
 		toggleArmManual = false;
+		toggleArmShifter = false;
+		toggleCollapse = false;
 		
 		armPIDSource = new AbsoluteEncoderPIDSource(robot.armEncoder);
 		armPIDOutput = new AbsoluteEncoderPIDOutput(robot);
@@ -66,18 +69,31 @@ public class ArmController {
 			armPIDController.setSetpoint(Params.ARM_REST_SETPOINT);
 			toggleArmManual = false;
 			toggleCollapse = false;
+			toggleArmShifter = false;
 			nextState = ArmState.kTeleop;
 			break;
 		case kTeleop:
+			//*** TOGGLE ZONE ***//
+			
 			//Toggle the arm override
 			if(humanControl.toggleManualArmDesired())
 				toggleArmManual = !toggleArmManual;
-			if(humanControl.toggleCollapseIntake()) {
+			if(humanControl.toggleCollapseIntake()) 
 				toggleCollapse = !toggleCollapse;
-			}
+			if(humanControl.toggleArmShifter())
+				toggleArmShifter = !toggleArmShifter;
+			
+			if(toggleArmShifter)
+				robot.setArmLowGear();
+			else
+				robot.setArmHighGear();
+			
 			//Arm Behavior
 			if (toggleArmManual) {
 				//Move arm based off of the Right Y of Operator Joystick
+				if (armPIDController.isEnabled()) {
+					armPIDController.disable();
+				}
 				robot.moveArm(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY));
 				intakeFunctions();
 				
@@ -137,6 +153,7 @@ public class ArmController {
 	public void stop() {
 		armPIDController.disable();
 		robot.moveArm(0);
+		robot.stopIntake();
 	}
 	
 	public void intakeFunctions() {

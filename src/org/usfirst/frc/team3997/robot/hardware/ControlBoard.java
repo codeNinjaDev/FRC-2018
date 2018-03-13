@@ -14,17 +14,15 @@ public class ControlBoard extends RemoteControl {
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
-	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
-	TriggerReader collapseButton;
-	//Driver Triggers
+	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, collapseButton, armShifterButton;
 
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
-	public TriggerReader gearTilterDownButton, gearTilterUpButton;
+	public TriggerReader intakeButton, outtakeButton;
 	
 	private boolean collapseIntakeDesired, tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
-			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired;
+			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired, armShifterDesired;
 
 
 	/** Driver joystick axes **/
@@ -55,10 +53,13 @@ public class ControlBoard extends RemoteControl {
 			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
 			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
 			armManualButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
+			armShifterButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
 			
-			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
-			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
-			collapseButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
+			intakeButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
+			outtakeButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
+			collapseButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
+			
+			
 		}
 
 		driverLeftJoyX = 0;
@@ -85,6 +86,7 @@ public class ControlBoard extends RemoteControl {
 		intakeDesired = false;
 		outtakeDesired = false;
 		collapseIntakeDesired = false;
+		armShifterDesired = false;
 	}
 	/** Reads all controller inputs **/
 	public void readControls() {
@@ -119,7 +121,7 @@ public class ControlBoard extends RemoteControl {
 		collapseIntakeDesired = collapseButton.isDown();
 		intakeDesired = intakeButton.isDown();
 		outtakeDesired = outtakeButton.isDown();
-		
+		armShifterDesired = armShifterButton.isDown();
 	}
 	/** Reads all controller buttons **/
 	public void readAllButtons() {
@@ -137,7 +139,12 @@ public class ControlBoard extends RemoteControl {
 		armScaleButton.readValue();
 		armFeedButton.readValue();
 		armManualButton.readValue();
+		armShifterButton.readValue();
+		
 		collapseButton.readValue();
+		intakeButton.readValue();
+		outtakeButton.readValue();
+		
 	}
 
 	/** Gets joystick value given joystick  and axe 
@@ -230,18 +237,20 @@ public class ControlBoard extends RemoteControl {
 
 	@Override
 	public boolean getIntakeDesired() {
-		// TODO Auto-generated method stub
 		return intakeDesired;
 	}
 
 	@Override
 	public boolean getOuttakeDesired() {
-		// TODO Auto-generated method stub
 		return outtakeDesired;
 	}
 	@Override
 	public boolean toggleCollapseIntake() {
 		return collapseIntakeDesired;
+	}
+	@Override
+	public boolean toggleArmShifter() {
+		return armShifterDesired;
 	}
 	
 
