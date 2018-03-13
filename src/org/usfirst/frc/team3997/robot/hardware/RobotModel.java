@@ -1,27 +1,23 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
-import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
+import org.usfirst.frc.team3997.robot.Params;
 
-/**
- * Contains all the hardware for the robot, including motors, sensors, and
- * power.
- * 
- * @category hardware
- * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
- *         Friedlander
- *
- */
 public class RobotModel {
 
 	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
-	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
+	public Spark leftArmMotor, rightArmMotor, leftIntakeMotor, rightIntakeMotor;
+	public SpeedControllerGroup leftDriveMotors, rightDriveMotors, armMotors, intakeMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
+	public AbsoluteEncoder armEncoder;
 	public MPU9250Gyro gyro;
+	public Compressor compressor;
+	public DoubleSolenoid leftSolenoid;
+	public DoubleSolenoid rightSolenoid;
+	public DigitalInput limitSwitch;
 
 	// public CameraServer camera;
 	public Timer timer;
@@ -29,35 +25,63 @@ public class RobotModel {
 	private PowerDistributionPanel pdp;
 	private double leftDriveACurrent, leftDriveBCurrent, rightDriveACurrent, rightDriveBCurrent;
 
-	/**
-	 * Initializes all the hardware variables
-	 * 
-	 * 
-	 * 
+	/*
+	 * TODO boolean enabled = c.enabled(); boolean pressureSwitch =
+	 * c.getPressureSwitchValue(); double current = c.getCompressorCurrent();
 	 */
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
+
+		// Pneumatics
+		compressor = new Compressor(Ports.COMPRESSOR_MODULE);
+		leftSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[0], Ports.SOLENOID_CHANNEL[0],
+				Ports.SOLENOID_CHANNEL[1]);
+		rightSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[1], Ports.SOLENOID_CHANNEL[2],
+				Ports.SOLENOID_CHANNEL[3]);
+
 		// Init drive motors
 		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new VictorSP(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
 		rightDriveMotorA = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_A_PWM_PORT);
 		rightDriveMotorB = new VictorSP(Ports.RIGHT_DRIVE_MOTOR_B_PWM_PORT);
-
+		// Make a Speed Controller group for Drive
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
 
+		// Init arm motors
+		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
+		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
+		// Invert right arm motor
+		leftArmMotor.setInverted(false);
+		rightArmMotor.setInverted(true);
+		// Make a speed controller group for the arm
+		armMotors = new SpeedControllerGroup(leftArmMotor, rightArmMotor);
+
+		// Init intake motors
+		leftIntakeMotor = new Spark(Ports.LEFT_INTAKE_MOTOR_PWM_PORT);
+		rightIntakeMotor = new Spark(Ports.RIGHT_INTAKE_MOTOR_PWM_PORT);
+		// Invert right intake motor
+		leftIntakeMotor.setInverted(false);
+		rightIntakeMotor.setInverted(true);
+		
+		//Limit switch for intake to detect cube
+		limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
 
+		//Initialize arm sensor
+		AnalogInput.setGlobalSampleRate(62500);
+		armEncoder = new AbsoluteEncoder(Ports.ARM_ENCODER);
+
+		//Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
 		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
 
+		//Encoder setup
 		leftDriveEncoder.setReverseDirection(false);
-		//Distance Per Encoder Pulse - how far it goes for one tick of encoder
-		leftDriveEncoder.setDistancePerPulse(Params.WHEEL_CIRCUMFERENCE / Params.PULSES_PER_ROTATION);
+		leftDriveEncoder.setDistancePerPulse(((1.0) / Params.PULSES_PER_ROTATION) * (Params.WHEEL_CIRCUMFERENCE));
 		leftDriveEncoder.setSamplesToAverage(1);
 		rightDriveEncoder.setReverseDirection(false);
-		//Distance Per Encoder Pulse - how far it goes for one tick of encoder
-		rightDriveEncoder.setDistancePerPulse(Params.WHEEL_CIRCUMFERENCE / Params.PULSES_PER_ROTATION);
+		rightDriveEncoder.setDistancePerPulse(((1.0) / Params.PULSES_PER_ROTATION) * (Params.WHEEL_CIRCUMFERENCE));
 		rightDriveEncoder.setSamplesToAverage(1);
 
 		leftDriveMotorA.setSafetyEnabled(false);
@@ -78,31 +102,21 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 
-		gyro = new MPU9250Gyro(Port.kOnboard);
-	}
-	/**
-	 * Updates Gyro yaw interface
-	 **/
-	public void updateGyro() {
-		//gyro.update();
+		gyro = new MPU9250Gyro(Ports.gyroPort);
+		// TODO add real url
+		// camera.addServer("Server");
+
 	}
 
-	/**
-	 * Enum of Wheels
-	 **/
+	public void updateGyro() {
+		gyro.update();
+	}
+
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
 	};
 
-	/**
-	 * Sets the speed for a given wheel(s)
-	 * 
-	 * @param w
-	 *            Which wheels? (Wheels enum)
-	 * @param speed
-	 *            What speed? (-1 to 1)
-	 *
-	 **/
+	// sets the speed for a given wheel(s)
 	public void setWheelSpeed(Wheels w, double speed) {
 		switch (w) {
 		case LeftWheels:
@@ -110,7 +124,6 @@ public class RobotModel {
 			leftDriveMotorB.set(speed);
 			break;
 		case RightWheels:
-			// TODO figure out why in the world this works while setRightMotors() works
 			rightDriveMotorA.set(-speed); // negative value since wheels are
 											// inverted on robot
 			rightDriveMotorB.set(-speed); // negative value since wheels are
@@ -119,8 +132,6 @@ public class RobotModel {
 		case AllWheels:
 			leftDriveMotorA.set(speed);
 			leftDriveMotorB.set(speed);
-			// TODO figure out why in the world this works while setRightMotors() works
-
 			rightDriveMotorA.set(-speed); // negative value since wheels are
 											// inverted on robot
 			rightDriveMotorB.set(-speed); // negative value since wheels are
@@ -129,35 +140,25 @@ public class RobotModel {
 		}
 	}
 
-	/***
-	 * Returns the speed of a given wheel
-	 * 
-	 * @param w
-	 *            Which wheels? (Wheels enum)
-	 **/
+	// returns the speed of a given wheel
 	public double getWheelSpeed(Wheels w) {
 		switch (w) {
 		case LeftWheels:
 			return leftDriveMotorA.get();
 		case RightWheels:
-			// TODO figure out why in the world this works while setRightMotors() works
 			return -rightDriveMotorA.get();
 		default:
 			return 0;
 		}
 	}
 
-	/**
-	 * resets hardware <i>e.g encoders, gyros</i>
-	 * 
-	 * 
-	 **/
+	// resets variables and objects
 	public void reset() {
 		resetEncoders();
 		gyro.reset();
 	}
 
-	/** Initializes variables pertaining to current **/
+	// initializes variables pertaining to current
 	public void updateCurrent() {
 		leftDriveACurrent = pdp.getCurrent(Ports.LEFT_DRIVE_MOTOR_A_PDP_CHAN);
 		leftDriveBCurrent = pdp.getCurrent(Ports.LEFT_DRIVE_MOTOR_B_PDP_CHAN);
@@ -165,27 +166,27 @@ public class RobotModel {
 		rightDriveBCurrent = pdp.getCurrent(Ports.RIGHT_DRIVE_MOTOR_B_PDP_CHAN);
 	}
 
-	/** Returns the voltage **/
+	// returns the voltage
 	public double getVoltage() {
 		return pdp.getVoltage();
 	}
 
-	/** Returns the total energy of the PDP ({@link PowerDistributionPanel}) **/
+	// returns the total energy of the PDP
 	public double getTotalEnergy() {
 		return pdp.getTotalEnergy();
 	}
 
-	/** Returns the total current of the PDP ({@link PowerDistributionPanel}) **/
+	// returns the total current of the PDP
 	public double getTotalCurrent() {
 		return pdp.getTotalCurrent();
 	}
 
-	/** Returns the total power of the PDP ({@link PowerDistributionPanel}) **/
+	// returns the total power of the PDP
 	public double getTotalPower() {
 		return pdp.getTotalPower();
 	}
 
-	/** Returns the current of a given channel ({@link PowerDistributionPanel}) **/
+	// returns the current of a given channel
 	public double getCurrent(int channel) {
 		switch (channel) {
 		case Ports.RIGHT_DRIVE_MOTOR_A_PDP_CHAN:
@@ -201,66 +202,105 @@ public class RobotModel {
 		}
 	}
 
-	/** Resets the timer **/
+	// resets the timer
 	public void resetTimer() {
 		timer.reset();
 	}
 
-	/** Gets Roborio timestamp **/
 	public double getTimestamp() {
 		return timer.getFPGATimestamp();
 	}
 
-	/** Gets the timer time **/
+	// returns the time
 	public double getTime() {
 		return timer.get();
 	}
 
-	/** Resets econder values **/
+	// encoders
 	public void resetEncoders() {
 		leftDriveEncoder.reset();
 		rightDriveEncoder.reset();
+
 	}
 
-	/** Gets the difference between left and right {@link Encoder}s **/
 	public double getEncoderError() {
 		return leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance();
 	}
 
-	/** Resets gyro yaw value **/
 	public void resetGyro() {
 		gyro.reset();
 	}
 
-	/** Gets gyro yaw value **/
 	public double getAngle() {
 		return gyro.getAngle();
 	}
 
-	/**
-	 * Sets the speed of the left motors
-	 * 
-	 * @param output
-	 *            speed of motor (-1 to 1)
-	 **/
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);
 
 	}
 
-	/**
-	 * Sets the speed of the right motors
-	 * 
-	 * @param output
-	 *            speed of motor (-1 to 1)
-	 **/
-
 	public void setRightMotors(double output) {
-		// negative value since wheels are
-		// inverted on robot
-		rightDriveMotorA.set(-output);
-		rightDriveMotorB.set(-output);
+		rightDriveMotorA.set(output);
+		rightDriveMotorB.set(output);
 	}
 
+	public void moveArm(double speed) {
+		armMotors.set(speed);
+	}
+
+	public double getAverageArmSpeed() {
+		return (leftArmMotor.getSpeed() + rightArmMotor.getSpeed()) / 2;
+	}
+
+	public double getArmEncoderRawValue() {
+		return armEncoder.getValue();
+	}
+
+	public double getAverageArmEncoderRawValue() {
+		return armEncoder.getAverageValue();
+	}
+
+	public double getAverageArmVoltage() {
+		return armEncoder.getAverageVoltage();
+	}
+
+	public double getArmVoltage() {
+		return armEncoder.getVoltage();
+	}
+
+	public double getArmAngle() {
+		return armEncoder.getAngle();
+	}
+
+	public void intakeWheels(double speed) {
+		intakeMotors.set(speed);
+
+	}
+
+	public void openIntake() {
+		leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+		rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+	}
+
+	public void closeIntake() {
+		leftSolenoid.set(DoubleSolenoid.Value.kForward);
+		rightSolenoid.set(DoubleSolenoid.Value.kForward);
+	}
+
+	public boolean getBlockTouching() {
+		return limitSwitch.get();
+	}
+	public void intakeBlock() {
+		intakeWheels(-.5);
+	}
+	
+
+	public void outtakeBlock() {
+		intakeWheels(0.3);
+	}
+	public void stopIntake() {
+		intakeWheels(0);
+	}
 }

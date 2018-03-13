@@ -367,7 +367,7 @@ public class MPU9250Gyro extends GyroBase {
 	@Override
 	public void calibrate() {
 
-		//calibrateMPU9250(gyroBias);
+		calibrateMPU9250(gyroBias);
 	}
 
 	void calibrateMPU9250(double[] dest) {

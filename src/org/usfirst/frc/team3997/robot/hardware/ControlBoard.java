@@ -12,15 +12,20 @@ import edu.wpi.first.wpilibj.*;
 public class ControlBoard extends RemoteControl {
 	/** Driver Buttons **/
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
-	/** Operator Buttons **/
-	public ButtonReader gearWheelOuttakeButton, gearWheelIntakeButton, toggleDisabledGearTilter, toggleGearManual, gearTilterRampButton, gearTotalIntakeButton;
-	/** Driver Triggers **/
+	//Operator Buttons
+/** Operator Buttons **/
+	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
+	TriggerReader collapseButton;
+	//Driver Triggers
+
+/** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
 	public TriggerReader gearTilterDownButton, gearTilterUpButton;
-	/** Actions Desired **/
-	private boolean tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
-			driveBackDesired, driveBackOtherDesired, gearTilterDownDesired, gearWheelOuttakeDesired, gearWheelIntakeDesired, toggleGearManualDesired, gearTilterRampDesired, gearTilterUpDesired, gearTotalIntakeDesired;
+	
+	private boolean collapseIntakeDesired, tankDriveDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired;
+
 
 	/** Driver joystick axes **/
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
@@ -45,15 +50,15 @@ public class ControlBoard extends RemoteControl {
 			slowDriveTier2Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
 			
 			//Operator Controls
-			gearWheelOuttakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
-			gearWheelIntakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
-			gearTotalIntakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
-			gearTilterRampButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
-			toggleGearManual = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
+			armScaleButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON);
+			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
+			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
+			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
+			armManualButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
 			
-			gearTilterDownButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
-			gearTilterUpButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
-
+			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
+			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
+			collapseButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
 		}
 
 		driverLeftJoyX = 0;
@@ -71,14 +76,15 @@ public class ControlBoard extends RemoteControl {
 		driveBackOtherDesired = false;
 		
 		//Operator Vars
-		gearWheelIntakeDesired = false;
-		gearWheelOuttakeDesired = false;
-		gearTilterRampDesired = false;
-		toggleGearManualDesired = false;
-		gearTotalIntakeDesired = false;
+		armSwitchDesired = false;
+		armScaleDesired = false;
+		armFeedDesired = false;
+		toggleArmManualDesired = false;
+		armClimbDesired = false;
 		
-		gearTilterDownDesired = false;
-		gearTilterUpDesired = false;
+		intakeDesired = false;
+		outtakeDesired = false;
+		collapseIntakeDesired = false;
 	}
 	/** Reads all controller inputs **/
 	public void readControls() {
@@ -105,14 +111,15 @@ public class ControlBoard extends RemoteControl {
 		driveBackOtherDesired = driveBackOtherButton.isDown();
 		
 		//Operator Vars
-		gearWheelIntakeDesired = gearWheelIntakeButton.isDown();
-		gearWheelOuttakeDesired = gearWheelOuttakeButton.isDown();
-		gearTilterRampDesired = gearTilterRampButton.isDown();
-		gearTotalIntakeDesired = gearTotalIntakeButton.isDown();
-		toggleGearManualDesired = toggleGearManual.isDown();
+		armSwitchDesired = armSwitchButton.isDown();
+		armScaleDesired = armScaleButton.isDown();
+		armClimbDesired = armClimbButton.isDown();
+		armFeedDesired = armFeedButton.isDown();
+		toggleArmManualDesired = armManualButton.isDown();
+		collapseIntakeDesired = collapseButton.isDown();
+		intakeDesired = intakeButton.isDown();
+		outtakeDesired = outtakeButton.isDown();
 		
-		gearTilterDownDesired = gearTilterDownButton.isDown();
-		gearTilterUpDesired = gearTilterUpButton.isDown();
 	}
 	/** Reads all controller buttons **/
 	public void readAllButtons() {
@@ -124,14 +131,15 @@ public class ControlBoard extends RemoteControl {
 		driveBackButton.readValue();
 		driveBackOtherButton.readValue();
 		//Operator 
-		gearTilterDownButton.readValue();
-		gearTilterUpButton.readValue();
-		gearTilterRampButton.readValue();
-		gearWheelIntakeButton.readValue();
-		gearWheelOuttakeButton.readValue();
-		toggleGearManual.readValue();
-		gearTotalIntakeButton.readValue();
+		
+		armClimbButton.readValue();
+		armSwitchButton.readValue();
+		armScaleButton.readValue();
+		armFeedButton.readValue();
+		armManualButton.readValue();
+		collapseButton.readValue();
 	}
+
 	/** Gets joystick value given joystick  and axe 
 	 * 
 	 * @param j A Joystick
@@ -194,4 +202,47 @@ public class ControlBoard extends RemoteControl {
 	}
 	
 	
+
+	@Override
+	public boolean toggleManualArmDesired() {
+		return toggleArmManualDesired;
+	}
+
+	@Override
+	public boolean getSwitchArmDesired() {
+		return armSwitchDesired;
+	}
+
+	@Override
+	public boolean getScaleArmDesired() {
+		return armScaleDesired;
+	}
+
+	@Override
+	public boolean getFeedArmDesired() {
+		return armFeedDesired;
+	}
+
+	@Override
+	public boolean getClimbArmDesired() {
+		return armClimbDesired;
+	}
+
+	@Override
+	public boolean getIntakeDesired() {
+		// TODO Auto-generated method stub
+		return intakeDesired;
+	}
+
+	@Override
+	public boolean getOuttakeDesired() {
+		// TODO Auto-generated method stub
+		return outtakeDesired;
+	}
+	@Override
+	public boolean toggleCollapseIntake() {
+		return collapseIntakeDesired;
+	}
+	
+
 }

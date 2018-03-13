@@ -21,10 +21,21 @@ public abstract class RemoteControl {
 
 	public abstract boolean getSlowDriveTier1Desired();
 	public abstract boolean getSlowDriveTier2Desired();
+	
 
 	public abstract boolean getDriveBackDesired();
 
 	public abstract boolean getDriveBackOtherDesired();
 	
+	public abstract boolean toggleManualArmDesired();
+	public abstract boolean getSwitchArmDesired();
+	public abstract boolean getScaleArmDesired();
+	public abstract boolean getFeedArmDesired();
+	public abstract boolean getClimbArmDesired();
+	public abstract boolean getIntakeDesired();
+	public abstract boolean getOuttakeDesired();
+	public abstract boolean toggleCollapseIntake();
+
+
 	
 }

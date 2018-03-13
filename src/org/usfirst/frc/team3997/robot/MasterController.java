@@ -29,6 +29,7 @@ public class MasterController {
 	private LightController lights;
 	private RobotModel robot;
 	private MotionController motion;
+	private ArmController armController;
 
 	/**
 	 * 
@@ -46,49 +47,59 @@ public class MasterController {
 	 *            Gets a LightConroller object
 	 */
 	public MasterController(DriveController driveTrain, RobotModel robot, MotionController motion,
-			VisionController vision, LightController lights) {
+			VisionController vision, LightController lights, ArmController armController) {
 
 		this.vision = vision;
 		this.driveTrain = driveTrain;
 		this.robot = robot;
 		this.motion = motion;
 		this.lights = lights;
+		this.armController = armController;
 	}
 
 	/**
-	 *Returns VisionController object initialization in Robot.java
+	 * Returns VisionController object initialization in Robot.java
 	 *
 	 **/
 	public VisionController getVisionController() {
 		return vision;
 	}
+
 	/**
-	 *Returns RobotModel object initialization in Robot.java
+	 * Returns RobotModel object initialization in Robot.java
 	 *
 	 **/
 	public RobotModel getRobotModel() {
 		return robot;
 	}
+
 	/**
-	 *Returns DriveController object initialization in Robot.java
+	 * Returns DriveController object initialization in Robot.java
 	 *
 	 **/
 	public DriveController getDriveController() {
 		return driveTrain;
 	}
+
 	/**
-	 *Returns LightController object initialization in Robot.java
+	 * Returns LightController object initialization in Robot.java
 	 *
 	 **/
 	public LightController getLightController() {
 		return lights;
 	}
+
 	/**
-	 *Returns MotionController object initialization in Robot.java
+	 * Returns MotionController object initialization in Robot.java
 	 *
 	 **/
 	public MotionController getMotionController() {
 		return motion;
 	}
+
+	public ArmController getArmController() {
+		return armController;
+	}
+
 
 }

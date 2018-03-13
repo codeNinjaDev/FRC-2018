@@ -14,6 +14,16 @@ public class Params {
 	public static double X_ARCADE_DRIVE_OUT = 0.0;
 	public static double X_ARCADE_DRIVE_LEFT_RIGHT = 6.25;
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
+
+
+
+	// ARM PARAMS
+	public static double ARM_FEED_SETPOINT = 0;
+	public static double ARM_SWITCH_SETPOINT 	= 30;
+	public static double ARM_SCALE_SETPOINT = 120; // 0.575
+	public static double ARM_CLIMB_SETPOINT = 150;
+	public static double ARM_REST_SETPOINT = 0; 
+
 	public static double MAX_SPEED = 1;
 	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
 	//Wheel diameter in inches
@@ -59,19 +69,20 @@ public class Params {
 	public static double drive_i = 0.0;
 	public static double drive_d = 0.05;
 
-	/*// [NEW_DRIVE_PID]
-	public static final double new_drive_p = DashboardVariables.DRIVE_P;
-	public static final double new_drive_i = DashboardVariables.DRIVE_I;
-	public static final double new_drive_d = DashboardVariables.DRIVE_D;
-	*/
-	// [GEAR_PID]
-	public static final double gear_p = DashboardVariables.GEAR_P;
-	public static final double gear_i = DashboardVariables.GEAR_I;
-	public static final double gear_d = DashboardVariables.GEAR_D;
+	// [NEW_DRIVE_PID]
+	public static double new_drive_p = DashboardVariables.DRIVE_P;
+	public static double new_drive_i = DashboardVariables.DRIVE_I;
+	public static double new_drive_d = DashboardVariables.DRIVE_D;
 
-	public static final double gear_ramp_p = DashboardVariables.GEAR_RAMP_P;
-	public static final double gear_ramp_i = DashboardVariables.GEAR_RAMP_I;
-	public static final double gear_ramp_d = DashboardVariables.GEAR_RAMP_D;
+	// [ARM_PID]
+	public static double arm_p = 0;
+	public static double arm_i = 0;
+	public static double arm_d = 0;
+	public static double arm_f = 0;
+
+	
+	
+
 
 	// [GEAR_DOWN_PID]
 	public static final double gear_down_p = 0.0;
