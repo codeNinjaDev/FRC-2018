@@ -42,7 +42,7 @@ public class ArmController {
 		
 		armPIDSource = new AbsoluteEncoderPIDSource(robot.armEncoder);
 		armPIDOutput = new AbsoluteEncoderPIDOutput(robot);
-		armPIDController = new PIDController(0, 0, 0, 0, armPIDSource, armPIDOutput);
+		armPIDController = new PIDController(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f, armPIDSource, armPIDOutput);
 		
 		armPIDController.setOutputRange(-1, 1);
 		armPIDController.setAbsoluteTolerance(0.25);
@@ -159,10 +159,14 @@ public class ArmController {
 	public void intakeFunctions() {
 		//If intake button pressed run intake wheels
 		if(humanControl.getIntakeDesired()) {
+			//TODO Add limit switch logic
 			robot.intakeBlock();
 			robot.closeIntake();
+			
 	    //If outtake button pressed openIntake and run outtake wheels
 		} else if(humanControl.getOuttakeDesired()) {
+			//TODO Add limit switch logic
+
 			robot.outtakeBlock();
 			robot.openIntake();
 			

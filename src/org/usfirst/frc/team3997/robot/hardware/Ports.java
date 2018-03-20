@@ -3,10 +3,7 @@ package org.usfirst.frc.team3997.robot.hardware;
 import edu.wpi.first.wpilibj.I2C.Port;
 
 public class Ports {
-	public static final int GEAR_POT_OFFSET                        = 0;
 	// ***************** PWM PORTS *****************
-
-
 	public static final int CLIMBER_MOTOR_PWM_PORT                 = 6;
 	public static final int LEFT_ARM_MOTOR_PWM_PORT                = 8;
 	public static final int RIGHT_ARM_MOTOR_PWM_PORT               = 3;
@@ -29,7 +26,7 @@ public class Ports {
 	public static final int LEFT_DRIVE_ENCODER_PORTS[]            = {9, 8};
 	//Top Ports
 	public static final int RIGHT_DRIVE_ENCODER_PORTS[]           = {7, 6};
-	public static final int LIMIT_SWITCH                              = 0;
+	public static final int LIMIT_SWITCH                              = 1;
 
 
 	// ******************* ANALOG IN PORTS*******************

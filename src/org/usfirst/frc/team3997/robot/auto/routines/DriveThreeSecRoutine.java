@@ -17,7 +17,7 @@ public class DriveThreeSecRoutine extends AutoRoutine {
 
 	@Override
 	protected void routine() {
-		driveInterval(controllers, 3, .5, 0);
+		driveInterval(controllers, 10, 1, 0);
 	}
 
 }

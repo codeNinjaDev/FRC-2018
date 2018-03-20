@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
@@ -32,10 +33,10 @@ public class DriveDistanceAction extends Action{
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
 		
-		P = 0.3;
-		//TODO Might Need to change pID values
-		I = 0.0;
-		D = 0.0;
+		P = Params.drive_p;
+		// TODO Might Need to change pID values
+		I = Params.drive_i;
+		D = Params.drive_d;
 		
 		SmartDashboard.putNumber("DRIVE_PID_P", P);
 		SmartDashboard.putNumber("DRIVE_PID_I", I);

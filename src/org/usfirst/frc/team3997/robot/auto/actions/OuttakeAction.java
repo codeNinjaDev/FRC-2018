@@ -9,15 +9,15 @@ public class OuttakeAction extends Action {
 
 	double speed;
 	RobotModel robot;
-	public OuttakeAction(MasterController controllers, double seconds, double speed) {
-		goal_time = seconds;
+	public OuttakeAction(MasterController controllers, double timeout, double speed) {
+		goal_time = timeout;
 		robot = controllers.getRobotModel();
 		this.speed = speed;
 		
 	}
 	
 	public boolean isFinished() {
-		return (Timer.getFPGATimestamp() >= start_time + goal_time);
+		return ((Timer.getFPGATimestamp() >= start_time + goal_time) || (robot.getBlockTouching()));
 	}
 
 	@Override
@@ -28,6 +28,7 @@ public class OuttakeAction extends Action {
 
 	@Override
 	public void finish() {
+		robot.openIntake();
 		robot.stopIntake();
 	}
 

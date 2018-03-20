@@ -18,9 +18,12 @@ public class RobotModel {
 	public DoubleSolenoid leftSolenoid, rightSolenoid;
 	public Solenoid armShifter;
 	public DigitalInput limitSwitch;
+	
 
 	// public CameraServer camera;
 	public Timer timer;
+	public Timer autoTimer;
+	public Timer teleopTimer;
 
 	private PowerDistributionPanel pdp;
 	private double leftDriveACurrent, leftDriveBCurrent, rightDriveACurrent, rightDriveBCurrent;
@@ -257,6 +260,7 @@ public class RobotModel {
 
 	public double getArmEncoderRawValue() {
 		return armEncoder.getValue();
+		
 	}
 
 	public double getAverageArmEncoderRawValue() {
@@ -310,5 +314,23 @@ public class RobotModel {
 	}
 	public void setArmLowGear() {
 		armShifter.set(false);
+	}
+	public void setVoltage(double desiredVoltage) {
+	    
+	    double batteryVoltage = pdp.getVoltage();
+
+	    if (desiredVoltage > batteryVoltage) {
+	        leftDriveMotors.set(1.0);
+	        rightDriveMotors.set(1.0);
+
+	    }
+	    else if (desiredVoltage < -1*batteryVoltage) {
+	    	leftDriveMotors.set(-1.0);
+	        rightDriveMotors.set(-1.0);	    }
+	    else {
+	    	leftDriveMotors.set(desiredVoltage/batteryVoltage);
+	        rightDriveMotors.set(desiredVoltage/batteryVoltage);
+	    }
+
 	}
 }

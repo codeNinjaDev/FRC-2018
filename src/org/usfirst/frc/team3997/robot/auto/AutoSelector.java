@@ -10,6 +10,7 @@ import org.usfirst.frc.team3997.robot.auto.routines.DriveThreeSecRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RightAutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.StepVoltageRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.TurnRoutine;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,6 +35,7 @@ public class AutoSelector {
 		registerAutonomous(new LeftAutoRoutine(controllers));
 		registerAutonomous(new CenterAutoRoutine(controllers));
 		registerAutonomous(new RightAutoRoutine(controllers));
+		registerAutonomous(new StepVoltageRoutine(controllers));
 		
 	} 
 	
@@ -47,6 +49,8 @@ public class AutoSelector {
 		autoChooser.addObject("Left Auto Routine", 5);
 		autoChooser.addObject("Center Auto Routine", 6);
 		autoChooser.addObject("Right Auto Routine", 7);
+		autoChooser.addObject("Step Voltage Routine", 8);
+
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);
 		SmartDashboard.putData("Autonomous", autoChooser);

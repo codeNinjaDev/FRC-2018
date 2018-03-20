@@ -16,7 +16,7 @@ public class IntakeAction extends Action {
 	}
 	
 	public boolean isFinished() {
-		return (Timer.getFPGATimestamp() >= start_time + goal_time);
+		return ((Timer.getFPGATimestamp() >= start_time + goal_time) || (!robot.getBlockTouching()));
 	}
 
 	@Override
@@ -27,6 +27,7 @@ public class IntakeAction extends Action {
 
 	@Override
 	public void finish() {
+		robot.closeIntake();
 		robot.stopIntake();
 	}
 

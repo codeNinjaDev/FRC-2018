@@ -6,7 +6,8 @@ import org.usfirst.frc.team3997.robot.auto.actions.ArcadeStraightAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
-
+import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
 import org.usfirst.frc.team3997.robot.auto.actions.PathFollowerAction;
 import org.usfirst.frc.team3997.robot.auto.actions.VisionAction;
 import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
@@ -50,6 +51,15 @@ public abstract class AutoRoutine {
 	public void pathFollower(MasterController controllers, Trajectory trajectory, double timeout) {
 		runAction(new PathFollowerAction(controllers, trajectory, timeout));
 	}
+	
+	public void outtake(MasterController controllers, double timeout, double speed) {
+		runAction(new OuttakeAction(controllers, timeout, speed));
+	}
+	
+	public void intake(MasterController controllers, double timeout, double speed) {
+		runAction(new IntakeAction(controllers, timeout, speed));
+	}
+	
 	
 	public void waitTime(double seconds) {
 		runAction(new WaitAction(seconds));
