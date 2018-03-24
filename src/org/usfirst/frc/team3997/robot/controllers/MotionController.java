@@ -153,13 +153,11 @@ public class MotionController {
 		// TODO find ticks_per_revolution
 		// .1016 meters = 4 inch wheel diameter
 		isEnabled = true;
-		robot.resetGyro();
 		left.configureEncoder(robot.leftDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
 		right.configureEncoder(robot.rightDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
 		left.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 		right.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 
-		robot.resetGyro();
 
 	}
 	
@@ -172,12 +170,11 @@ public class MotionController {
 	public void update() {
 		double deltaTime = Timer.getFPGATimestamp();
 
-		robot.updateGyro();
 		if (isEnabled || (!left.isFinished() && !right.isFinished())) {
 			double l = left.calculate(robot.leftDriveEncoder.get());
 			double r = right.calculate(robot.rightDriveEncoder.get());
 
-			double gyro_heading = robot.getAngle();
+			double gyro_heading = 0;
 
 			double desired_heading = Pathfinder.r2d(left.getHeading());
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);

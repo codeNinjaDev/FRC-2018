@@ -31,8 +31,10 @@ public class AbsoluteEncoder extends AnalogInput{
 		    m_channel = channel;
 
 		    final int portHandle = AnalogJNI.getPort((byte) channel);
-		    m_port = AnalogJNI.initializeAnalogInputPort(portHandle);
-
+		    //m_port = AnalogJNI.initializeAnalogInputPort(portHandle);
+		    //temp
+		    m_port = 0;
+		    
 		    HAL.report(tResourceType.kResourceType_AnalogChannel, channel);
 		    setName("AnalogInput", channel);
 	   }

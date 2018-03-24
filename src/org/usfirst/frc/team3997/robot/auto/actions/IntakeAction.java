@@ -16,12 +16,12 @@ public class IntakeAction extends Action {
 	}
 	
 	public boolean isFinished() {
-		return ((Timer.getFPGATimestamp() >= start_time + goal_time) || (!robot.getBlockTouching()));
+		return ((Timer.getFPGATimestamp() >= start_time + goal_time)/* || (!robot.getBlockTouching())*/);
 	}
 
 	@Override
 	public void update() {
-		robot.intakeWheels(speed);
+		robot.intakeWheels(-speed);
 
 	}
 
@@ -33,6 +33,7 @@ public class IntakeAction extends Action {
 
 	@Override
 	public void start() {
+		robot.relaxWrist();
 		start_time = Timer.getFPGATimestamp();
 	}
 

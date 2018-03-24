@@ -19,6 +19,10 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
 public abstract class AutoRoutine {
+	public class OneCubeCenterAutoRoutine {
+
+	}
+
 	public boolean m_active = false;
 	public boolean teleop;
 	
@@ -60,6 +64,7 @@ public abstract class AutoRoutine {
 		runAction(new IntakeAction(controllers, timeout, speed));
 	}
 	
+
 	
 	public void waitTime(double seconds) {
 		runAction(new WaitAction(seconds));

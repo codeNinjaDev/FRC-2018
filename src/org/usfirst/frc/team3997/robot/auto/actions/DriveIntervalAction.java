@@ -30,7 +30,7 @@ public class DriveIntervalAction extends Action {
 		y_drive = y;
 		this.kDrive = controllers.getDriveController();
 		this.robot = controllers.getRobotModel();
-		positionVsTimeCSV = new DataWriter<double[]>("PositionTime", double[].class);
+		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime", double[].class);
 	}
 	
 	public boolean isFinished() {

@@ -8,20 +8,44 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+/*** Drive Forward action that uses arcade drive **/
 public class ArcadeStraightAction extends Action {
 	private DriveController driveTrain;
 	private RobotModel robot;
-
+	/*** Instance variable for desired distance ***/
 	private double distance;
+	/*** Instance variable or allowed timeout ***/
 	private double timeout;
+	/*** Instance variable for max speed set***/
 	private double maxSpeed;
+	/*** Instance variables for P,I,D of straight PID controller ***/
 	private double P, I, D;
+	/*** Residual distance of left and right encoder ***/
 	private double leftEncoderStartDistance, rightEncoderStartDistance;
+	//Not sure
 	private double afterSetpointTime, timeAfterHit;
+	/*** Boolean checks if reached distance ***/
 	private boolean reachedSetpoint;
+	//Not sure
 	private int target_pass;
 
+	/*** <h1> ArcadeStraightAction Constructor </h1>
+	 * 
+	 * <h2> Activity: </h2>
+	 * <ul>
+	 * 	<li>Initializes DriveController and RobotModel object from MasterController</li>
+	 * <li>Initializes distance, timeout, maxSpeed from Constructor params</li>
+	 * 
+	 * 
+	 * 
+	 * </ul>
+	 * @param controllers
+	 * @param distance
+	 * @param maxSpeed
+	 * @param timeout
+	 * @param timeAfterHit
+	 * 
+	 */
 	public ArcadeStraightAction(MasterController controllers, double distance, double maxSpeed, double timeout,
 			double timeAfterHit) {
 		this.driveTrain = controllers.getDriveController();
@@ -47,6 +71,7 @@ public class ArcadeStraightAction extends Action {
 	}
 
 	@Override
+	/*** Checks if timeout is finished or reached setpoint ***/
 	public boolean isFinished() {
 
 		return (Timer.getFPGATimestamp() >= start_time + timeout) || reachedSetpoint;
@@ -54,6 +79,7 @@ public class ArcadeStraightAction extends Action {
 	}
 
 	@Override
+	/*** Updates gyro and checks if PID is complete ***/
 	public void update() {
 		robot.updateGyro();
 		if (driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
@@ -64,11 +90,15 @@ public class ArcadeStraightAction extends Action {
 	}
 
 	@Override
+	/*** Disables PID ***/
 	public void finish() {
+		driveTrain.leftPID.disable();
+		driveTrain.rightPID.disable();
 		driveTrain.straightPID.disable();
 	}
 
 	@Override
+	/*** Starts timer and PID ***/
 	public void start() {
 		start_time = Timer.getFPGATimestamp();
 

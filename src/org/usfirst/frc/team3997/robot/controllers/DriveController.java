@@ -95,7 +95,7 @@ public class DriveController {
 		this.robot.rightDriveEncoder.setSamplesToAverage(Params.DRIVE_Y_PID_SAMPLES_AVERAGE);
 		// TODO I think that this is wrong
 		leftPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.LeftWheels, this.robot);
-		leftPID = new PIDController(0, 0, 0, this.robot.leftDriveEncoder, leftPIDOutput);
+		leftPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, this.robot.leftDriveEncoder, leftPIDOutput);
 		// TODO Might change this to max power variable
 		leftPID.setOutputRange(-1.0, 1.0);
 		leftPID.setAbsoluteTolerance(0.25);
@@ -104,7 +104,7 @@ public class DriveController {
 		// TODO I think that this is wrong
 		rightPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.RightWheels, this.robot);
 
-		rightPID = new PIDController(0, 0, 0, robot.rightDriveEncoder, rightPIDOutput);
+		rightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, robot.rightDriveEncoder, rightPIDOutput);
 		// TODO Might change this to max power variable
 		rightPID.setOutputRange(-1.0, 1.0);
 		rightPID.setAbsoluteTolerance(0.25);
@@ -113,7 +113,7 @@ public class DriveController {
 		avgEncodersPIDSource = new DriveEncodersPIDSource(this.robot);
 
 		straightPIDOutput = new ArcadeStraightPIDOutput(drive, this.robot);
-		straightPID = new PIDController(0, 0, 0, avgEncodersPIDSource, straightPIDOutput);
+		straightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, avgEncodersPIDSource, straightPIDOutput);
 		// TODO might change this to max power variable
 		straightPID.setOutputRange(-1.0, 1.0);
 		straightPID.setAbsoluteTolerance(1);

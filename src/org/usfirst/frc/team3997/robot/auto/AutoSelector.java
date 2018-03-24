@@ -8,6 +8,7 @@ import org.usfirst.frc.team3997.robot.auto.routines.CustomDistanceRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DoNothingRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DriveThreeSecRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftAutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.OneCubeCenterAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RightAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.StepVoltageRoutine;
@@ -36,6 +37,7 @@ public class AutoSelector {
 		registerAutonomous(new CenterAutoRoutine(controllers));
 		registerAutonomous(new RightAutoRoutine(controllers));
 		registerAutonomous(new StepVoltageRoutine(controllers));
+		registerAutonomous(new OneCubeCenterAutoRoutine(controllers));
 		
 	} 
 	
@@ -50,7 +52,7 @@ public class AutoSelector {
 		autoChooser.addObject("Center Auto Routine", 6);
 		autoChooser.addObject("Right Auto Routine", 7);
 		autoChooser.addObject("Step Voltage Routine", 8);
-
+		autoChooser.addObject("Single Cube Center", 9);
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);
 		SmartDashboard.putData("Autonomous", autoChooser);

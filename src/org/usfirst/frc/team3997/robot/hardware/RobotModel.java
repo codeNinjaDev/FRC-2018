@@ -13,11 +13,11 @@ public class RobotModel {
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors, armMotors, intakeMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
 	public AbsoluteEncoder armEncoder;
-	public MPU9250Gyro gyro;
 	public Compressor compressor;
-	public DoubleSolenoid leftSolenoid, rightSolenoid;
-	public Solenoid armShifter;
-	public DigitalInput limitSwitch;
+	public DoubleSolenoid intakeSolenoid;
+	public DoubleSolenoid wristSolenoid;
+
+	//public DigitalInput limitSwitch;
 	
 
 	// public CameraServer camera;
@@ -34,14 +34,10 @@ public class RobotModel {
 	 */
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
-
 		// Pneumatics
 		compressor = new Compressor(Ports.COMPRESSOR_MODULE);
-		leftSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[0], Ports.SOLENOID_CHANNEL[0],
-				Ports.SOLENOID_CHANNEL[1]);
-		rightSolenoid = new DoubleSolenoid(Ports.SOLENOID_MODULE[1], Ports.SOLENOID_CHANNEL[2],
-				Ports.SOLENOID_CHANNEL[3]);
-		armShifter = new Solenoid(Ports.SOLENOID_MODULE[2], Ports.SOLENOID_CHANNEL[3]);
+		intakeSolenoid = new DoubleSolenoid(Ports.INTAKE_SOLENOIDS[0], Ports.INTAKE_SOLENOIDS[1]);
+		wristSolenoid = new DoubleSolenoid(Ports.WRIST_SOLENOIDS[0], Ports.WRIST_SOLENOIDS[1]);
 		
 		// Init drive motors
 		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
@@ -69,7 +65,7 @@ public class RobotModel {
 		rightIntakeMotor.setInverted(true);
 		
 		//Limit switch for intake to detect cube
-		limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
+		//limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
 
 		//Initialize arm sensor
@@ -95,8 +91,8 @@ public class RobotModel {
 
 		leftDriveMotorA.setInverted(false);
 		leftDriveMotorB.setInverted(false);
-		rightDriveMotorA.setInverted(false);
-		rightDriveMotorB.setInverted(false);
+		rightDriveMotorA.setInverted(true);
+		rightDriveMotorB.setInverted(true);
 
 		leftDriveACurrent = 0;
 		leftDriveBCurrent = 0;
@@ -106,15 +102,12 @@ public class RobotModel {
 		timer = new Timer();
 		timer.start();
 
-		gyro = new MPU9250Gyro(Ports.gyroPort);
 		// TODO add real url
 		// camera.addServer("Server");
 
 	}
 
-	public void updateGyro() {
-		gyro.update();
-	}
+	
 
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
@@ -159,7 +152,6 @@ public class RobotModel {
 	// resets variables and objects
 	public void reset() {
 		resetEncoders();
-		gyro.reset();
 	}
 
 	// initializes variables pertaining to current
@@ -231,14 +223,7 @@ public class RobotModel {
 		return leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance();
 	}
 
-	public void resetGyro() {
-		gyro.reset();
-	}
-
-	public double getAngle() {
-		return gyro.getAngle();
-	}
-
+	
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);
@@ -285,17 +270,24 @@ public class RobotModel {
 	}
 
 	public void openIntake() {
-		leftSolenoid.set(DoubleSolenoid.Value.kReverse);
-		rightSolenoid.set(DoubleSolenoid.Value.kReverse);
+		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public void closeIntake() {
-		leftSolenoid.set(DoubleSolenoid.Value.kForward);
-		rightSolenoid.set(DoubleSolenoid.Value.kForward);
+		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
-
+	
+	public void flexWrist() {
+		wristSolenoid.set(DoubleSolenoid.Value.kForward);
+	}
+	
+	public void relaxWrist() {
+		wristSolenoid.set(DoubleSolenoid.Value.kReverse);
+	}
+	
 	public boolean getBlockTouching() {
-		return limitSwitch.get();
+		//return limitSwitch.get();
+		return false;
 	}
 	public void intakeBlock() {
 		intakeWheels(-.5);
@@ -309,12 +301,7 @@ public class RobotModel {
 		intakeWheels(0);
 	}
 	
-	public void setArmHighGear() {
-		armShifter.set(true);
-	}
-	public void setArmLowGear() {
-		armShifter.set(false);
-	}
+	
 	public void setVoltage(double desiredVoltage) {
 	    
 	    double batteryVoltage = pdp.getVoltage();
