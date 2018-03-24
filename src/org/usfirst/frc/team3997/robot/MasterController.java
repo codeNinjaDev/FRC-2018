@@ -28,7 +28,6 @@ public class MasterController {
 	private DriveController driveTrain;
 	private LightController lights;
 	private RobotModel robot;
-	private MotionController motion;
 	private ArmController armController;
 
 	/**
@@ -46,13 +45,12 @@ public class MasterController {
 	 * @param lights
 	 *            Gets a LightConroller object
 	 */
-	public MasterController(DriveController driveTrain, RobotModel robot, MotionController motion,
+	public MasterController(DriveController driveTrain, RobotModel robot,
 			VisionController vision, LightController lights, ArmController armController) {
 
 		this.vision = vision;
 		this.driveTrain = driveTrain;
 		this.robot = robot;
-		this.motion = motion;
 		this.lights = lights;
 		this.armController = armController;
 	}
@@ -89,13 +87,7 @@ public class MasterController {
 		return lights;
 	}
 
-	/**
-	 * Returns MotionController object initialization in Robot.java
-	 *
-	 **/
-	public MotionController getMotionController() {
-		return motion;
-	}
+	
 
 	public ArmController getArmController() {
 		return armController;

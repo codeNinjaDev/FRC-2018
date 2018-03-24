@@ -12,7 +12,6 @@ import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.LightController;
-import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.feed.DashboardInput;
 import org.usfirst.frc.team3997.robot.feed.DashboardLogger;
@@ -53,7 +52,6 @@ public class Robot extends IterativeRobot {
 	DashboardLogger dashboardLogger;
 	DashboardInput input;
 
-	MotionController motion;
 
 	MasterController masterController;
 	Auto auto;
@@ -73,10 +71,9 @@ public class Robot extends IterativeRobot {
 		lights = new LightController();
 		dashboardLogger = new DashboardLogger(robot, humanControl);
 		input = new DashboardInput();
-		motion = new MotionController(robot);
 		armController = new ArmController(robot, humanControl);
 		
-		masterController = new MasterController(driveController, robot, motion, visionController,
+		masterController = new MasterController(driveController, robot, visionController,
 				lights, armController);
 		auto = new Auto(masterController);
 		timer = new Timer();
@@ -125,7 +122,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		robot.reset();
-		robot.updateGyro();
 		AutoRoutineRunner.getTimer().reset();
 		input.updateInput();
 		auto.stop();
@@ -147,8 +143,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		robot.updateGyro();
-		SmartDashboard.putNumber("gyro", robot.getAngle());
 		visionController.update();
 		lights.setAutoLights();
 		dashboardLogger.updateData();
@@ -163,7 +157,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		auto.stop();
-		robot.resetGyro();
 		robot.resetTimer();
 		robot.resetEncoders();
 		driveController.reset();
@@ -181,8 +174,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		SmartDashboard.putNumber("gyro", robot.getAngle());
-		robot.updateGyro();
+		
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();

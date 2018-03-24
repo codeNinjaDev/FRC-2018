@@ -81,7 +81,6 @@ public class ArcadeStraightAction extends Action {
 	@Override
 	/*** Updates gyro and checks if PID is complete ***/
 	public void update() {
-		robot.updateGyro();
 		if (driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {

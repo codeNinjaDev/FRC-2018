@@ -107,7 +107,7 @@ public class RobotModel {
 
 	}
 
-	
+
 
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
@@ -224,6 +224,7 @@ public class RobotModel {
 	}
 
 	
+
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);
