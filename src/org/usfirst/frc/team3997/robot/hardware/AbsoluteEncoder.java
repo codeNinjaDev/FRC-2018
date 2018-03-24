@@ -82,7 +82,8 @@ public class AbsoluteEncoder extends AnalogInput{
 	   * @return A scaled sample straight from this channel.
 	   */
 	  public double getVoltage() {
-	    return AnalogJNI.getAnalogVoltage(m_port);
+		  return 0;
+	    //TODO return AnalogJNI.getAnalogVoltage(m_port);
 	  }
 
 	  /**
@@ -95,7 +96,8 @@ public class AbsoluteEncoder extends AnalogInput{
 	   * @return A scaled sample from the output of the oversample and average engine for this channel.
 	   */
 	  public double getAverageVoltage() {
-	    return AnalogJNI.getAnalogAverageVoltage(m_port);
+		  return 0;
+		  //TODO return AnalogJNI.getAnalogAverageVoltage(m_port);
 	  }
 
 	  /**

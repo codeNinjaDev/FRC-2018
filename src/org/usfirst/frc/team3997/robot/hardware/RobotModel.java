@@ -47,7 +47,7 @@ public class RobotModel {
 		// Make a Speed Controller group for Drive
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
-
+		rightDriveMotors.setInverted(true);
 		// Init arm motors
 		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
 		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
@@ -64,6 +64,8 @@ public class RobotModel {
 		leftIntakeMotor.setInverted(false);
 		rightIntakeMotor.setInverted(true);
 		
+		//Speedcontroller group for intake motors
+		intakeMotors = new SpeedControllerGroup(leftIntakeMotor, rightIntakeMotor);
 		//Limit switch for intake to detect cube
 		//limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
