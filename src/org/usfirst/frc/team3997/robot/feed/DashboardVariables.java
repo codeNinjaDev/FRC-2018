@@ -5,15 +5,7 @@ import jaci.pathfinder.Waypoint;
 
 public class DashboardVariables {
 
-	public static double firstAutoDistance = 0.0;
-	public static double firstAutoDistanceTimeout = 0.0;
-
-	public static double nextAutoAngle = 0.0;
-	public static double nextAutoAngleTimeout = 0.0;
-
-	public static double lastAutoDistance = 0.0;
-	public static double lastAutoDistanceTimeout = 0.0;
-
+	public static double firstAutoTime = 0;
 	
 	public static double DRIVE_P = 0.0;
 	public static double DRIVE_I = 0.0;

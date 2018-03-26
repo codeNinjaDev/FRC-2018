@@ -23,14 +23,15 @@ import org.usfirst.frc.team3997.robot.MasterController;
 public class DriveIntervalAction extends Action {
 	private DriveController kDrive;
 	private RobotModel robot;
-	DataWriter<double[]> positionVsTimeCSV;
+	//DataWriter<double[]> positionVsTimeCSV;
 	public DriveIntervalAction(MasterController controllers, double seconds, double y, double x) {
 		goal_time = seconds;
 		x_drive = x;
 		y_drive = y;
 		this.kDrive = controllers.getDriveController();
 		this.robot = controllers.getRobotModel();
-		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime", double[].class);
+		//positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime.csv", double[].class);
+		System.out.println("Action Drive ");
 	}
 	
 	public boolean isFinished() {
@@ -41,15 +42,17 @@ public class DriveIntervalAction extends Action {
 	public void update() {
 		SmartDashboard.putNumber("reachedUPDATE", Timer.getFPGATimestamp());
 		kDrive.arcadeDrive(y_drive, x_drive, false);
-		double[] currentPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
-		positionVsTimeCSV.add(currentPos);
+		//double[] currentPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
+		//positionVsTimeCSV.add(currentPos);
+		System.out.println("UPDATING");
+		SmartDashboard.putString("AUTON", "UPDATING");
 	}
 
 	@Override
 	public void finish() {
 		kDrive.stop();
-		double[] finalPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
-		positionVsTimeCSV.add(finalPos);
+		//double[] finalPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
+		//positionVsTimeCSV.add(finalPos);
 		robot.autoTimer.stop();
 	}
 
@@ -57,8 +60,8 @@ public class DriveIntervalAction extends Action {
 	public void start() {
 		robot.resetEncoders();
 		robot.autoTimer.start();
-		double[] startPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
-		positionVsTimeCSV.add(startPos);
+		//double[] startPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
+		//positionVsTimeCSV.add(startPos);
 		SmartDashboard.putNumber("reachedSTART", Timer.getFPGATimestamp());
 		start_time = Timer.getFPGATimestamp();
 	}

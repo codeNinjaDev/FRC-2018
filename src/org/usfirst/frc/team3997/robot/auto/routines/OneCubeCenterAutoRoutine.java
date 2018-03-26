@@ -24,7 +24,7 @@ public class OneCubeCenterAutoRoutine extends AutoRoutine {
 			driveRotate(controllers, 60, .6, 3.5, true);
 		else
 			driveRotate(controllers, -60, .6, 3.5, true);
-		driveDistanceStraight(controllers, 30, .6, 3, true);
+		driveDistanceStraight(controllers, 88.35, .6, 3, true);
 		outtake(controllers, 2, .5);
 	}
 

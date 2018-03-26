@@ -94,7 +94,7 @@ public class Robot extends IterativeRobot {
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
 		new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+            /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
             
             CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -110,7 +110,7 @@ public class Robot extends IterativeRobot {
 
                 Imgproc.line(output, new Point((output.size().width / 2), 0), new Point((output.size().width / 2), (output.size().height)), new Scalar(0, 0, 0), thickness);
                 outputStream.putFrame(output);
-            }
+            }*/
         }).start();
 		dashboardLogger.updateEssentialData();
 

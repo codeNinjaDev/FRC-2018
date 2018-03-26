@@ -103,7 +103,7 @@ public class RobotModel {
 
 		timer = new Timer();
 		timer.start();
-
+		autoTimer = new Timer();
 		// TODO add real url
 		// camera.addServer("Server");
 
