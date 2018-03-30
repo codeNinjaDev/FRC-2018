@@ -32,7 +32,6 @@ public class PathFollowerAction extends Action{
 
 	@Override
 	public void update() {
-		robot.updateGyro();
 		motion.update();
 	}
 

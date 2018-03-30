@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 import org.usfirst.frc.team3997.robot.hardware.Ports;
@@ -16,7 +18,7 @@ public class RobotModel {
 	public Compressor compressor;
 	public DoubleSolenoid intakeSolenoid;
 	public DoubleSolenoid wristSolenoid;
-
+	public Gyro mpu_gyro;
 	//public DigitalInput limitSwitch;
 	
 
@@ -64,6 +66,7 @@ public class RobotModel {
 		leftIntakeMotor.setInverted(false);
 		rightIntakeMotor.setInverted(true);
 		
+		intakeMotors = new SpeedControllerGroup(leftIntakeMotor, rightIntakeMotor);
 		//Limit switch for intake to detect cube
 		//limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
@@ -101,6 +104,9 @@ public class RobotModel {
 
 		timer = new Timer();
 		timer.start();
+		
+		mpu_gyro = new MPU9250Gyro(Port.kOnboard);
+		
 
 		// TODO add real url
 		// camera.addServer("Server");
@@ -301,6 +307,14 @@ public class RobotModel {
 		intakeWheels(0);
 	}
 	
+	public double getAngle() {
+		return mpu_gyro.getAngle();
+	}
+	
+	public void resetGyro() {
+		mpu_gyro.reset();
+	}
+	
 	
 	public void setVoltage(double desiredVoltage) {
 	    
@@ -320,4 +334,6 @@ public class RobotModel {
 	    }
 
 	}
+
+	
 }

@@ -18,7 +18,7 @@ import java.lang.Math;
  * @author peter
  *
  */
-public class MPU9250Gyro extends GyroBase {
+public class MPU9250Gyro implements Gyro {
 
 	// Magnetometer Registers
 	int AK8963_ADDRESS = 0x0C;
@@ -217,8 +217,6 @@ public class MPU9250Gyro extends GyroBase {
 	double Kp = 5 * 2;
 	double Ki = 0;
 	double gx, gy, gz; // variables to hold latest sensor data values
-	double q[] = { 1.0f, 0.0f, 0.0f, 0.0f }; // vector to hold quaternion
-	double eInt[] = { 0.0f, 0.0f, 0.0f }; // vector to hold integral error for Mahony method
 	// Set initial input parameters
 	double currentTime = 0;
 	double lastTime = 0;
@@ -236,20 +234,17 @@ public class MPU9250Gyro extends GyroBase {
 		gScale = GFS_250DPS;
 		if (ADO == 1) {
 			MPU9250_ADDRESS = 0x69; // Device address when ADO = 1
-			AK8963_ADDRESS = 0x0C; // Address of magnetometer
-			MS5637_ADDRESS = 0x76; // Address of altimeter
+
 		} else {
 			MPU9250_ADDRESS = 0x68; // Device address when ADO = 0
-			AK8963_ADDRESS = 0x0C; // Address of magnetometer
-			MS5637_ADDRESS = 0x76; // Address of altimeter
+
 		}
 		i2c = new I2C(port, MPU9250_ADDRESS);
-		setName("MPU9250Gyro", port.value);
 		if (i2c.addressOnly()) {
+			SmartDashboard.putString("GYRO", "FOUND");
 			getGyroRes(gScale);
 			calibrate();
 			init();
-			SmartDashboard.putString("GYRO", "FOUND");
 
 		} else {
 			SmartDashboard.putString("GYRO", "NOTFOUND");
@@ -257,12 +252,25 @@ public class MPU9250Gyro extends GyroBase {
 
 	}
 
+	/*** 
+	 * Reads an array of bytes
+	 * 
+	 * @param registerAddress Takes in register address
+	 * @param count Number of bytes of data
+	 * @param destination Place to store the bytes
+	 * @return Returns read bytes
+	 */
 	byte[] readBytes(int registerAddress, int count, byte[] destination) {
 		i2c.read(registerAddress, count, destination);
 		return destination;
 
 	}
-
+	/***
+	 * Reads only one byte
+	 * 
+	 * @param registerAddress Takes in register address
+	 * @return The read byte
+	 */
 	byte readByte(int registerAddress) {
 		byte[] destination = new byte[1];
 		i2c.read(registerAddress, 1, destination);
@@ -270,10 +278,20 @@ public class MPU9250Gyro extends GyroBase {
 
 	}
 
+	/**
+	 * Writes data to register 
+	 * @param registerAddress Takes in register address
+	 * @param data Data to write to register
+	 * @return True or False based on success of data transfer
+	 */
 	boolean writeByte(int registerAddress, int data) {
 		return i2c.write(registerAddress, data);
 	}
 
+	/**
+	 * Sets the Gyro Resolution
+	 * @param gScale Gyro Scale
+	 */
 	void getGyroRes(int gScale) {
 		// Possible gyro scales (and their register bit settings) are:
 		// 250 DPS (00), 500 DPS (01), 1000 DPS (10), and 2000 DPS (11).
@@ -295,6 +313,10 @@ public class MPU9250Gyro extends GyroBase {
 		}
 	}
 
+	/**
+	 * Reads Gyro Data 
+	 * @param destination Array to read into
+	 */
 	void readGyroData(int[] destination) {
 		SmartDashboard.putBoolean("Raw Boolean", true);
 
@@ -311,7 +333,9 @@ public class MPU9250Gyro extends GyroBase {
 		destination[2] = ((rawData[4] << 8) | rawData[5]);
 
 	}
-
+	/**
+	 * Initializes Gyro
+	 */
 	void init() {
 		// wake up device
 		writeByte(PWR_MGMT_1, 0x00); // Clear sleep mode bit (6), enable all sensors
@@ -369,7 +393,7 @@ public class MPU9250Gyro extends GyroBase {
 
 		calibrateMPU9250(gyroBias);
 	}
-
+	
 	void calibrateMPU9250(double[] dest) {
 		byte data[] = new byte[12]; // data array to hold accelerometer and gyro x, y, z, data
 		int ii, packet_count, fifo_count;
@@ -430,10 +454,18 @@ public class MPU9250Gyro extends GyroBase {
 
 		}
 		// Normalize sums to get average count biases
-
-		gyro_bias[0] /= packet_count;
-		gyro_bias[1] /= packet_count;
-		gyro_bias[2] /= packet_count;
+		//TODO Divides by zero 
+		try {
+			
+			gyro_bias[0] /= packet_count;
+			gyro_bias[1] /= packet_count;
+			gyro_bias[2] /= packet_count;
+		} catch(Exception e) {
+			SmartDashboard.putString("GYRO_STATUS", "ZERO");
+			for(int i = 0; i < 100; i++)
+				System.out.println("Packet count = 0; fifo count = 0");
+		}
+		
 
 		// Construct the gyro biases for push to the hardware gyro bias registers, which
 		// are reset to zero upon device startup
@@ -483,7 +515,7 @@ public class MPU9250Gyro extends GyroBase {
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
 		
 		// TODO change to account for drift
-		double rotation_threshold = 1;
+		double rotation_threshold = 0;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
 
@@ -493,7 +525,7 @@ public class MPU9250Gyro extends GyroBase {
 		
 		double deltaTime = currentTimestamp - currentTime;
 		//I have a bad feeling about having it exactly equal to 20
-		if (((gz >= rotation_threshold) || (gz <= -rotation_threshold)) && (deltaTime >= 20)) {
+		if (/*(gz >= rotation_threshold) || (gz <= -rotation_threshold))*/(deltaTime >= 20)) {
 			/**
 			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
 			 */
@@ -510,9 +542,12 @@ public class MPU9250Gyro extends GyroBase {
 
 	}
 
+	@Override
 	public void free() {
-		super.free();
+		// TODO Auto-generated method stub
 		i2c.free();
 	}
+
+
 
 }

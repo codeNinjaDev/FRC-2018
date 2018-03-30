@@ -55,7 +55,6 @@ public class DriveRotateAction extends Action{
 
 	@Override
 	public void update() {
-		robot.updateGyro();
 		if(driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {

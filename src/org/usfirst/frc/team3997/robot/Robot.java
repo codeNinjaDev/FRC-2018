@@ -125,7 +125,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		robot.reset();
-		robot.updateGyro();
 		AutoRoutineRunner.getTimer().reset();
 		input.updateInput();
 		auto.stop();
@@ -147,7 +146,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		robot.updateGyro();
 		SmartDashboard.putNumber("gyro", robot.getAngle());
 		visionController.update();
 		lights.setAutoLights();
@@ -182,7 +180,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-		robot.updateGyro();
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
