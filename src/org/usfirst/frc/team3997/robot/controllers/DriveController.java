@@ -178,28 +178,30 @@ public class DriveController {
 	 **/
 	public void arcadeDrive(double myY, double myX, boolean teleOp) {
 		if (teleOp) {
+			//Brake 1
 			if ((humanControl.getSlowDriveTier1Desired() && !humanControl.getSlowDriveTier2Desired())
 					|| (!humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
-				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.65;
-				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.65;
-				Params.SQUARE_DRIVE_AXIS_INPUT = false;
-			} else if ((humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.35;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.35;
+				Params.SQUARE_DRIVE_AXIS_INPUT = false;
+				//Brake 2
+			} else if ((humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
+				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.2;
+				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.2;
 				Params.SQUARE_DRIVE_AXIS_INPUT = false;
 			} else {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 1.0;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 1.0;
 				Params.SQUARE_DRIVE_AXIS_INPUT = true;
 			}
-
+			// Speed * BrakeSpeed * Max Speed from prefs
 			drive.arcadeDrive(myY * Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER * Math.pow(Params.MAX_SPEED, .5),
 					myX * Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER * Math.pow(Params.MAX_SPEED, .5),
 					Params.SQUARE_DRIVE_AXIS_INPUT);
 			SmartDashboard.putNumber("Prefs MAXSPEED", Params.MAX_SPEED);
 
 		} else {
-			drive.arcadeDrive(myY, myX, false);
+			drive.arcadeDrive(myY*Params.MAX_SPEED, myX*Params.MAX_SPEED, false);
 		}
 	}
 

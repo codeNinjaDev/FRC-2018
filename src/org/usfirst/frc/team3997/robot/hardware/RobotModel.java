@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
+
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.Params;
 
@@ -14,7 +15,7 @@ public class RobotModel {
 	public Spark leftArmMotor, rightArmMotor, leftIntakeMotor, rightIntakeMotor;
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors, armMotors, intakeMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
-	public AbsoluteEncoder armEncoder;
+	public TenTurnPotentiometer pot;
 	public Compressor compressor;
 	public DoubleSolenoid intakeSolenoid;
 	public DoubleSolenoid wristSolenoid;
@@ -49,7 +50,7 @@ public class RobotModel {
 		// Make a Speed Controller group for Drive
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
-
+		rightDriveMotors.setInverted(true);
 		// Init arm motors
 		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
 		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
@@ -66,6 +67,7 @@ public class RobotModel {
 		leftIntakeMotor.setInverted(false);
 		rightIntakeMotor.setInverted(true);
 		
+		//Speedcontroller group for intake motors
 		intakeMotors = new SpeedControllerGroup(leftIntakeMotor, rightIntakeMotor);
 		//Limit switch for intake to detect cube
 		//limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
@@ -73,7 +75,7 @@ public class RobotModel {
 
 		//Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
-		armEncoder = new AbsoluteEncoder(Ports.ARM_ENCODER);
+		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
 
 		//Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
@@ -106,14 +108,14 @@ public class RobotModel {
 		timer.start();
 		
 		mpu_gyro = new MPU9250Gyro(Port.kOnboard);
-		
 
+		autoTimer = new Timer();
 		// TODO add real url
 		// camera.addServer("Server");
 
 	}
 
-	
+
 
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
@@ -230,6 +232,7 @@ public class RobotModel {
 	}
 
 	
+
 	public void setLeftMotors(double output) {
 		leftDriveMotorA.set(output);
 		leftDriveMotorB.set(output);
@@ -250,24 +253,24 @@ public class RobotModel {
 	}
 
 	public double getArmEncoderRawValue() {
-		return armEncoder.getValue();
+		return pot.getValue();
 		
 	}
 
 	public double getAverageArmEncoderRawValue() {
-		return armEncoder.getAverageValue();
+		return pot.getAverageValue();
 	}
 
 	public double getAverageArmVoltage() {
-		return armEncoder.getAverageVoltage();
+		return pot.getAverageVoltage();
 	}
 
 	public double getArmVoltage() {
-		return armEncoder.getVoltage();
+		return pot.getVoltage();
 	}
 
 	public double getArmAngle() {
-		return armEncoder.getAngle();
+		return pot.getAngle();
 	}
 
 	public void intakeWheels(double speed) {

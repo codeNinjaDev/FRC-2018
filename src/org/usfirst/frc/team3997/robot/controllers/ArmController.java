@@ -7,8 +7,8 @@ import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Joysticks;
 
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
-import org.usfirst.frc.team3997.robot.pid.AbsoluteEncoderPIDOutput;
-import org.usfirst.frc.team3997.robot.pid.AbsoluteEncoderPIDSource;
+import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDOutput;
+import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -75,8 +75,8 @@ public class ArmController {
 		toggleArmManual = false;
 		toggleCollapse = false;
 
-		armPIDSource = new AbsoluteEncoderPIDSource(robot.armEncoder);
-		armPIDOutput = new AbsoluteEncoderPIDOutput(robot);
+		armPIDSource = new PotentiometerPIDSource(robot.pot);
+		armPIDOutput = new PotentiometerPIDOutput(robot);
 		armPIDController = new PIDController(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f, armPIDSource,
 				armPIDOutput);
 

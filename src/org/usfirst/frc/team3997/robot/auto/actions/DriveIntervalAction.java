@@ -30,7 +30,8 @@ public class DriveIntervalAction extends Action {
 		y_drive = y;
 		this.kDrive = controllers.getDriveController();
 		this.robot = controllers.getRobotModel();
-		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime", double[].class);
+		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime.csv", double[].class);
+		System.out.println("Action Drive ");
 	}
 	
 	public boolean isFinished() {
@@ -43,6 +44,8 @@ public class DriveIntervalAction extends Action {
 		kDrive.arcadeDrive(y_drive, x_drive, false);
 		double[] currentPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
 		positionVsTimeCSV.add(currentPos);
+		System.out.println("UPDATING");
+		SmartDashboard.putString("AUTON", "UPDATING");
 	}
 
 	@Override
@@ -50,6 +53,7 @@ public class DriveIntervalAction extends Action {
 		kDrive.stop();
 		double[] finalPos = {robot.leftDriveEncoder.getDistance(), robot.autoTimer.get()};
 		positionVsTimeCSV.add(finalPos);
+		positionVsTimeCSV.flush();
 		robot.autoTimer.stop();
 	}
 

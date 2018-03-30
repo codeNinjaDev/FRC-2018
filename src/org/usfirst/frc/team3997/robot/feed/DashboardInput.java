@@ -12,11 +12,7 @@ public class DashboardInput {
 	public DashboardInput() {
 		preferences = Preferences.getInstance();
 
-		DashboardVariables.firstAutoDistance = preferences.getDouble("First Auto Distance", 0);
 
-		DashboardVariables.nextAutoAngle = preferences.getDouble("Next Auto Angle", 0);
-
-		DashboardVariables.lastAutoDistance = preferences.getDouble("Second Auto Distance", 0);
 
 		Params.arm_p = preferences.getDouble("ARM P Value", 0);
 		Params.arm_i = preferences.getDouble("ARM I Value", 0);
@@ -33,6 +29,8 @@ public class DashboardInput {
 		Params.drive_i = preferences.getDouble("Drive I Value", 0);
 		Params.drive_d = preferences.getDouble("Drive D Value", 0);
 
+		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
+		
 		Params.MAX_SPEED = preferences.getDouble("Max Speed", 1);
 		System.out.println("PREFS: " + preferences.getDouble("Max Speed", 1));
 	}
@@ -40,11 +38,7 @@ public class DashboardInput {
 	public void updateInput() {
 		preferences = Preferences.getInstance();
 
-		DashboardVariables.firstAutoDistance = preferences.getDouble("First Auto Distance", 0);
-
-		DashboardVariables.nextAutoAngle = preferences.getDouble("Next Auto Angle", 0);
-
-		DashboardVariables.lastAutoDistance = preferences.getDouble("Second Auto Distance", 0);
+		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
 
 		Params.arm_p = preferences.getDouble("ARM P Value", 0);
 		Params.arm_i = preferences.getDouble("ARM I Value", 0);
