@@ -4,11 +4,11 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 
-public class AbsoluteEncoderPIDOutput implements PIDOutput{
+public class PotentiometerPIDOutput implements PIDOutput{
 	
 	RobotModel robot;
 	
-	public AbsoluteEncoderPIDOutput(RobotModel robot) {
+	public PotentiometerPIDOutput(RobotModel robot) {
 		this.robot = robot;
 	}
 

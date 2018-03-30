@@ -12,7 +12,7 @@ public class RobotModel {
 	public Spark leftArmMotor, rightArmMotor, leftIntakeMotor, rightIntakeMotor;
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors, armMotors, intakeMotors;
 	public Encoder leftDriveEncoder, rightDriveEncoder;
-	public AbsoluteEncoder armEncoder;
+	public TenTurnPotentiometer pot;
 	public Compressor compressor;
 	public DoubleSolenoid intakeSolenoid;
 	public DoubleSolenoid wristSolenoid;
@@ -72,7 +72,7 @@ public class RobotModel {
 
 		//Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
-		armEncoder = new AbsoluteEncoder(Ports.ARM_ENCODER);
+		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
 
 		//Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
@@ -247,24 +247,24 @@ public class RobotModel {
 	}
 
 	public double getArmEncoderRawValue() {
-		return armEncoder.getValue();
+		return pot.getValue();
 		
 	}
 
 	public double getAverageArmEncoderRawValue() {
-		return armEncoder.getAverageValue();
+		return pot.getAverageValue();
 	}
 
 	public double getAverageArmVoltage() {
-		return armEncoder.getAverageVoltage();
+		return pot.getAverageVoltage();
 	}
 
 	public double getArmVoltage() {
-		return armEncoder.getVoltage();
+		return pot.getVoltage();
 	}
 
 	public double getArmAngle() {
-		return armEncoder.getAngle();
+		return pot.getAngle();
 	}
 
 	public void intakeWheels(double speed) {

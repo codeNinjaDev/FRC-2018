@@ -1,32 +1,32 @@
 package org.usfirst.frc.team3997.robot.pid;
 
-import org.usfirst.frc.team3997.robot.hardware.AbsoluteEncoder;
+import org.usfirst.frc.team3997.robot.hardware.TenTurnPotentiometer;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
-public class AbsoluteEncoderPIDSource implements PIDSource {
-	AbsoluteEncoder absoluteEncoder;
+public class PotentiometerPIDSource implements PIDSource {
+	TenTurnPotentiometer pot;
 
-	public AbsoluteEncoderPIDSource(AbsoluteEncoder absoluteEncoder) {
-		this.absoluteEncoder = absoluteEncoder;
+	public PotentiometerPIDSource(TenTurnPotentiometer pot) {
+		this.pot = pot;
 	}
 
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
-		absoluteEncoder.setPIDSourceType(pidSource);
+		pot.setPIDSourceType(pidSource);
 	}
 
 	@Override
 	public PIDSourceType getPIDSourceType() {
-		return absoluteEncoder.getPIDSourceType();
+		return pot.getPIDSourceType();
 	}
 
 	@Override
 	public double pidGet() {
 		switch (getPIDSourceType()) {
 		case kDisplacement:
-			return absoluteEncoder.getAngle();
+			return pot.getAngle();
 		case kRate:
 			return 0.0;
 		default:
