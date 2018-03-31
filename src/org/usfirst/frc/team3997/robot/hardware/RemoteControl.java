@@ -14,7 +14,6 @@ public abstract class RemoteControl {
 
 	public abstract double getJoystickValue(Joysticks j, Axes a);
 
-	public abstract boolean getTankDriveDesired();
 
 	// Returns true if arcade drive is desired
 	public abstract boolean getArcadeDriveDesired();
@@ -34,8 +33,14 @@ public abstract class RemoteControl {
 	public abstract boolean getClimbArmDesired();
 	public abstract boolean getIntakeDesired();
 	public abstract boolean getOuttakeDesired();
-	public abstract boolean toggleCollapseIntake();
-	public abstract boolean toggleArmShifter();
+
+
+	public abstract boolean flexWristDesired();
+	public abstract boolean relaxWristDesired();
+
+	public abstract boolean closeIntakeDesired();
+
+	public abstract boolean openIntakeDesired();
 
 
 	

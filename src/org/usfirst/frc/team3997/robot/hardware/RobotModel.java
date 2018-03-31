@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.can.CANStatus;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.Params;
@@ -26,7 +28,7 @@ public class RobotModel {
 
 	private PowerDistributionPanel pdp;
 	private double leftDriveACurrent, leftDriveBCurrent, rightDriveACurrent, rightDriveBCurrent;
-
+	CANStatus canStatus;
 	/*
 	 * TODO boolean enabled = c.enabled(); boolean pressureSwitch =
 	 * c.getPressureSwitchValue(); double current = c.getCompressorCurrent();
@@ -34,7 +36,9 @@ public class RobotModel {
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
 		// Pneumatics
-		compressor = new Compressor(Ports.COMPRESSOR_MODULE);
+		compressor = new Compressor(0);
+		compressor.setClosedLoopControl(true);
+		
 		intakeSolenoid = new DoubleSolenoid(Ports.INTAKE_SOLENOIDS[0], Ports.INTAKE_SOLENOIDS[1]);
 		wristSolenoid = new DoubleSolenoid(Ports.WRIST_SOLENOIDS[0], Ports.WRIST_SOLENOIDS[1]);
 		
@@ -51,7 +55,7 @@ public class RobotModel {
 		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
 		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
 		// Invert right arm motor
-		leftArmMotor.setInverted(false);
+		leftArmMotor.setInverted(true);
 		rightArmMotor.setInverted(true);
 		// Make a speed controller group for the arm
 		armMotors = new SpeedControllerGroup(leftArmMotor, rightArmMotor);
@@ -272,11 +276,11 @@ public class RobotModel {
 	}
 
 	public void openIntake() {
-		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 
 	public void closeIntake() {
-		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void flexWrist() {
@@ -292,12 +296,12 @@ public class RobotModel {
 		return false;
 	}
 	public void intakeBlock() {
-		intakeWheels(-.5);
+		intakeWheels(1);
 	}
 	
 
 	public void outtakeBlock() {
-		intakeWheels(0.3);
+		intakeWheels(-1);
 	}
 	public void stopIntake() {
 		intakeWheels(0);
@@ -322,4 +326,6 @@ public class RobotModel {
 	    }
 
 	}
+	
+	
 }

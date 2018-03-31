@@ -87,9 +87,7 @@ public class Robot extends IterativeRobot {
 
 		if (humanControl.getArcadeDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = true;
-		} else if (humanControl.getTankDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = false;
-		}
+		} 
 		currTimeSec = 0.0;
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
@@ -125,7 +123,6 @@ public class Robot extends IterativeRobot {
 		AutoRoutineRunner.getTimer().reset();
 		input.updateInput();
 		auto.stop();
-
 		timer.reset();
 		timer.start();
 
@@ -133,7 +130,7 @@ public class Robot extends IterativeRobot {
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
 
-	
+
 		auto.start();
 		
 	}
@@ -174,7 +171,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
+		robot.openIntake();
+
+		SmartDashboard.putBoolean("COMPRESSOR", robot.compressor.enabled());
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
@@ -206,9 +205,7 @@ public class Robot extends IterativeRobot {
 		driveController.reset();
 		if (humanControl.getArcadeDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = true;
-		} else if (humanControl.getTankDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = false;
-		}
+		} 
 		robot.reset();
 		input.updateInput();
 		dashboardLogger.updateEssentialData();
@@ -220,6 +217,7 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putNumber("gyro", robot.getAngle());
 		//robot.updateGyro();
 		input.updateInput();
+		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
 		dashboardLogger.updateData();
 		dashboardLogger.updateEssentialData();
 		AutoRoutineRunner.getTimer().reset();
@@ -227,8 +225,6 @@ public class Robot extends IterativeRobot {
 		visionController.update();
 		if (humanControl.getArcadeDriveDesired()) {
 			Params.USE_ARCADE_DRIVE = true;
-		} else if (humanControl.getTankDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = false;
 		}
 		//auto.listOptions();
 		lights.setDisabledLights();

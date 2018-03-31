@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.util.AllocationException;
 
-public class TenTurnPotentiometer extends AnalogPotentiometer{
+public class TenTurnPotentiometer{
 	
 	  private static final int kAccumulatorSlot = 1;
 	  int m_port; // explicit no modifier, private and package accessible.
@@ -16,7 +16,7 @@ public class TenTurnPotentiometer extends AnalogPotentiometer{
 	  private static final int[] kAccumulatorChannels = {0, 1};
 	  //Gear 4 to 1 ratio
 	  private static final int VOLT_TO_DEGREES = 720/4;
-	  
+	  double starting_error;
 	  protected PIDSourceType m_pidSource = PIDSourceType.kDisplacement;
 
 	  /**
@@ -25,24 +25,17 @@ public class TenTurnPotentiometer extends AnalogPotentiometer{
 	   * @param channel The channel number to represent. 0-3 are on-board 4-7 are on the MXP port.
 	   */
 	   public TenTurnPotentiometer(final int channel) {
-		    super(channel);
-		    checkAnalogInputChannel(channel);
 		    m_channel = channel;
-
 		    final int portHandle = AnalogJNI.getPort((byte) channel);
-		    //m_port = AnalogJNI.initializeAnalogInputPort(portHandle);
+		    m_port = AnalogJNI.initializeAnalogInputPort(portHandle);
 		    //temp
-		    m_port = 0;
-		    
+		    starting_error = (getAverageVoltage() * VOLT_TO_DEGREES);
 		    HAL.report(tResourceType.kResourceType_AnalogChannel, channel);
-		    setName("AnalogInput", channel);
 	   }
 	   /**
 		   * Channel destructor.
 		   */
-		  @Override
 		  public void free() {
-		    super.free();
 		    AnalogJNI.freeAnalogInputPort(m_port);
 		    m_port = 0;
 		    m_channel = 0;
@@ -121,12 +114,10 @@ public class TenTurnPotentiometer extends AnalogPotentiometer{
 		    return AnalogJNI.getAnalogSampleRate();
 		  }
 
-		  @Override
 		  public void setPIDSourceType(PIDSourceType pidSource) {
 		    m_pidSource = pidSource;
 		  }
 
-		  @Override
 		  public PIDSourceType getPIDSourceType() {
 		    return m_pidSource;
 		  }
@@ -136,18 +127,16 @@ public class TenTurnPotentiometer extends AnalogPotentiometer{
 		   *
 		   * @return the average voltage
 		   */
-		  @Override
 		  public double pidGet() {
 		    return getAverageVoltage();
 		  }
 
-		  @Override
 		  public void initSendable(SendableBuilder builder) {
 		    builder.setSmartDashboardType("Analog Input");
 		    builder.addDoubleProperty("Value", this::getAverageVoltage, null);
 		  }
 		  public double getAngle() {
-			double degrees = (getAverageVoltage() * VOLT_TO_DEGREES);
+			double degrees = (getAverageVoltage() * VOLT_TO_DEGREES) - starting_error;
 			return degrees;
 		  }
 }

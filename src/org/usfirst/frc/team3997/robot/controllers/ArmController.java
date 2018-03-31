@@ -4,6 +4,7 @@ import java.util.ResourceBundle.Control;
 
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
+import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Axes;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Joysticks;
 
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -13,6 +14,7 @@ import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /***
  * Controls arm and intake behavior
@@ -40,7 +42,8 @@ public class ArmController {
 	private boolean toggleArmManual;
 	/*** Boolean for collapsing intake ***/
 	private boolean toggleCollapse;
-
+	
+	private boolean toggleIntake;
 	/*** Enum that lets us shift our status from init to teleop and vice versa ***/
 	public enum ArmState {
 		kInitialize, kTeleop
@@ -74,7 +77,8 @@ public class ArmController {
 
 		toggleArmManual = false;
 		toggleCollapse = false;
-
+		toggleIntake = false;
+		
 		armPIDSource = new PotentiometerPIDSource(robot.pot);
 		armPIDOutput = new PotentiometerPIDOutput(robot);
 		armPIDController = new PIDController(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f, armPIDSource,
@@ -112,6 +116,7 @@ public class ArmController {
 			// Toggle variables to false
 			toggleArmManual = false;
 			toggleCollapse = false;
+			robot.flexWrist();
 			// Sets next state to teleop
 			nextState = ArmState.kTeleop;
 			break;
@@ -121,18 +126,18 @@ public class ArmController {
 			// If armManualDesired, Toggle the arm override
 			if (humanControl.toggleManualArmDesired())
 				toggleArmManual = !toggleArmManual;
-			// If collapseIntakeDesired, Toggle the collapse intake
-			if (humanControl.toggleCollapseIntake())
-				toggleCollapse = !toggleCollapse;
+			
 
+			
 			// Arm Behavior
 			if (toggleArmManual) {
 				//Disable PID if in manual
 				if (armPIDController.isEnabled()) {
 					armPIDController.disable();
 				}
+				SmartDashboard.putString("ARM", "OVERIDE");
 				// Move arm based off of the Right Y of Operator Joystick
-				robot.moveArm(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY));
+				robot.moveArm(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY)*.75);
 				//Intake normally
 				intakeFunctions();
 
@@ -152,6 +157,8 @@ public class ArmController {
 					goToSwitchPosition();
 				} else if (humanControl.getFeedArmDesired()) {
 					goToFeedPosition();
+				} else {
+					
 				}
 			}
 			//Set next state to teleop
@@ -203,46 +210,60 @@ public class ArmController {
 		//Stops intake
 		robot.stopIntake();
 	}
+	
 	/*** Intakes Power Cube ***/
 	public void intakePowerCube() {
-		//Snaps wrist down
-		robot.relaxWrist();
+		robot.openIntake();
 		//Intake wheels
 		robot.intakeBlock();
 		//Closes intakes
-		robot.closeIntake();
 	}
 
 	public void outtakePowerCube() {
-		//Snaps wrist up
-		robot.flexWrist();
-		//Outtake wheels
 		robot.outtakeBlock();
-		//Open intake
 		robot.openIntake();
+		//Open intake
 	}
 
 	public void intakeFunctions() {
+		if(humanControl.flexWristDesired()) {
+			SmartDashboard.putString("INTAKE", "OPEN");
+
+			robot.flexWrist();
+		}
+		if(humanControl.relaxWristDesired()) {
+			
+			SmartDashboard.putString("INTAKE", "RELAX");
+
+			robot.relaxWrist();
+		}
+		if(humanControl.getJoystickValue(Joysticks.kOperatorJoy, Axes.kLY) > 0) {
+			SmartDashboard.putString("INTAKE", "OPEN");
+			
+			robot.openIntake();
+		}
+		if(humanControl.getJoystickValue(Joysticks.kOperatorJoy, Axes.kLY) < 0) {
+			robot.closeIntake();
+			SmartDashboard.putString("INTAKE", "CLOSE");
+		}
+
 		// If intake button pressed run intake wheels
 		if (humanControl.getIntakeDesired()) {
 			// TODO Add limit switch logic
 			intakePowerCube();
-
+			
 			// If outtake button pressed openIntake and run outtake wheels
 		} else if (humanControl.getOuttakeDesired()) {
+			
 			// TODO Add limit switch logic
 			outtakePowerCube();
-
 		} else {
+			robot.closeIntake();
 			robot.stopIntake();
 		}
 		// If toggle collapsed is desired then it shifts the pneumatics to the next
 		// position
-		if (toggleCollapse) {
-			robot.closeIntake();
-		} else {
-			robot.openIntake();
-		}
+		
 	}
 
 }
