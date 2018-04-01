@@ -26,21 +26,20 @@ public abstract class RemoteControl {
 
 	public abstract boolean getDriveBackOtherDesired();
 	
+	//ARM
 	public abstract boolean toggleManualArmDesired();
 	public abstract boolean getSwitchArmDesired();
 	public abstract boolean getScaleArmDesired();
 	public abstract boolean getFeedArmDesired();
 	public abstract boolean getClimbArmDesired();
+	
+	//INTAKE
 	public abstract boolean getIntakeDesired();
 	public abstract boolean getOuttakeDesired();
-
-
 	public abstract boolean flexWristDesired();
 	public abstract boolean relaxWristDesired();
 
-	public abstract boolean closeIntakeDesired();
 
-	public abstract boolean openIntakeDesired();
 
 
 	

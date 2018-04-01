@@ -3,6 +3,7 @@ package org.usfirst.frc.team3997.robot.hardware;
 
 import org.usfirst.frc.team3997.robot.Params;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** Handles inputs from controller 
  * @category hardware
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
@@ -14,14 +15,14 @@ public class ControlBoard extends RemoteControl {
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
-	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton, openIntakeButton, closeIntakeButton;
+	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, flexWristButton, relaxWristButton;
 
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
-	public TriggerReader flexWristButton, relaxWristButton;
+	public TriggerReader intakeButton, outtakeButton;
 	
-	private boolean openIntakeDesired, closeIntakeDesired, flexWristDesired, relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+	private boolean flexWristDesired, relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
 			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired, armShifterDesired;
 
 
@@ -51,16 +52,15 @@ public class ControlBoard extends RemoteControl {
 			//Operator Controls
 			armScaleButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON);
 			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
-			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
-			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
+			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
+			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
 			armManualButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
 			
-			flexWristButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
-			relaxWristButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
-			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
-			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
-			openIntakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON);
-			closeIntakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
+			intakeButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
+			outtakeButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
+			relaxWristButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
+			flexWristButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
+			
 			
 		}
 
@@ -123,8 +123,7 @@ public class ControlBoard extends RemoteControl {
 		relaxWristDesired = relaxWristButton.isDown();
 		intakeDesired = intakeButton.isDown();
 		outtakeDesired = outtakeButton.isDown();
-		openIntakeDesired = openIntakeButton.isDown();
-		closeIntakeDesired = closeIntakeButton.isDown();
+
 	}
 	/** Reads all controller buttons **/
 	public void readAllButtons() {
@@ -149,8 +148,7 @@ public class ControlBoard extends RemoteControl {
 		outtakeButton.readValue();
 		flexWristButton.readValue();
 		relaxWristButton.readValue();
-		openIntakeButton.readValue();
-		closeIntakeButton.readValue();
+
 	}
 
 	/** Gets joystick value given joystick  and axe 
@@ -215,55 +213,63 @@ public class ControlBoard extends RemoteControl {
 
 	@Override
 	public boolean toggleManualArmDesired() {
+		SmartDashboard.putString("OPERATOR", "TOGGLE ARM");
 		return toggleArmManualDesired;
 	}
 
 	@Override
 	public boolean getSwitchArmDesired() {
+		SmartDashboard.putString("OPERATOR", "SWITCH_POSITION");
+
 		return armSwitchDesired;
 	}
 
 	@Override
 	public boolean getScaleArmDesired() {
+		SmartDashboard.putString("OPERATOR", "SCALE_POSITION");
 		return armScaleDesired;
 	}
 
 	@Override
 	public boolean getFeedArmDesired() {
+		SmartDashboard.putString("OPERATOR", "FEED_POSITION");
+
 		return armFeedDesired;
 	}
 
 	@Override
 	public boolean getClimbArmDesired() {
+		SmartDashboard.putString("OPERATOR", "CLIMB_POSITION");
+
 		return armClimbDesired;
 	}
 
 	@Override
 	public boolean getIntakeDesired() {
+		SmartDashboard.putString("OPERATOR", "INTAKE");
+
 		return intakeDesired;
 	}
 
 	@Override
 	public boolean getOuttakeDesired() {
+		SmartDashboard.putString("OPERATOR", "OUTTAKE");
+
 		return outtakeDesired;
 	}
 	@Override
 	public boolean flexWristDesired() {
+		SmartDashboard.putString("OPERATOR", "FLEX_WRIST");
+
 		return flexWristDesired;
 	}
 	@Override
 	public boolean relaxWristDesired() {
+		SmartDashboard.putString("OPERATOR", "FLEX_WRIST");
+
 		return relaxWristDesired;
 	}
 
-	@Override 
-	public boolean openIntakeDesired() {
-		return openIntakeDesired;
-	}
-	
-	@Override 
-	public boolean closeIntakeDesired() {
-		return closeIntakeDesired;
-	}
+
 
 }
