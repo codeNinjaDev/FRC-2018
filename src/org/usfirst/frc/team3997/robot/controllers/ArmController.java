@@ -8,7 +8,7 @@ import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Axes;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Joysticks;
 
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
-import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDOutput;
+import org.usfirst.frc.team3997.robot.pid.ArmPIDOutput;
 import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -80,7 +80,7 @@ public class ArmController {
 		toggleIntake = false;
 		
 		armPIDSource = new PotentiometerPIDSource(robot.pot);
-		armPIDOutput = new PotentiometerPIDOutput(robot);
+		armPIDOutput = new ArmPIDOutput(robot);
 		armPIDController = new PIDController(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f, armPIDSource,
 				armPIDOutput);
 
