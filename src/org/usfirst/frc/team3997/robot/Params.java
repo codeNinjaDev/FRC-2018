@@ -27,7 +27,7 @@ public class Params {
 	public static double MAX_SPEED = 1;
 	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
 	//Wheel diameter in inches
-	public static double WHEEL_DIAMETER = 4;
+	public static double WHEEL_DIAMETER = 6;
 	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 	public static double DESIRED_VOLTAGE = 12;

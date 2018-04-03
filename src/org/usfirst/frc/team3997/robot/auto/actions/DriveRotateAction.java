@@ -22,7 +22,7 @@ public class DriveRotateAction extends Action{
 	
 	public DriveRotateAction(MasterController controllers, double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
 		this.driveTrain = controllers.getDriveController();
-		this.distance = (angle * 40.0) / (180.0);
+		this.distance = (angle * 10.0) / (90.0);
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();
 		this.maxSpeed = maxSpeed;

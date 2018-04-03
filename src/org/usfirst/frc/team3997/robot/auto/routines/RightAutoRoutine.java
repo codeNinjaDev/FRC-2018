@@ -33,7 +33,7 @@ public class RightAutoRoutine extends AutoRoutine{
 			} else {
 				driveDistanceStraight(controllers, 240, .8, 6, true);
 				driveRotate(controllers, -30, .5, 3, true);
-				arm.goToScalePosition();
+				//arm.goToScalePosition();
 				outtake(controllers, 4, 5);
 			}
 			
@@ -45,7 +45,7 @@ public class RightAutoRoutine extends AutoRoutine{
 			} else {
 				driveDistanceStraight(controllers, 240, .8, 6, true);
 				driveRotate(controllers, -30, .5, 3, true);
-				arm.goToScalePosition();
+				//arm.goToScalePosition();
 				outtake(controllers, 4, 5);
 			}
 			// trajectory = MotionController.generateTrajectory(rightRightPath);

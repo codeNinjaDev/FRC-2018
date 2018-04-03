@@ -30,7 +30,7 @@ public class LeftAutoRoutine extends AutoRoutine{
 			if(isLeftScale) {
 				driveDistanceStraight(controllers, 240, .8, 6, true);
 				driveRotate(controllers, 30, .5, 3, true);
-				arm.goToScalePosition();
+				//arm.goToScalePosition();
 				outtake(controllers, 4, 5);
 			} else {
 				//If left switch but not left scale
@@ -43,7 +43,7 @@ public class LeftAutoRoutine extends AutoRoutine{
 			if(isLeftScale) {
 				driveDistanceStraight(controllers, 240, .8, 6, true);
 				driveRotate(controllers, 30, .5, 3, true);
-				arm.goToScalePosition();
+				//arm.goToScalePosition();
 				outtake(controllers, 4, 5);
 			} else {
 				//If not left switch and not left scale

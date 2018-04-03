@@ -37,7 +37,7 @@ public class Ports {
 
 	// ***************** SOLENOID PORTS *****************
 	public static final int COMPRESSOR_MODULE = 9;
-	public static final int[] INTAKE_SOLENOIDS = {0, 1};
+	public static final int[] INTAKE_SOLENOIDS = {0, 4};
 	public static final int[] WRIST_SOLENOIDS = {2, 3};
 
 

@@ -137,11 +137,12 @@ public class ArmController {
 				}
 				SmartDashboard.putString("ARM", "OVERIDE");
 				// Move arm based off of the Right Y of Operator Joystick
-				robot.moveArm(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY)*.75);
+				robot.moveArm((humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY)*.75));
 				//Intake normally
 				intakeFunctions();
 
 			} else {
+				SmartDashboard.putString("ARM", "PID");
 				//Disable PID
 				if (armPIDController.isEnabled()) {
 					armPIDController.disable();
@@ -213,7 +214,6 @@ public class ArmController {
 	
 	/*** Intakes Power Cube ***/
 	public void intakePowerCube() {
-		robot.openIntake();
 		//Intake wheels
 		robot.intakeBlock();
 		//Closes intakes
@@ -221,7 +221,6 @@ public class ArmController {
 
 	public void outtakePowerCube() {
 		robot.outtakeBlock();
-		robot.openIntake();
 		//Open intake
 	}
 
@@ -230,26 +229,16 @@ public class ArmController {
 			SmartDashboard.putString("INTAKE", "OPEN");
 
 			robot.flexWrist();
-		}
-		if(humanControl.relaxWristDesired()) {
-			
-			SmartDashboard.putString("INTAKE", "RELAX");
-
+		} else {
 			robot.relaxWrist();
 		}
-		if(humanControl.getJoystickValue(Joysticks.kOperatorJoy, Axes.kLY) > 0) {
-			SmartDashboard.putString("INTAKE", "OPEN");
-			
-			robot.openIntake();
-		}
-		if(humanControl.getJoystickValue(Joysticks.kOperatorJoy, Axes.kLY) < 0) {
-			robot.closeIntake();
-			SmartDashboard.putString("INTAKE", "CLOSE");
-		}
+		
+		
 
 		// If intake button pressed run intake wheels
 		if (humanControl.getIntakeDesired()) {
 			// TODO Add limit switch logic
+			robot.openIntake();
 			intakePowerCube();
 			
 			// If outtake button pressed openIntake and run outtake wheels
@@ -257,7 +246,10 @@ public class ArmController {
 			
 			// TODO Add limit switch logic
 			outtakePowerCube();
+			robot.openIntake();
+
 		} else {
+			
 			robot.closeIntake();
 			robot.stopIntake();
 		}

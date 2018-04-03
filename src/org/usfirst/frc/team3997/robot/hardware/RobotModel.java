@@ -276,11 +276,11 @@ public class RobotModel {
 	}
 
 	public void openIntake() {
-		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public void closeIntake() {
-		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public void flexWrist() {
@@ -301,7 +301,7 @@ public class RobotModel {
 	
 
 	public void outtakeBlock() {
-		intakeWheels(-1);
+		intakeWheels(-.75);
 	}
 	public void stopIntake() {
 		intakeWheels(0);

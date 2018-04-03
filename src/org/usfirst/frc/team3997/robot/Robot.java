@@ -171,9 +171,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		robot.openIntake();
-
-		SmartDashboard.putBoolean("COMPRESSOR", robot.compressor.enabled());
+		
+		SmartDashboard.putString("INTAKE_SOLENOID", robot.intakeSolenoid.get().toString());
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
