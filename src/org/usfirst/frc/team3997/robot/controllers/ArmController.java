@@ -85,7 +85,7 @@ public class ArmController {
 				armPIDOutput);
 
 		armPIDController.setOutputRange(-1, 1);
-		armPIDController.setAbsoluteTolerance(0.25);
+		armPIDController.setPercentTolerance(5);
 		armPIDController.setSetpoint(Params.ARM_REST_SETPOINT);
 		armPIDController.disable();
 
@@ -155,6 +155,7 @@ public class ArmController {
 				} else if (humanControl.getScaleArmDesired()) {
 					goToScalePosition();
 				} else if (humanControl.getSwitchArmDesired()) {
+					SmartDashboard.putString("ARM", "SWITCH");
 					goToSwitchPosition();
 				} else if (humanControl.getFeedArmDesired()) {
 					goToFeedPosition();
@@ -175,7 +176,7 @@ public class ArmController {
 		//Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
-		armPIDController.setSetpoint(Params.ARM_SWITCH_SETPOINT);
+		armPIDController.setSetpoint(48);
 		armPIDController.enable();
 	}
 	/*** <h2> Moves arm to scoring position for the scale **/
@@ -185,6 +186,7 @@ public class ArmController {
 		armPIDController.setOutputRange(-1, 1);
 		armPIDController.setSetpoint(Params.ARM_SCALE_SETPOINT);
 		armPIDController.enable();
+		
 	}
 	/*** <h2> Moves arm to scoring position for the climb **/
 	public void goToClimbPosition() {

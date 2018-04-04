@@ -2,6 +2,7 @@ package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.hal.AnalogJNI;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
@@ -136,6 +137,8 @@ public class TenTurnPotentiometer{
 		    builder.addDoubleProperty("Value", this::getAverageVoltage, null);
 		  }
 		  public double getAngle() {
+			if(RobotState.isDisabled())
+				starting_error = (getAverageVoltage() * VOLT_TO_DEGREES);
 			double degrees = (getAverageVoltage() * VOLT_TO_DEGREES) - starting_error;
 			return degrees;
 		  }

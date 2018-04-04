@@ -11,7 +11,7 @@ public class DriveYMotorsPIDOutput implements PIDOutput {
 	}
 	@Override
 	public void pidWrite(double output) {
-		drive.arcadeDrive(0.0, output, false);
+		drive.arcadeDrive(output, 0, false);
 	}
 	
 }

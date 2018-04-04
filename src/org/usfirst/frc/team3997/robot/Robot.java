@@ -171,7 +171,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
+		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
 		SmartDashboard.putString("INTAKE_SOLENOID", robot.intakeSolenoid.get().toString());
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;

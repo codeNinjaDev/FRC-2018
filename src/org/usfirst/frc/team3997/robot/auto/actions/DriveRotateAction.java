@@ -85,7 +85,7 @@ public class DriveRotateAction extends Action{
 		
 		driveTrain.rightPID.setOutputRange(-maxSpeed, maxSpeed);
 		driveTrain.rightPID.setPID(P, I, D);
-		driveTrain.rightPID.setSetpoint(distance + rightEncoderStartDistance);
+		driveTrain.rightPID.setSetpoint(-(distance + rightEncoderStartDistance));
 		
 		driveTrain.leftPID.enable();
 		driveTrain.rightPID.enable();

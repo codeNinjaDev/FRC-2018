@@ -19,8 +19,8 @@ public class Params {
 
 	// ARM PARAMS
 	public static double ARM_FEED_SETPOINT = 0;
-	public static double ARM_SWITCH_SETPOINT 	= 30;
-	public static double ARM_SCALE_SETPOINT = 120; // 0.575
+	public static double ARM_SWITCH_SETPOINT 	= 48;
+	public static double ARM_SCALE_SETPOINT = 137; // 0.575
 	public static double ARM_CLIMB_SETPOINT = 150;
 	public static double ARM_REST_SETPOINT = 0; 
 

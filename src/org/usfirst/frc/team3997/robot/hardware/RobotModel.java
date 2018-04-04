@@ -50,7 +50,7 @@ public class RobotModel {
 		// Make a Speed Controller group for Drive
 		leftDriveMotors = new SpeedControllerGroup(leftDriveMotorA, leftDriveMotorB);
 		rightDriveMotors = new SpeedControllerGroup(rightDriveMotorA, rightDriveMotorB);
-		rightDriveMotors.setInverted(true);
+		rightDriveMotors.setInverted(true); // negative value since wheels are
 		// Init arm motors
 		leftArmMotor = new Spark(Ports.LEFT_ARM_MOTOR_PWM_PORT);
 		rightArmMotor = new Spark(Ports.RIGHT_ARM_MOTOR_PWM_PORT);
@@ -76,7 +76,7 @@ public class RobotModel {
 		//Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
 		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
-
+		
 		//Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
 		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
@@ -126,18 +126,16 @@ public class RobotModel {
 			leftDriveMotorB.set(speed);
 			break;
 		case RightWheels:
-			rightDriveMotorA.set(-speed); // negative value since wheels are
-											// inverted on robot
-			rightDriveMotorB.set(-speed); // negative value since wheels are
-											// inverted on robot
+			rightDriveMotorA.set(speed); 
+											
+			rightDriveMotorB.set(speed); 
+											
 			break;
 		case AllWheels:
 			leftDriveMotorA.set(speed);
 			leftDriveMotorB.set(speed);
-			rightDriveMotorA.set(-speed); // negative value since wheels are
-											// inverted on robot
-			rightDriveMotorB.set(-speed); // negative value since wheels are
-											// inverted on robot
+			rightDriveMotorA.set(speed); 					
+			rightDriveMotorB.set(speed); 
 			break;
 		}
 	}
@@ -148,7 +146,7 @@ public class RobotModel {
 		case LeftWheels:
 			return leftDriveMotorA.get();
 		case RightWheels:
-			return -rightDriveMotorA.get();
+			return rightDriveMotorA.get();
 		default:
 			return 0;
 		}
