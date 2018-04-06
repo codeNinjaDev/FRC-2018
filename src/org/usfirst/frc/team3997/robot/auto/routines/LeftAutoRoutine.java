@@ -24,39 +24,83 @@ public class LeftAutoRoutine extends AutoRoutine{
 
 	@Override
 	public void prestart() {
-		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
-		if(isLeftSwitch) {
-			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
-			if(isLeftScale) {
-				driveDistanceStraight(controllers, 240, .8, 6, true);
-				driveRotate(controllers, 30, .5, 3, true);
-				//arm.goToScalePosition();
-				outtake(controllers, 4, 5);
-			} else {
-				//If left switch but not left scale
-				driveDistanceStraight(controllers, 100, 1, 5, true);
-			}
-			
-			// trajectory = MotionController.generateTrajectory(rightLeftPath);
-		} else {
-			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
-			if(isLeftScale) {
-				driveDistanceStraight(controllers, 240, .8, 6, true);
-				driveRotate(controllers, 30, .5, 3, true);
-				//arm.goToScalePosition();
-				outtake(controllers, 4, 5);
-			} else {
-				//If not left switch and not left scale
-				driveDistanceStraight(controllers, 100, 1, 5, true);
-			}
-			// trajectory = MotionController.generateTrajectory(rightRightPath);
-		}
+		controllers.getRobotModel().closeIntake();
 	}
 
 	@Override
 	protected void routine() {
-		//pathFollower(controllers, trajectory, timeout);
-	}
+		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
+		if(isLeftSwitch) {
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			boolean isRightScale = (PlateDetector.getScaleColor() == 'R');
+			/*** 
+			 * LEFT Side:
+			 * 
+			 * 	If Left Switch:
+			 *	 If Right Scale:
+			 * 		Go TO SWITCH:
+			 * 		Arm to switch pos
+			 * 		Drive 140 inches
+			 * 		turn 90 degrees
+			 * 		drive 20 inches
+			 * 		outtake block
+			 * 	 If Left Scale:
+			 * 		Drive -240 inches to the scale
+		     * 		Rotate 30 degrees
+			 * 		Arm to Scale Pos
+				 *  Outtake Block
+			 * 
+			 * ***/
+			if(isLeftScale) {
+				driveDistanceStraight(controllers, 240, .8, 6, true);
+				driveRotate(controllers, 30, .5, 3, true);
+				//arm.goToScalePosition();
+				outtake(controllers, 4, .75);
+				controllers.getRobotModel().openIntake();;
+			} else if(isRightScale){
+				
+				arm.goToSwitchPosition();
+				driveDistanceStraight(controllers, 140, 1, 5, true);
+				driveRotate(controllers, -40, .6, 3, true);
+				outtake(controllers, 3, .75);
+				controllers.getRobotModel().openIntake();;
+			}
+			
+			// trajectory = MotionController.generateTrajectory(rightLeftPath);
+		}
+		boolean isRightSwitch = (PlateDetector.getSwitchColor() == 'R');
+		if (isRightSwitch) {
+			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
+			boolean isRightScale = (PlateDetector.getScaleColor() == 'R');
+
+			if (isLeftScale) {
+				driveDistanceStraight(controllers, -240, .8, 6, true);
+				driveRotate(controllers, 30, .5, 3, true);
+				arm.goToScalePosition();
+
+				outtake(controllers, 4, .75);
+				controllers.getRobotModel().openIntake();;
+			} else if (isRightScale) {
+				/*** 
+				 * Right Side:
+				 * 
+				 * 	If Right Switch:
+				 *	 If Right Scale:
+				 * 		PASS AutoLine
+				 * 		Drive Forward 200 in
+				 * 		Outtake Block
+				 * 	 If Left Scale:
+				 * 		Go TO SCALE:
+				 * 		Arm to switch pos
+				 * 		Drive 240 inches
+				 * 		turn 30 degrees
+				 * 		outtake block
+				 * 
+				 * ***/
+				driveDistanceStraight(controllers, 200, .8, 6, true);
+			}
+			// trajectory = MotionController.generateTrajectory(rightRightPath);
+		}	}
 
 
 }

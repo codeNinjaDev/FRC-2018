@@ -23,7 +23,7 @@ public class OuttakeAction extends Action {
 
 	@Override
 	public void update() {
-		robot.intakeWheels(speed);
+		robot.intakeWheels(-speed);
 
 	}
 

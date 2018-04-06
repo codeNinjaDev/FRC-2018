@@ -16,7 +16,7 @@ public class OneCubeCenterAutoRoutine extends AutoRoutine {
 	@Override
 	public void prestart() {
 		// TODO Auto-generated method stub
-		
+		controllers.getRobotModel().closeIntake();
 	}
 
 	@Override
@@ -37,7 +37,10 @@ public class OneCubeCenterAutoRoutine extends AutoRoutine {
 		Timer.delay(1);
 		driveDistanceStraight(controllers, 40, .6, 3, true);
 		Timer.delay(1);
+		
 		outtake(controllers, 2, .5);
+		controllers.getRobotModel().openIntake();;
+
 	}
 
 }

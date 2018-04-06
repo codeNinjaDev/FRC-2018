@@ -142,7 +142,6 @@ public class ArmController {
 
 			} else {
 				SmartDashboard.putString("ARM", "PID");
-				//Disable PID
 				
 				//Intake normally
 				intakeFunctions();
@@ -157,7 +156,8 @@ public class ArmController {
 				} else if (humanControl.getFeedArmDesired()) {
 					goToFeedPosition();
 				} else {
-					
+					//Disable PID
+					armPIDController.disable();
 				}
 			}
 			//Set next state to teleop
