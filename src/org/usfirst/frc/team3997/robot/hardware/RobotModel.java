@@ -65,7 +65,7 @@ public class RobotModel {
 		rightIntakeMotor = new Spark(Ports.RIGHT_INTAKE_MOTOR_PWM_PORT);
 		// Invert right intake motor
 		leftIntakeMotor.setInverted(false);
-		rightIntakeMotor.setInverted(true);
+		rightIntakeMotor.setInverted(false);
 		
 		//Speedcontroller group for intake motors
 		intakeMotors = new SpeedControllerGroup(leftIntakeMotor, rightIntakeMotor);
@@ -282,11 +282,11 @@ public class RobotModel {
 	}
 	
 	public void flexWrist() {
-		wristSolenoid.set(DoubleSolenoid.Value.kForward);
+		wristSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void relaxWrist() {
-		wristSolenoid.set(DoubleSolenoid.Value.kReverse);
+		wristSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public boolean getBlockTouching() {

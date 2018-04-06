@@ -30,7 +30,6 @@ public class DashboardLogger {
 		putDriverMotorOutputs();
 		putDriveEncoderData();
 		putGamePadButtonPress();
-		putGameData();
 		putStats();
 
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
@@ -96,11 +95,7 @@ public class DashboardLogger {
 		SmartDashboard.putNumber("MOTOR_rightDriveMotorB", robot.rightDriveMotorB.get());
 	}
 
-	public void putGameData() {
-		SmartDashboard.putString("Switch Colors", String.valueOf(PlateDetector.getSwitchColor()));
-		SmartDashboard.putString("Scale Colors", String.valueOf(PlateDetector.getScaleColor()));
-
-	}
+	
 	
 	public void startTeleop() {
 		max_velocity = 0;

@@ -15,8 +15,8 @@ public class ControlBoard extends RemoteControl {
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
-	public ButtonReader armManualButton, armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
-
+	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
+	public ToggleButtonReader armManualButton;
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
@@ -54,7 +54,7 @@ public class ControlBoard extends RemoteControl {
 			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
 			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
 			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
-			armManualButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
+			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
 			
 			
 			
@@ -120,7 +120,7 @@ public class ControlBoard extends RemoteControl {
 		armScaleDesired = armScaleButton.isDown();
 		armClimbDesired = armClimbButton.isDown();
 		armFeedDesired = armFeedButton.isDown();
-		toggleArmManualDesired = armManualButton.isDown();
+		toggleArmManualDesired = armManualButton.getState();
 		flexWristDesired = flexWristButton.isDown();
 		relaxWristDesired = relaxWristButton.isDown();
 		intakeDesired = intakeButton.isDown();

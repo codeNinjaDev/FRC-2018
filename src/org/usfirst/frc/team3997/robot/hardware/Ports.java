@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.I2C.Port;
 
 public class Ports {
 	// ***************** PWM PORTS *****************
-	public static final int CLIMBER_MOTOR_PWM_PORT                 = 6;
 	public static final int LEFT_ARM_MOTOR_PWM_PORT                = 8;
 	public static final int RIGHT_ARM_MOTOR_PWM_PORT               = 3;
 	public static final int LEFT_INTAKE_MOTOR_PWM_PORT             = 9;
@@ -37,7 +36,7 @@ public class Ports {
 
 	// ***************** SOLENOID PORTS *****************
 	public static final int COMPRESSOR_MODULE = 9;
-	public static final int[] INTAKE_SOLENOIDS = {0, 4};
+	public static final int[] INTAKE_SOLENOIDS = {0, 1};
 	public static final int[] WRIST_SOLENOIDS = {2, 3};
 
 

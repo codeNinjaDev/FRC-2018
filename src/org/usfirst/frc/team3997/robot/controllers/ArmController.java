@@ -124,8 +124,7 @@ public class ArmController {
 			// *** TOGGLE ZONE ***//
 
 			// If armManualDesired, Toggle the arm override
-			if (humanControl.toggleManualArmDesired())
-				toggleArmManual = !toggleArmManual;
+			toggleArmManual = humanControl.toggleManualArmDesired();
 			
 
 			
@@ -144,9 +143,7 @@ public class ArmController {
 			} else {
 				SmartDashboard.putString("ARM", "PID");
 				//Disable PID
-				if (armPIDController.isEnabled()) {
-					armPIDController.disable();
-				}
+				
 				//Intake normally
 				intakeFunctions();
 				//Go to set point position
