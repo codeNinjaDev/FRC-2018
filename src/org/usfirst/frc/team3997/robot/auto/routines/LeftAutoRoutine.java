@@ -81,14 +81,15 @@ public class LeftAutoRoutine extends AutoRoutine {
 	void goToSwitch() {
 		arm.goToSwitchPosition();
 		driveDistanceStraight(controllers, 103, .7, 3, true);
-		driveRotate(controllers, 90, 1, 3, true);
+		robot.relaxWrist();
+		driveRotate(controllers, -90, 1, 3, true);
 		arm.outtakePowerCube();
 		driveDistanceStraight(controllers, -30, .7, 5, true);
 		arm.goToFeedPosition();
 	}
 	
 	void passAutoLine() {
-		driveDistanceStraight(controllers, 90, .7, 5, true);
+		driveDistanceStraight(controllers, -90, .7, 5, true);
 	}
 	
 	void goToScale() {

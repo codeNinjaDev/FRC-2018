@@ -17,7 +17,7 @@ public class TurnRoutine extends AutoRoutine {
 
 	@Override
 	protected void routine() {
-		driveRotate(controllers, 90, .5, 1.6, true);
+		driveRotate(controllers, 90, .5, 3, true);
 	}
 
 }

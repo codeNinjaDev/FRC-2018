@@ -8,9 +8,11 @@ import org.usfirst.frc.team3997.robot.auto.routines.CustomDistanceRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DoNothingRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DriveThreeSecRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftAutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.LeftSwitchLeftSide;
 import org.usfirst.frc.team3997.robot.auto.routines.OneCubeCenterAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RightAutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.RightSwitchRightSide;
 import org.usfirst.frc.team3997.robot.auto.routines.StepVoltageRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.TurnRoutine;
 
@@ -38,6 +40,9 @@ public class AutoSelector {
 		registerAutonomous(new RightAutoRoutine(controllers));
 		registerAutonomous(new StepVoltageRoutine(controllers));
 		registerAutonomous(new OneCubeCenterAutoRoutine(controllers));
+		registerAutonomous(new LeftSwitchLeftSide(controllers));
+		registerAutonomous(new RightSwitchRightSide(controllers));
+
 		
 	} 
 	
@@ -48,11 +53,14 @@ public class AutoSelector {
 		autoChooser.addObject("Pass Auto Line (Drive 100)", 2);
 		autoChooser.addObject("Turn 90 degrees", 3);
 		autoChooser.addObject("Custom Routine (check preferences)", 4);
-		autoChooser.addObject("Left Auto Routine", 5);
+		autoChooser.addObject("Left Switch or Scale Auto Routine", 5);
 		autoChooser.addObject("Center Auto Routine", 6);
-		autoChooser.addObject("Right Auto Routine", 7);
+		autoChooser.addObject("Right Switch or Scale Auto Routine", 7);
 		autoChooser.addObject("Step Voltage Routine", 8);
 		autoChooser.addObject("Single Cube Center", 9);
+		autoChooser.addObject("Left Switch", 10);
+		autoChooser.addObject("Rightt Switch", 11);
+
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);
 		SmartDashboard.putData("Autonomous", autoChooser);
