@@ -33,10 +33,10 @@ public class DriveDistanceAction extends Action{
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
 		
-		P = Params.drive_p;
+		P = .02;
 		// TODO Might Need to change pID values
 		I = Params.drive_i;
-		D = Params.drive_d;
+		D = 0.1;
 		
 		SmartDashboard.putNumber("DRIVE_PID_P", P);
 		SmartDashboard.putNumber("DRIVE_PID_I", I);

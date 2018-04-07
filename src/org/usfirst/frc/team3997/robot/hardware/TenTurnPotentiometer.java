@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.hal.AnalogJNI;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.AllocationException;
 
 public class TenTurnPotentiometer{
@@ -137,6 +138,8 @@ public class TenTurnPotentiometer{
 		    builder.addDoubleProperty("Value", this::getAverageVoltage, null);
 		  }
 		  public double getAngle() {
+			  SmartDashboard.putNumber("AVERAGE_POT_VolTAGE", getAverageVoltage());
+
 			if(RobotState.isDisabled())
 				starting_error = (getAverageVoltage() * VOLT_TO_DEGREES);
 			double degrees = (getAverageVoltage() * VOLT_TO_DEGREES) - starting_error;

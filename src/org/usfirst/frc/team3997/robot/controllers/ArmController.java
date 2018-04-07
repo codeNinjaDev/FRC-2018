@@ -146,9 +146,7 @@ public class ArmController {
 				//Intake normally
 				intakeFunctions();
 				//Go to set point position
-				if (humanControl.getClimbArmDesired()) {
-					goToClimbPosition();
-				} else if (humanControl.getScaleArmDesired()) {
+				if (humanControl.getScaleArmDesired()) {
 					goToScalePosition();
 				} else if (humanControl.getSwitchArmDesired()) {
 					SmartDashboard.putString("ARM", "SWITCH");
@@ -157,7 +155,8 @@ public class ArmController {
 					goToFeedPosition();
 				} else {
 					//Disable PID
-					armPIDController.disable();
+					if(armPIDController.isEnabled())
+						armPIDController.disable();
 				}
 			}
 			//Set next state to teleop
@@ -181,7 +180,7 @@ public class ArmController {
 		//Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
-		armPIDController.setSetpoint(Params.ARM_SCALE_SETPOINT);
+		armPIDController.setSetpoint(125);
 		armPIDController.enable();
 		
 	}
@@ -224,13 +223,7 @@ public class ArmController {
 	}
 
 	public void intakeFunctions() {
-		if(humanControl.flexWristDesired()) {
-			SmartDashboard.putString("INTAKE", "OPEN");
-
-			robot.flexWrist();
-		} else {
-			robot.relaxWrist();
-		}
+		robot.relaxWrist();
 		
 		
 
@@ -245,7 +238,6 @@ public class ArmController {
 			
 			// TODO Add limit switch logic
 			outtakePowerCube();
-			robot.openIntake();
 
 		} else {
 			

@@ -15,15 +15,15 @@ public class ControlBoard extends RemoteControl {
 	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
-	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, armClimbButton, intakeButton, outtakeButton;
+	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, intakeButton, outtakeButton;
 	public ToggleButtonReader armManualButton;
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
-	public TriggerReader flexWristButton, relaxWristButton;
+	public TriggerReader relaxWristButton;
 	
-	private boolean flexWristDesired, relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
-			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, armClimbDesired, intakeDesired, outtakeDesired, armShifterDesired;
+	private boolean relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired;
 
 
 	/** Driver joystick axes **/
@@ -52,14 +52,12 @@ public class ControlBoard extends RemoteControl {
 			//Operator Controls
 			armScaleButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON);
 			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
-			armClimbButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RED_BUTTON);
 			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
 			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
 			
 			
 			
 			relaxWristButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
-			flexWristButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
 			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
 			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
 			
@@ -85,11 +83,9 @@ public class ControlBoard extends RemoteControl {
 		armScaleDesired = false;
 		armFeedDesired = false;
 		toggleArmManualDesired = false;
-		armClimbDesired = false;
 		
 		intakeDesired = false;
 		outtakeDesired = false;
-		flexWristDesired = false;
 		relaxWristDesired = false;
 	}
 	/** Reads all controller inputs **/
@@ -118,10 +114,8 @@ public class ControlBoard extends RemoteControl {
 		//Operator Vars
 		armSwitchDesired = armSwitchButton.isDown();
 		armScaleDesired = armScaleButton.isDown();
-		armClimbDesired = armClimbButton.isDown();
 		armFeedDesired = armFeedButton.isDown();
 		toggleArmManualDesired = armManualButton.getState();
-		flexWristDesired = flexWristButton.isDown();
 		relaxWristDesired = relaxWristButton.isDown();
 		intakeDesired = intakeButton.isDown();
 		outtakeDesired = outtakeButton.isDown();
@@ -138,7 +132,6 @@ public class ControlBoard extends RemoteControl {
 		driveBackOtherButton.readValue();
 		//Operator 
 		
-		armClimbButton.readValue();
 		armSwitchButton.readValue();
 		armScaleButton.readValue();
 		armFeedButton.readValue();
@@ -148,7 +141,6 @@ public class ControlBoard extends RemoteControl {
 		outtakeButton.readValue();
 		intakeButton.readValue();
 		outtakeButton.readValue();
-		flexWristButton.readValue();
 		relaxWristButton.readValue();
 
 	}
@@ -239,12 +231,7 @@ public class ControlBoard extends RemoteControl {
 		return armFeedDesired;
 	}
 
-	@Override
-	public boolean getClimbArmDesired() {
-		SmartDashboard.putString("OPERATOR", "CLIMB_POSITION");
-
-		return armClimbDesired;
-	}
+	
 
 	@Override
 	public boolean getIntakeDesired() {
@@ -259,12 +246,7 @@ public class ControlBoard extends RemoteControl {
 
 		return outtakeDesired;
 	}
-	@Override
-	public boolean flexWristDesired() {
-		SmartDashboard.putString("OPERATOR", "FLEX_WRIST");
-
-		return flexWristDesired;
-	}
+	
 	@Override
 	public boolean relaxWristDesired() {
 		SmartDashboard.putString("OPERATOR", "FLEX_WRIST");

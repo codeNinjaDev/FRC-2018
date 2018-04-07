@@ -39,7 +39,6 @@ public class OneCubeCenterAutoRoutine extends AutoRoutine {
 		Timer.delay(1);
 		
 		outtake(controllers, 2, .5);
-		controllers.getRobotModel().openIntake();;
 
 	}
 

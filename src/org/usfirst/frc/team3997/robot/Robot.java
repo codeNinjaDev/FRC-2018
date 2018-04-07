@@ -92,6 +92,7 @@ public class Robot extends IterativeRobot {
 		lastTimeSec = 0.0;
 		deltaTimeSec = 0.0;
 		new Thread(() -> {
+			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
             

@@ -22,7 +22,7 @@ public class DriveRotateAction extends Action{
 	
 	public DriveRotateAction(MasterController controllers, double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
 		this.driveTrain = controllers.getDriveController();
-		this.distance = (angle * 10.0) / (90.0);
+		this.distance = (angle * 20.0) / (90.0);
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();
 		this.maxSpeed = maxSpeed;
@@ -32,10 +32,10 @@ public class DriveRotateAction extends Action{
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
 		
-		P = Params.drive_p;
+		P = 20;
 		// TODO Might Need to change pID values
 		I = Params.drive_i;
-		D =  Params.drive_d;
+		D =  .1;
 		
 		SmartDashboard.putNumber("DRIVE_PID_P", P);
 		SmartDashboard.putNumber("DRIVE_PID_I", I);
@@ -85,7 +85,7 @@ public class DriveRotateAction extends Action{
 		
 		driveTrain.rightPID.setOutputRange(-maxSpeed, maxSpeed);
 		driveTrain.rightPID.setPID(P, I, D);
-		driveTrain.rightPID.setSetpoint((distance + rightEncoderStartDistance));
+		driveTrain.rightPID.setSetpoint(-(distance + rightEncoderStartDistance));
 		
 		driveTrain.leftPID.enable();
 		driveTrain.rightPID.enable();
