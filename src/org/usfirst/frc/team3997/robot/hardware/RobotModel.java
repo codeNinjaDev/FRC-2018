@@ -299,7 +299,7 @@ public class RobotModel {
 	
 
 	public void outtakeBlock() {
-		intakeWheels(-.9);
+		intakeWheels(-1);
 	}
 	public void stopIntake() {
 		intakeWheels(0);

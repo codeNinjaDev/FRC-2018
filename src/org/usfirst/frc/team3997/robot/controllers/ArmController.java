@@ -238,7 +238,11 @@ public class ArmController {
 			
 			// TODO Add limit switch logic
 			outtakePowerCube();
-
+			if(humanControl.getScaleArmDesired()) {
+				robot.closeIntake();
+			} else {
+				robot.openIntake();
+			}
 		} else {
 			
 			robot.closeIntake();

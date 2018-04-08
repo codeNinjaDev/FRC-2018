@@ -8,9 +8,11 @@ import org.usfirst.frc.team3997.robot.auto.routines.CustomDistanceRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DoNothingRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.DriveThreeSecRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftAutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.LeftScale;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftSwitchLeftSide;
 import org.usfirst.frc.team3997.robot.auto.routines.OneCubeCenterAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
+import org.usfirst.frc.team3997.robot.auto.routines.RighScale;
 import org.usfirst.frc.team3997.robot.auto.routines.RightAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RightSwitchRightSide;
 import org.usfirst.frc.team3997.robot.auto.routines.StepVoltageRoutine;
@@ -42,6 +44,9 @@ public class AutoSelector {
 		registerAutonomous(new OneCubeCenterAutoRoutine(controllers));
 		registerAutonomous(new LeftSwitchLeftSide(controllers));
 		registerAutonomous(new RightSwitchRightSide(controllers));
+		registerAutonomous(new LeftScale(controllers));
+		registerAutonomous(new RighScale(controllers));
+
 
 		
 	} 
@@ -60,7 +65,9 @@ public class AutoSelector {
 		autoChooser.addObject("Single Cube Center", 9);
 		autoChooser.addObject("Left Switch", 10);
 		autoChooser.addObject("Rightt Switch", 11);
-
+		autoChooser.addObject("Left Scale", 10);
+		autoChooser.addObject("Rightt Scale", 11);
+		
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);
 		SmartDashboard.putData("Autonomous", autoChooser);

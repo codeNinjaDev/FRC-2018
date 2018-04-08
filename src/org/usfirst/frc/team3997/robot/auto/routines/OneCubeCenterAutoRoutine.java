@@ -16,29 +16,47 @@ public class OneCubeCenterAutoRoutine extends AutoRoutine {
 	@Override
 	public void prestart() {
 		// TODO Auto-generated method stub
-		controllers.getRobotModel().closeIntake();
+
 	}
 
 	@Override
 	protected void routine() {
 		controllers.getRobotModel().closeIntake();;
+		controllers.getRobotModel().relaxWrist();;
+		outtake(controllers, .2, 1);
 
-		/*controllers.getRobotModel().moveArm(.5);
-		Timer.delay(.5);
-		controllers.getRobotModel().moveArm(.2);
-		*/
 		
-		driveDistanceStraight(controllers, 25, .6, 3, true);
-		Timer.delay(1);
+		driveDistanceStraight(controllers, 47, .6, 3, true);
+		//Timer.delay(.25);
+		waitTime(0.5);
 		if(PlateDetector.getSwitchColor() == 'R') 
-			driveRotate(controllers, 60, .6, 3.5, true);
+			driveRotate(controllers, 45, .6, 2, true);
 		else
-			driveRotate(controllers, -60, .6, 3.5, true);
-		Timer.delay(1);
-		driveDistanceStraight(controllers, 40, .6, 3, true);
-		Timer.delay(1);
+			driveRotate(controllers, -45, .6, 2, true);
+		waitTime(0.5);
+
+		//Timer.delay(.25);
+		driveDistanceStraight(controllers, 64, .6, 3, true);
+		controllers.getArmController().goToSwitchPosition();
+		if(PlateDetector.getSwitchColor() == 'R') 
+			driveRotate(controllers, -45, .6, 2, true);
+		else
+			driveRotate(controllers, 45, .6, 2, true);
+		driveDistanceStraight(controllers, 8, .5, 2, true);
+		controllers.getRobotModel().outtakeBlock();
 		
-		outtake(controllers, 2, .5);
+		controllers.getRobotModel().openIntake();
+		waitTime(0.5);
+
+		//Timer.delay(.25);
+		controllers.getRobotModel().stopIntake();
+
+		
+		controllers.getDriveController().arcadeDrive(-.5, 0, false);
+		waitTime(0.2);
+		controllers.getDriveController().arcadeDrive(0, 0, false);
+
+		
 
 	}
 

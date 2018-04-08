@@ -32,7 +32,7 @@ public class DriveRotateAction extends Action{
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
 		
-		P = 20;
+		P = 1;
 		// TODO Might Need to change pID values
 		I = Params.drive_i;
 		D =  .1;
