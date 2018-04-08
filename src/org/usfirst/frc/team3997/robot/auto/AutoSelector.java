@@ -10,6 +10,7 @@ import org.usfirst.frc.team3997.robot.auto.routines.DriveThreeSecRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftScale;
 import org.usfirst.frc.team3997.robot.auto.routines.LeftSwitchLeftSide;
+import org.usfirst.frc.team3997.robot.auto.routines.MotionRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.OneCubeCenterAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RighScale;
@@ -46,6 +47,7 @@ public class AutoSelector {
 		registerAutonomous(new RightSwitchRightSide(controllers));
 		registerAutonomous(new LeftScale(controllers));
 		registerAutonomous(new RighScale(controllers));
+		registerAutonomous(new MotionRoutine(controllers));
 
 
 		
@@ -67,6 +69,7 @@ public class AutoSelector {
 		autoChooser.addObject("Rightt Switch", 11);
 		autoChooser.addObject("Left Scale", 10);
 		autoChooser.addObject("Rightt Scale", 11);
+		autoChooser.addObject("Motion Profling Routine", 12);
 		
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);
