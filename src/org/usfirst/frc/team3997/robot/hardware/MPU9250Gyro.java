@@ -18,7 +18,7 @@ import java.lang.Math;
  * @author peter
  *
  */
-public class MPU9250Gyro implements Gyro {
+public class MPU9250Gyro extends GyroBase implements PIDSource {
 
 	// Magnetometer Registers
 	int AK8963_ADDRESS = 0x0C;
@@ -226,9 +226,11 @@ public class MPU9250Gyro implements Gyro {
 	final int GFS_2000DPS = 0x06;
 
 	I2C i2c;
+	PIDSourceType pidSourceType;
 	int gScale;
 
 	public MPU9250Gyro(Port port) {
+		pidSourceType = PIDSourceType.kDisplacement;
 		yaw = 0;
 		gz = 0;
 		gScale = GFS_250DPS;
@@ -252,12 +254,15 @@ public class MPU9250Gyro implements Gyro {
 
 	}
 
-	/*** 
+	/***
 	 * Reads an array of bytes
 	 * 
-	 * @param registerAddress Takes in register address
-	 * @param count Number of bytes of data
-	 * @param destination Place to store the bytes
+	 * @param registerAddress
+	 *            Takes in register address
+	 * @param count
+	 *            Number of bytes of data
+	 * @param destination
+	 *            Place to store the bytes
 	 * @return Returns read bytes
 	 */
 	byte[] readBytes(int registerAddress, int count, byte[] destination) {
@@ -265,10 +270,12 @@ public class MPU9250Gyro implements Gyro {
 		return destination;
 
 	}
+
 	/***
 	 * Reads only one byte
 	 * 
-	 * @param registerAddress Takes in register address
+	 * @param registerAddress
+	 *            Takes in register address
 	 * @return The read byte
 	 */
 	byte readByte(int registerAddress) {
@@ -279,9 +286,12 @@ public class MPU9250Gyro implements Gyro {
 	}
 
 	/**
-	 * Writes data to register 
-	 * @param registerAddress Takes in register address
-	 * @param data Data to write to register
+	 * Writes data to register
+	 * 
+	 * @param registerAddress
+	 *            Takes in register address
+	 * @param data
+	 *            Data to write to register
 	 * @return True or False based on success of data transfer
 	 */
 	boolean writeByte(int registerAddress, int data) {
@@ -290,7 +300,9 @@ public class MPU9250Gyro implements Gyro {
 
 	/**
 	 * Sets the Gyro Resolution
-	 * @param gScale Gyro Scale
+	 * 
+	 * @param gScale
+	 *            Gyro Scale
 	 */
 	void getGyroRes(int gScale) {
 		// Possible gyro scales (and their register bit settings) are:
@@ -314,8 +326,10 @@ public class MPU9250Gyro implements Gyro {
 	}
 
 	/**
-	 * Reads Gyro Data 
-	 * @param destination Array to read into
+	 * Reads Gyro Data
+	 * 
+	 * @param destination
+	 *            Array to read into
 	 */
 	void readGyroData(int[] destination) {
 		SmartDashboard.putBoolean("Raw Boolean", true);
@@ -326,13 +340,14 @@ public class MPU9250Gyro implements Gyro {
 		for (int i = 0; i < rawData.length; i++) {
 			dashboardData[i] = (double) rawData[i];
 		}
-		//System.out.println("This is raw data: " + rawData);
-		//SmartDashboard.putNumberArray("Raw Data", dashboardData);
+		// System.out.println("This is raw data: " + rawData);
+		// SmartDashboard.putNumberArray("Raw Data", dashboardData);
 		destination[0] = ((rawData[0] << 8) | rawData[1]); // Turn the MSB and LSB into a signed 16-bit value
 		destination[1] = ((rawData[2] << 8) | rawData[3]);
 		destination[2] = ((rawData[4] << 8) | rawData[5]);
 
 	}
+
 	/**
 	 * Initializes Gyro
 	 */
@@ -393,7 +408,7 @@ public class MPU9250Gyro implements Gyro {
 
 		calibrateMPU9250(gyroBias);
 	}
-	
+
 	void calibrateMPU9250(double[] dest) {
 		byte data[] = new byte[12]; // data array to hold accelerometer and gyro x, y, z, data
 		int ii, packet_count, fifo_count;
@@ -454,18 +469,17 @@ public class MPU9250Gyro implements Gyro {
 
 		}
 		// Normalize sums to get average count biases
-		//TODO Divides by zero 
+		// TODO Divides by zero
 		try {
-			
+
 			gyro_bias[0] /= packet_count;
 			gyro_bias[1] /= packet_count;
 			gyro_bias[2] /= packet_count;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			SmartDashboard.putString("GYRO_STATUS", "ZERO");
-			for(int i = 0; i < 100; i++)
+			for (int i = 0; i < 100; i++)
 				System.out.println("Packet count = 0; fifo count = 0");
 		}
-		
 
 		// Construct the gyro biases for push to the hardware gyro bias registers, which
 		// are reset to zero upon device startup
@@ -504,7 +518,7 @@ public class MPU9250Gyro implements Gyro {
 
 	@Override
 	public void reset() {
-		
+
 		writeByte(PWR_MGMT_1, 0x80); // Write a one to bit 7 reset bit; toggle reset device
 		yaw = 0;
 		Timer.delay(0.1);
@@ -513,7 +527,7 @@ public class MPU9250Gyro implements Gyro {
 	public void update() {
 		// Multiply timer.getTimestamp * 1000 to get millis
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
-		
+
 		// TODO change to account for drift
 		double rotation_threshold = 0;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
@@ -522,28 +536,29 @@ public class MPU9250Gyro implements Gyro {
 		gx = gyroData[0] * gRes;
 		gy = gyroData[1] * gRes;
 		gz = gyroData[2] * gRes;
-		
+
 		double deltaTime = currentTimestamp - currentTime;
-		//I have a bad feeling about having it exactly equal to 20
-		if (/*(gz >= rotation_threshold) || (gz <= -rotation_threshold))*/(deltaTime >= 20)) {
+		// I have a bad feeling about having it exactly equal to 20
+		// Do I really need to have deltaTime be greater than or equal to 20?
+		if (/* (gz >= rotation_threshold) || (gz <= -rotation_threshold)) */(deltaTime >= 20)) {
 			/**
 			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
 			 */
+			
+			
 			gz /= (1000 / deltaTime);
 			yaw += gz;
 			if (yaw < 0)
 				yaw += 360;
 			else if (yaw > 359)
 				yaw -= 360;
-			
-			if(yaw > 180) {
+
+			if (yaw > 180) {
 				yaw = (yaw - 360);
-			} 
-				
+			}
+
 			currentTime = Timer.getFPGATimestamp() * 1000;
-		} 
-		
-		
+		}
 
 	}
 
@@ -553,6 +568,27 @@ public class MPU9250Gyro implements Gyro {
 		i2c.free();
 	}
 
+	/***********************************************************/
+	/* PIDSource Interface Implementation */
+	/***********************************************************/
 
+	public PIDSourceType getPIDSourceType() {
+		return pidSourceType;
+	}
 
+	public void setPIDSourceType(PIDSourceType type) {
+		pidSourceType = type;
+	}
+
+	/**
+	 * Returns the current yaw value reported by the sensor. This yaw value is
+	 * useful for implementing features including "auto rotate to a known angle".
+	 * 
+	 * @return The current yaw angle in degrees (-180 to 180).
+	 */
+	public double pidGet() {
+
+		return getAngle();
+
+	}
 }
