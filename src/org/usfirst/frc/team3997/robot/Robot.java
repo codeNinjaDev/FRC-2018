@@ -12,6 +12,7 @@ import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.LightController;
+import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.feed.DashboardInput;
 import org.usfirst.frc.team3997.robot.feed.DashboardLogger;
@@ -52,6 +53,7 @@ public class Robot extends IterativeRobot {
 	DashboardLogger dashboardLogger;
 	DashboardInput input;
 
+	MotionController motion;
 
 	MasterController masterController;
 	Auto auto;
@@ -71,9 +73,10 @@ public class Robot extends IterativeRobot {
 		lights = new LightController();
 		dashboardLogger = new DashboardLogger(robot, humanControl);
 		input = new DashboardInput();
+		motion = new MotionController(robot);
 		armController = new ArmController(robot, humanControl);
 		
-		masterController = new MasterController(driveController, robot, visionController,
+		masterController = new MasterController(driveController, robot, motion, visionController,
 				lights, armController);
 		auto = new Auto(masterController);
 		timer = new Timer();
@@ -93,7 +96,7 @@ public class Robot extends IterativeRobot {
 		deltaTimeSec = 0.0;
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+            
             camera.setResolution(640, 480);
             
             CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -109,7 +112,7 @@ public class Robot extends IterativeRobot {
 
                 Imgproc.line(output, new Point((output.size().width / 2), 0), new Point((output.size().width / 2), (output.size().height)), new Scalar(0, 0, 0), thickness);
                 outputStream.putFrame(output);
-            }*/
+            }
         }).start();
 		dashboardLogger.updateEssentialData();
 
@@ -141,6 +144,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		SmartDashboard.putNumber("gyro", robot.getAngle());
 		visionController.update();
 		lights.setAutoLights();
 		dashboardLogger.updateData();
@@ -155,6 +159,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		auto.stop();
+		robot.resetGyro();
 		robot.resetTimer();
 		robot.resetEncoders();
 		driveController.reset();
@@ -174,6 +179,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
 		SmartDashboard.putString("INTAKE_SOLENOID", robot.intakeSolenoid.get().toString());
+		SmartDashboard.putNumber("gyro", robot.getAngle());
 		dashboardLogger.updateData();
 		lastTimeSec = currTimeSec;
 		currTimeSec = robot.getTime();
