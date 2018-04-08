@@ -535,6 +535,11 @@ public class MPU9250Gyro implements Gyro {
 				yaw += 360;
 			else if (yaw > 359)
 				yaw -= 360;
+			
+			if(yaw > 180) {
+				yaw = (yaw - 360);
+			} 
+				
 			currentTime = Timer.getFPGATimestamp() * 1000;
 		} 
 		
