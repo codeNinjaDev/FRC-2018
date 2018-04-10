@@ -215,7 +215,7 @@ public class Robot extends IterativeRobot {
 		robot.reset();
 		input.updateInput();
 		dashboardLogger.updateEssentialData();
-
+		robot.resetGyro();
 	}
 
 	public void disabledPeriodic() {

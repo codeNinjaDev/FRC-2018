@@ -37,5 +37,15 @@ public class DriveEncodersPIDSource implements PIDSource {
 	public double getAverageDistance() {
 		return ((robot.leftDriveEncoder.getDistance()) + (robot.rightDriveEncoder.getDistance())) / 2.0;	
 	}
-
+	public double getAngle() {
+		double angle;
+		if((robot.leftDriveEncoder.getDistance() < 0) && (robot.rightDriveEncoder.getDistance() > 0)) {
+			angle = -1 * 4.5 * robot.rightDriveEncoder.getDistance();
+		} else if((robot.leftDriveEncoder.getDistance() > 0) && (robot.rightDriveEncoder.getDistance() < 0)) {
+			angle = 4.5*robot.leftDriveEncoder.getDistance();
+		} else {
+			return 0;
+		}
+		return angle;
+	}
 }

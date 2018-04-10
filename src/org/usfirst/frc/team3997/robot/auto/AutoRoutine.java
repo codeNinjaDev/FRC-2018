@@ -8,6 +8,7 @@ import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
 import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
 import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwingTurnAction;
 import org.usfirst.frc.team3997.robot.auto.actions.VisionAction;
 import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 
@@ -60,6 +61,10 @@ public abstract class AutoRoutine {
 		runAction(new IntakeAction(controllers, timeout, speed));
 	}
 	
+	public void swingTurn(MasterController controllers, double leftDistance, double rightDistance, double maxSpeed,
+			double timeout, boolean waitForTimeout) {
+		runAction(new SwingTurnAction(controllers, leftDistance, rightDistance, maxSpeed, timeout, waitForTimeout));
+	}
 
 	
 	public void waitTime(double seconds) {

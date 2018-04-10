@@ -21,7 +21,7 @@ public class RobotModel {
 	public Compressor compressor;
 	public DoubleSolenoid intakeSolenoid;
 	public DoubleSolenoid wristSolenoid;
-	public Gyro mpu_gyro;
+	public MPU9250Gyro mpu_gyro;
 	//public DigitalInput limitSwitch;
 	
 
@@ -318,6 +318,10 @@ public class RobotModel {
 	
 	public void resetGyro() {
 		mpu_gyro.reset();
+	}
+	
+	public double getDriveVelocity() {
+		return leftDriveEncoder.getRate();
 	}
 	
 	
