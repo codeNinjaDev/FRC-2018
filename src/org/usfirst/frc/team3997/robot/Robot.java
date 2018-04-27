@@ -39,9 +39,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	double currTimeSec = 0;
-	double lastTimeSec = 0;
-	double deltaTimeSec = 0;
+	
 	
 	RobotModel robot;
 	RemoteControl humanControl;
@@ -66,6 +64,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		/*** Initializes all classes ***/
 		robot = new RobotModel();
 		humanControl = new ControlBoard();
 		driveController = new DriveController(robot, humanControl);
@@ -75,25 +74,21 @@ public class Robot extends IterativeRobot {
 		input = new DashboardInput();
 		motion = new MotionController(robot);
 		armController = new ArmController(robot, humanControl);
-		
 		masterController = new MasterController(driveController, robot, motion, visionController,
 				lights, armController);
 		auto = new Auto(masterController);
 		timer = new Timer();
 		
-		
+		// Sets enabled lights
 		lights.setEnabledLights();
+		// Resets autonomous
 		auto.reset();
+		//List autonomous routines on Dashboard
 		auto.listOptions();
-
+		//Updates input from Robot Preferences
 		input.updateInput();
 
-		if (humanControl.getArcadeDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = true;
-		} 
-		currTimeSec = 0.0;
-		lastTimeSec = 0.0;
-		deltaTimeSec = 0.0;
+		/*** Starts camera stream ***/
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             
@@ -114,6 +109,7 @@ public class Robot extends IterativeRobot {
                 outputStream.putFrame(output);
             }
         }).start();
+		/*** Update Dashboard ***/
 		dashboardLogger.updateEssentialData();
 
 	}
@@ -123,30 +119,33 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		/*** Reset all hardware ***/
 		robot.reset();
+		//Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
+		//Update robot preferences
 		input.updateInput();
+		//Stop autonomous before starting
 		auto.stop();
+		//Reset timer
 		timer.reset();
+		//Start timer
 		timer.start();
-
-		currTimeSec = 0.0;
-		lastTimeSec = 0.0;
-		deltaTimeSec = 0.0;
-
-
+		//Starts Autonomous Routine
 		auto.start();
 		
 	}
 
 	/**
-	 * This function is called periodically during autonomous
+	 * This function is called periodically during autonomous, but is mainly used for logging
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		//Log Gyro angle
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-		visionController.update();
+		//Start auto pattern on led strip
 		lights.setAutoLights();
+		//Log data to the Dashboard
 		dashboardLogger.updateData();
 		dashboardLogger.updateEssentialData();
 
@@ -158,17 +157,19 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		//Stop autonomous
 		auto.stop();
+		//Reset Gyro
 		robot.resetGyro();
+		//Reset hardware timer
 		robot.resetTimer();
+		//Reset Encoders
 		robot.resetEncoders();
+		//Reset Drive
 		driveController.reset();
-		visionController.enable();
+		//Reset Arm
 		armController.reset();
-		
-		currTimeSec = 0.0;
-		lastTimeSec = 0.0;
-		deltaTimeSec = 0.0;
+		//Update input from Robot Preferences
 		input.updateInput();
 	}
 
@@ -177,19 +178,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		//Logs arm angle on Dashboard
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
-		SmartDashboard.putString("INTAKE_SOLENOID", robot.intakeSolenoid.get().toString());
+		//Updates Gyro angle
 		SmartDashboard.putNumber("gyro", robot.getAngle());
+		//Logs data to Dashboard
 		dashboardLogger.updateData();
-		lastTimeSec = currTimeSec;
-		currTimeSec = robot.getTime();
-		deltaTimeSec = currTimeSec - lastTimeSec;
+		//Read input from Gamepad
 		humanControl.readControls();
-		driveController.update(currTimeSec, deltaTimeSec);
+		//Updates Drive e.g arcadeDrive
+		driveController.update();
+		//Updates Intake and arm
 		armController.update();
-		
-		visionController.disable();
+		//Set enabled Light pattern
 		lights.setEnabledLights();
+		//Log Data to Dashboard
 		dashboardLogger.updateEssentialData();
 
 	}
@@ -206,33 +209,35 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledInit() {
+		robot.resetGyro();
+		//Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
-		visionController.disable();
+		//Reset drive
 		driveController.reset();
-		if (humanControl.getArcadeDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = true;
-		} 
+		//Reset hardware
 		robot.reset();
+		//Update input from Dashboard
 		input.updateInput();
+		//Log Data
 		dashboardLogger.updateEssentialData();
 
 	}
 
 	public void disabledPeriodic() {
-		//robot.reset();
-		//SmartDashboard.putNumber("gyro", robot.getAngle());
-		//robot.updateGyro();
+		//Reset auto timer
+		AutoRoutineRunner.getTimer().reset();
+		//Put Gyro Angle on SmartDashboard
+		SmartDashboard.putNumber("gyro", robot.getAngle());
+		//Update input from Dashboard
 		input.updateInput();
+		//Logs arm angle on Dashboard
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
+		//Log Dashboard
 		dashboardLogger.updateData();
 		dashboardLogger.updateEssentialData();
-		AutoRoutineRunner.getTimer().reset();
+		//Read Gamepad Controlls
 		humanControl.readControls();
-		visionController.update();
-		if (humanControl.getArcadeDriveDesired()) {
-			Params.USE_ARCADE_DRIVE = true;
-		}
-		//auto.listOptions();
+		//Set Disabled pattern for led strips
 		lights.setDisabledLights();
 	}
 

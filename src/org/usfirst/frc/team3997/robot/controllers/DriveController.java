@@ -95,7 +95,8 @@ public class DriveController {
 		this.robot.rightDriveEncoder.setSamplesToAverage(Params.DRIVE_Y_PID_SAMPLES_AVERAGE);
 		// TODO I think that this is wrong
 		leftPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.LeftWheels, this.robot);
-		leftPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, this.robot.leftDriveEncoder, leftPIDOutput);
+		leftPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, this.robot.leftDriveEncoder,
+				leftPIDOutput);
 		// TODO Might change this to max power variable
 		leftPID.setOutputRange(-1.0, 1.0);
 		leftPID.setAbsoluteTolerance(0.25);
@@ -104,7 +105,8 @@ public class DriveController {
 		// TODO I think that this is wrong
 		rightPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.RightWheels, this.robot);
 
-		rightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, robot.rightDriveEncoder, rightPIDOutput);
+		rightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, robot.rightDriveEncoder,
+				rightPIDOutput);
 		// TODO Might change this to max power variable
 		rightPID.setOutputRange(-1.0, 1.0);
 		rightPID.setAbsoluteTolerance(0.25);
@@ -113,7 +115,8 @@ public class DriveController {
 		avgEncodersPIDSource = new DriveEncodersPIDSource(this.robot);
 
 		straightPIDOutput = new ArcadeStraightPIDOutput(drive, this.robot);
-		straightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, avgEncodersPIDSource, straightPIDOutput);
+		straightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, avgEncodersPIDSource,
+				straightPIDOutput);
 		// TODO might change this to max power variable
 		straightPID.setOutputRange(-1.0, 1.0);
 		straightPID.setAbsoluteTolerance(1);
@@ -132,7 +135,7 @@ public class DriveController {
 	 * @param deltaTimeSec
 	 *            Does absolutely nothing
 	 **/
-	public void update(double currTimeSec, double deltaTimeSec) {
+	public void update() {
 		switch (m_stateVal) {
 		case kInitialize:
 			leftPID.disable();
@@ -154,11 +157,7 @@ public class DriveController {
 				rightPID.disable();
 			}
 
-			if (Params.USE_ARCADE_DRIVE) {
-				arcadeDrive(driverLeftY, driverRightX, true);
-			} else {
-				tankDrive(driverLeftY, driverRightY);
-			}
+			arcadeDrive(driverLeftY, driverRightX, true);
 
 			nextState = DriveState.kTeleopDrive;
 			break;
@@ -178,13 +177,13 @@ public class DriveController {
 	 **/
 	public void arcadeDrive(double myY, double myX, boolean teleOp) {
 		if (teleOp) {
-			//Brake 1
+			// Brake 1
 			if ((humanControl.getSlowDriveTier1Desired() && !humanControl.getSlowDriveTier2Desired())
 					|| (!humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.35;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.35;
 				Params.SQUARE_DRIVE_AXIS_INPUT = false;
-				//Brake 2
+				// Brake 2
 			} else if ((humanControl.getSlowDriveTier1Desired() && humanControl.getSlowDriveTier2Desired())) {
 				Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER = 0.2;
 				Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER = 0.2;
@@ -201,7 +200,7 @@ public class DriveController {
 			SmartDashboard.putNumber("Prefs MAXSPEED", Params.MAX_SPEED);
 
 		} else {
-			drive.arcadeDrive(myY*Params.MAX_SPEED, myX*Params.MAX_SPEED, false);
+			drive.arcadeDrive(myY * Params.MAX_SPEED, myX * Params.MAX_SPEED, false);
 		}
 	}
 
