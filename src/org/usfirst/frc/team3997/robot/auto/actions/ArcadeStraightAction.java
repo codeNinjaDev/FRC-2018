@@ -39,11 +39,11 @@ public class ArcadeStraightAction extends Action {
 	 * 
 	 * 
 	 * </ul>
-	 * @param controllers
-	 * @param distance
-	 * @param maxSpeed
-	 * @param timeout
-	 * @param timeAfterHit
+	 * @param controllers Gets all robot systems
+	 * @param distance Gets desired distance setpoint
+	 * @param maxSpeed Sets max speed during action
+	 * @param timeout How much time allowed to reach setpoint
+	 * @param timeAfterHit How much cushion time after reaching setpoint before ending action (Doesn't do anything currently)
 	 * 
 	 */
 	public ArcadeStraightAction(MasterController controllers, double distance, double maxSpeed, double timeout,
@@ -73,15 +73,15 @@ public class ArcadeStraightAction extends Action {
 	@Override
 	/*** Checks if timeout is finished or reached setpoint ***/
 	public boolean isFinished() {
-
+		//Checks if current time is greater than timeout 
 		return (Timer.getFPGATimestamp() >= start_time + timeout) || reachedSetpoint;
 
 	}
 
 	@Override
-	/*** Updates gyro and checks if PID is complete ***/
+	/*** Checks if PID is complete ***/
 	public void update() {
-		if (driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
+		if (driveTrain.straightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {
 			reachedSetpoint = false;
@@ -99,22 +99,24 @@ public class ArcadeStraightAction extends Action {
 	@Override
 	/*** Starts timer and PID ***/
 	public void start() {
+		//Starts the timer
 		start_time = Timer.getFPGATimestamp();
-
+		
+		//Configures encoders to measuring magnitude, not rate
 		robot.leftDriveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		robot.rightDriveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-
+		//Reset Encoders before startng
 		robot.leftDriveEncoder.reset();
 		robot.rightDriveEncoder.reset();
 
 		leftEncoderStartDistance = robot.leftDriveEncoder.getDistance();
 		leftEncoderStartDistance = robot.rightDriveEncoder.getDistance();
-
+		//Set Output range and PID Constants
 		driveTrain.straightPID.setOutputRange(-maxSpeed, maxSpeed);
 		driveTrain.straightPID.setPID(P, I, D);
-		// TODO Maybe distance + encoderStartDistance or - encoder
+		// TODO Maybe distance - encoderStartDistance
 		driveTrain.straightPID.setSetpoint(distance);
-
+		//Starts arcade PID staright
 		driveTrain.straightPID.enable();
 	}
 

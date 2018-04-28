@@ -20,7 +20,7 @@ public class StepVoltageRoutine extends AutoRoutine {
 	@Override
 	protected void routine() {
 
-		robot.setVoltage(12);
+		/*robot.setVoltage(12);
 		waitTime(10);
 		robot.setVoltage(10);
 		waitTime(10);
@@ -29,7 +29,7 @@ public class StepVoltageRoutine extends AutoRoutine {
 		robot.setVoltage(6);
 		waitTime(10);
 		robot.setVoltage(4);
-		waitTime(10);
+		waitTime(10);*/
 	}
 
 }

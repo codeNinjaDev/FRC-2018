@@ -10,7 +10,7 @@ public abstract class Action {
 	/*** Function for code to run when action is starting ***/
 	public abstract void start();
 	
-	
+	/*** Easy variables for simple auto to start out with ***/
 	protected double goal_time;
 	protected double start_time;
 	protected double x_drive;

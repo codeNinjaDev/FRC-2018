@@ -57,12 +57,6 @@ public class DashboardLogger {
 		SmartDashboard.putNumber("PDP_TotalPower", robot.getTotalPower());
 	}
 
-	public void putDriveMotorCurrentData() {
-		SmartDashboard.putNumber("PDP_leftDriveMotorA", robot.getCurrent(Ports.LEFT_DRIVE_MOTOR_A_PDP_CHAN));
-		SmartDashboard.putNumber("PDP_leftDriveMotorB", robot.getCurrent(Ports.LEFT_DRIVE_MOTOR_B_PDP_CHAN));
-		SmartDashboard.putNumber("PDP_rightDriveMotorA", robot.getCurrent(Ports.RIGHT_DRIVE_MOTOR_A_PDP_CHAN));
-		SmartDashboard.putNumber("PDP_rightDriveMotorB", robot.getCurrent(Ports.RIGHT_DRIVE_MOTOR_B_PDP_CHAN));
-	}
 
 	public void putDriveEncoderData() {
 		SmartDashboard.putNumber("LEFT_ENC_DISTANCE", robot.leftDriveEncoder.getDistance());

@@ -20,7 +20,7 @@ public class Params {
 	// ARM PARAMS
 	public static double ARM_FEED_SETPOINT = 0;
 	public static double ARM_SWITCH_SETPOINT 	= 48;
-	public static double ARM_SCALE_SETPOINT = 137; // 0.575
+	public static double ARM_SCALE_SETPOINT = 125; // 0.575
 	public static double ARM_CLIMB_SETPOINT = 150;
 	public static double ARM_REST_SETPOINT = 0; 
 
@@ -80,26 +80,8 @@ public class Params {
 	public static double arm_i = 0;
 	public static double arm_d = 0;
 	public static double arm_f = 0;
-
-	
-	
-
-
-	// [GEAR_DOWN_PID]
-	public static final double gear_down_p = 0.0;
-	public static final double gear_down_i = 0.0;
-	public static final double gear_down_d = 0.0;
-
-	// [CAMERA]
-	public static final double h_low = 0;
-	public static final double h_high = 180;
-	public static final double s_low = 0;
-	public static final double s_high = 255;
-	public static final double v_low = 0;
-	public static final double v_high = 255;
 	
 	//[MOTION PROFILING] inches
-	public static final double wheel_diameter = 4;
 	public static final double maximum_velocity = 86; //TODO add maximum velocity in inches/s
 	public static final double maximum_acceleration = 0.12; //TODO add maximum velocity in inches/s/s
 	public static final double maximum_jerk = .23; //TODO add maximum velocity in a/s

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.Joystick;
-
+/*** Creates a toggle button on gamepad ***/
 public class ToggleButtonReader extends ButtonReader {
 	private boolean currToggleState;
 	

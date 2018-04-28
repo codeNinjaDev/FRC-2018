@@ -91,12 +91,15 @@ public class MotionController {
 	}
 	/** Sets up config, trajectory, tank modifier, and encoderFollowers using an array of Waypoints **/
 	public void setUp(Waypoint[] points) {
+		//Takes in points
 		this.points = points;
+		//Configures Trajectory based off of Time Step and Kinematics
 		config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, Params.dt,
 				Params.maximum_velocity, Params.maximum_acceleration, Params.maximum_jerk);
+		//Generates trajectory
 		trajectory = Pathfinder.generate(points, config);
 
-		// TODO find distance between front and rear axles of a vehicle
+		// Sets up Modifier and encoder followers from @jaci
 		modifier = new TankModifier(trajectory).modify(Params.wheel_base_width);
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
@@ -135,32 +138,35 @@ public class MotionController {
 	}
 	/** Static function that returns a trajectory given an array of waypoints **/
 	public static Trajectory generateTrajectory(Waypoint[] points) {
-		SmartDashboard.putString("MOTIONPROFILINGCONFIG", "CALCULATING");
+		
+		SmartDashboard.putString("PATH_GENERATING", "CALCULATING");
+		
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, Params.dt, Params.maximum_velocity, Params.maximum_acceleration,
 				Params.maximum_jerk);
-		SmartDashboard.putString("MOTIONPROFILINGCONFIG", "DONE");
-		double deltaTime = Timer.getFPGATimestamp();
+		
+		
 		Trajectory traj = Pathfinder.generate(points, config);;
-		deltaTime = Timer.getFPGATimestamp() - deltaTime;
-		SmartDashboard.putNumber("Delta Generate Time", deltaTime);
+		SmartDashboard.putString("PATH_GENERATING", "DONE");
 
 		return traj;
 	}
 	/** Enables motion profiling **/
 	public void enable() {
-		// TODO get max velocity
-		// TODO find ticks_per_revolution
-		// .1016 meters = 4 inch wheel diameter
+		
+		//Sets enabled to true
 		isEnabled = true;
-		left.configureEncoder(robot.leftDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
-		right.configureEncoder(robot.rightDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), 6);
+		//Configures Encoders
+		left.configureEncoder(robot.leftDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), Params.WHEEL_DIAMETER);
+		right.configureEncoder(robot.rightDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), Params.WHEEL_DIAMETER);
+		
 		left.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 		right.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 
 
 	}
 	
+	//Returns true if profile finished
 	public boolean isProfileFinished() {
 		return isProfileFinished;
 	}
@@ -169,35 +175,26 @@ public class MotionController {
 	/** Runs motion profiling **/
 	public void update() {
 		double deltaTime = Timer.getFPGATimestamp();
-
-		if (isEnabled || (!left.isFinished() && !right.isFinished())) {
+		// If we are enabled and the profile isn't finished
+		if (isEnabled && !isProfileFinished()) {
 			double l = left.calculate(robot.leftDriveEncoder.get());
 			double r = right.calculate(robot.rightDriveEncoder.get());
 
 			double gyro_heading = 0;
 
 			double desired_heading = Pathfinder.r2d(left.getHeading());
+			//Bound Half Degrees and next line just bounds to -180 180
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
 			double turn = 0.8 * (-1.0 / 80) * angleDifference;
 			robot.setLeftMotors(l + turn);
 			robot.setRightMotors(r - turn);
-			if (left != null && !left.isFinished()) {
-
-	            SmartDashboard.putNumber("Left diff", left.getSegment().x);
-	            SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
-	            SmartDashboard.putNumber("Left set pos", left.getSegment().x);
-	            SmartDashboard.putNumber("Left calc voltage", l);
-	            SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
-	            SmartDashboard.putNumber("Left + turn", l + turn);
-	            SmartDashboard.putNumber("Left seg acceleration", left.getSegment().acceleration);
-	            SmartDashboard.putNumber("Angle offset w/ new path angle offset", angleDifference);
-	        }
 	        
 
 	        if (left.isFinished() && right.isFinished()) {
 	            isProfileFinished = true;
 	        }
 		}
+		
 		deltaTime = Timer.getFPGATimestamp() - deltaTime;
 		SmartDashboard.putNumber("Update Interation", deltaTime);
 

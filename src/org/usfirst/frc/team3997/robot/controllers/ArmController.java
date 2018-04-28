@@ -172,7 +172,7 @@ public class ArmController {
 		//Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
-		armPIDController.setSetpoint(48);
+		armPIDController.setSetpoint(Params.ARM_SWITCH_SETPOINT);
 		armPIDController.enable();
 	}
 	/*** <h2> Moves arm to scoring position for the scale **/
@@ -223,33 +223,31 @@ public class ArmController {
 	}
 
 	public void intakeFunctions() {
+		//Keep wrist relaxed
 		robot.relaxWrist();
 		
-		
-
-		// If intake button pressed run intake wheels
+		// If intake button pressed, open intake and then run intake wheels
 		if (humanControl.getIntakeDesired()) {
-			// TODO Add limit switch logic
 			robot.openIntake();
 			intakePowerCube();
 			
-			// If outtake button pressed openIntake and run outtake wheels
+		// If outtake button pressed run outtake wheels
 		} else if (humanControl.getOuttakeDesired()) {
 			
-			// TODO Add limit switch logic
 			outtakePowerCube();
+			//If going to scale, Keep intake closed
 			if(humanControl.getScaleArmDesired()) {
 				robot.closeIntake();
+			//If going to switch, open intake
 			} else {
 				robot.openIntake();
 			}
 		} else {
-			
+			//If not pressing anything, keep intake closed and stop intake wheels.
 			robot.closeIntake();
 			robot.stopIntake();
 		}
-		// If toggle collapsed is desired then it shifts the pneumatics to the next
-		// position
+		
 		
 	}
 
