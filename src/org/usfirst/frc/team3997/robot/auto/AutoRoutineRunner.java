@@ -8,7 +8,10 @@ public class AutoRoutineRunner {
 	private boolean autoStarted;
 	private AutoRoutine new_auto_routine;
 	private Thread routine_thread;
-
+	/*** 
+	 * Starts auto routine 
+	 * @param new_auto_routine 
+	 */
 	public void setAutoRoutine(AutoRoutine new_auto_routine) {
 		
 		autoTimer.reset();
@@ -18,7 +21,7 @@ public class AutoRoutineRunner {
 		SmartDashboard.putString("settingAutoRoutine", "SETTING");
 
 	}
-
+	/*** Starts new thread and runs auto routine ***/
 	public void start() {
 		SmartDashboard.putString("settingAutoRoutine", "STARTING");
 
@@ -41,7 +44,7 @@ public class AutoRoutineRunner {
 			SmartDashboard.putString("settingAutoRoutine", "NULL");
 		}
 	}
-	
+	/*** Stops autoroutine and thread ***/
 	public void stop() {
 		if(!autoStarted) {
 			return;
@@ -55,7 +58,7 @@ public class AutoRoutineRunner {
 		routine_thread = null;
 		autoTimer.stop();
 	}
-	
+	/*** Gets auto runner timer ***/
 	static public Timer getTimer() {
 		return autoTimer;
 	}

@@ -159,7 +159,7 @@ public class MotionController {
 		//Configures Encoders
 		left.configureEncoder(robot.leftDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), Params.WHEEL_DIAMETER);
 		right.configureEncoder(robot.rightDriveEncoder.get(), (int) Math.round(Params.PULSES_PER_ROTATION), Params.WHEEL_DIAMETER);
-		
+		//Configure PIDVA Constants
 		left.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 		right.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 
@@ -180,7 +180,7 @@ public class MotionController {
 			double l = left.calculate(robot.leftDriveEncoder.get());
 			double r = right.calculate(robot.rightDriveEncoder.get());
 
-			double gyro_heading = 0;
+			double gyro_heading = robot.getAngle();
 
 			double desired_heading = Pathfinder.r2d(left.getHeading());
 			//Bound Half Degrees and next line just bounds to -180 180

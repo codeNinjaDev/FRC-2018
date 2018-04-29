@@ -99,7 +99,7 @@ public class DashboardLogger {
 	
 	public void putStats() {
 		double position = robot.leftDriveEncoder.getDistance();
-		double velocity = position/statTimer.get();
+		double velocity = robot.leftDriveEncoder.getRate();
 		double acceleration = velocity/statTimer.get();
 		double jerk = acceleration/statTimer.get();
 		

@@ -21,13 +21,13 @@ import org.usfirst.frc.team3997.robot.auto.routines.TurnRoutine;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+/*** Gets selected autonomous routine ***/
 public class AutoSelector {
 
 	SendableChooser<Integer> autoChooser;
 	private ArrayList<AutoRoutine> autoRoutines;
 	int selectedIndex;
-	
+	/*** registers autonomous routines in order ***/
 	public AutoSelector(MasterController controllers) {
 		selectedIndex = 0;
 		autoRoutines = new ArrayList<AutoRoutine>();
@@ -52,7 +52,7 @@ public class AutoSelector {
 
 		
 	} 
-	
+	/*** Lists the auto routines on SmartDashboard ***/
 	public void listOptions() {
 		autoChooser = new SendableChooser<Integer>();
 		autoChooser.addDefault("Nothing (Default)", 0);
@@ -76,27 +76,28 @@ public class AutoSelector {
 		SmartDashboard.putData("Autonomous", autoChooser);
 		System.out.println("AUTO SELECTOR " + autoChooser);
 	}
-	
+	/*** Sets the autoroutine based on the driver choice ***/
 	public AutoRoutine pick() {
 		setAutoRoutineByIndex((int)autoChooser.getSelected());
 		return getAutoRoutine();
 	}
-	
+	/*** Appends another autoRoutine ***/
 	public void registerAutonomous(AutoRoutine auto) {
 		//
 		autoRoutines.add(auto);
 	}
-	
+	/*** gets the selected autonomous routine **/
 	public AutoRoutine getAutoRoutine() {
 		return autoRoutines.get(selectedIndex);
 	}
-	
+	/*** sets auto routine ***/
 	private void setAutoRoutineByIndex(int input) {
 		if(input < 0 || input >= autoRoutines.size()) {
 			input = 0;
 		}
 		selectedIndex = input;
 	}
+	/*** Gets default routine ***/
 	public AutoRoutine getDefaultRoutine() {
 		return autoRoutines.get(0);
 	}
