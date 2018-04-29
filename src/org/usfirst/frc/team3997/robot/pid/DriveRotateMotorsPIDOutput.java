@@ -2,7 +2,7 @@ package org.usfirst.frc.team3997.robot.pid;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
+/*** Controls Drive Rotation ***/
 public class DriveRotateMotorsPIDOutput implements PIDOutput{
 	private DifferentialDrive drive;
 	public DriveRotateMotorsPIDOutput(DifferentialDrive drive) {
