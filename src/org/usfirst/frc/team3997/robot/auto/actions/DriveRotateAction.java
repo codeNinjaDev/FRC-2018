@@ -7,21 +7,38 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+/*** Rotate to a specified angle with encoders as sensor ***/
 public class DriveRotateAction extends Action{
 	private DriveController driveTrain;
 	private RobotModel robot;
-	
+	/*** Distance Setpoint (Converted from angle in degrees to inches) ***/
 	private double distance;
+	/*** Max time for action to complete ***/
 	private double timeout;
+	/*** Max speed action can run ***/
 	private double maxSpeed;
+	//P I D constants
+	/** PID coefficients 
+	 */
 	private double P, I, D;
+	/*** The residual distance of encoders (error basically) ***/
 	private double leftEncoderStartDistance, rightEncoderStartDistance;
+	/*** Checks if reached desired setpoint ***/
+	private boolean reachedSetpoint;
+	/*** If true, it waits until timeout is complete, even if PID has hit the setpoint ***/
+	private boolean waitForTimeout;
 	
-	private boolean reachedSetpoint, waitForTimeout;
-	
+	/***
+	 * Converts angle to degrees and initalizes all variables
+	 * @param controllers ALl classes that control robot functionality
+	 * @param angle Angle Setpoint (e.g 90 degrees)
+	 * @param maxSpeed Max Speed of rotation (-1 to 1)
+	 * @param timeout Max allowed time action runs for
+	 * @param waitForTimeout Whether to wait the full timeout, even if the setpoint is reached
+	 */ 
 	public DriveRotateAction(MasterController controllers, double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
 		this.driveTrain = controllers.getDriveController();
+		//It takes 20 inches on the left side and -20 inches on the right side to turn 90 degrees
 		this.distance = (angle * 20.0) / (90.0);
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();

@@ -23,9 +23,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Gets selected autonomous routine ***/
 public class AutoSelector {
-
+	/*** Radio buttons on SmartDashboard ***/
 	SendableChooser<Integer> autoChooser;
+	/*** Array of All Autonomous Routines ***/
 	private ArrayList<AutoRoutine> autoRoutines;
+	/*** Selected Routine index ***/
 	int selectedIndex;
 	/*** registers autonomous routines in order ***/
 	public AutoSelector(MasterController controllers) {

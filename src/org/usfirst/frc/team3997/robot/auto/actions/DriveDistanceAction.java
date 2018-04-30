@@ -14,17 +14,22 @@ public class DriveDistanceAction extends Action{
 	private DriveController driveTrain;
 	private RobotModel robot;
 	
-	//Distance
+	/*** Distance Setpoint ***/
 	private double distance;
-	//Max time for action to complete
+	/*** Max time for action to complete ***/
 	private double timeout;
-	//Max speed action can run
+	/*** Max speed action can run ***/
 	private double maxSpeed;
 	//P I D constants
+	/** PID coefficients 
+	 */
 	private double P, I, D;
+	/*** The residual distance of encoders (error basically) ***/
 	private double leftEncoderStartDistance, rightEncoderStartDistance;
-	
-	private boolean reachedSetpoint, waitForTimeout;
+	/*** Checks if reached desired setpoint ***/
+	private boolean reachedSetpoint;
+	/*** If true, it waits until timeout is complete, even if PID has hit the setpoint ***/
+	private boolean waitForTimeout;
 	/*** Drives Forward with independent left and right PID controllers
 	 * 
 	 * @param controllers ALl classes that control robot functionality

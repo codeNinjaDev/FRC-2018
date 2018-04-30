@@ -21,8 +21,9 @@ public abstract class AutoRoutine {
 	public class OneCubeCenterAutoRoutine {
 
 	}
-
+	/*** Boolean checks if auton is active ***/
 	public boolean m_active = false;
+	/*** Boolean checks if in teleop ***/
 	public boolean teleop;
 	
 	/*** Drives for a specified time interval

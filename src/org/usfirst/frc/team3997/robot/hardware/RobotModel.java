@@ -12,32 +12,37 @@ import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.Params;
 /*** Hardware (motors, pneumatics, sensors) for robot ***/
 public class RobotModel {
-	//Drive Motors
+	/***Drive Motors***/
 	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
-	//Arm and Intake Motors
-	public Spark leftArmMotor, rightArmMotor, leftIntakeMotor, rightIntakeMotor;
-	//Motor Groups for Drive, Arm, and Intake
-	public SpeedControllerGroup leftDriveMotors, rightDriveMotors, armMotors, intakeMotors;
-	//Drive Encoder
+	/*** Arm Motors ***/
+	public Spark leftArmMotor, rightArmMotor;
+	/***Intake Motors***/
+	public Spark leftIntakeMotor, rightIntakeMotor;
+	/***Motor Groups for Drive***/
+	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
+	/***Motor Groups for Arm ***/
+	public SpeedControllerGroup armMotors;
+	/***Motor Groups for Intake ***/
+	public SpeedControllerGroup intakeMotors;;
+	/*** Drive Encoder ***/
 	public Encoder leftDriveEncoder, rightDriveEncoder;
-	//Arm Potentiometer
+	/*** Arm Potentiometer ***/
 	public TenTurnPotentiometer pot;
-	//Compressor
+	/*** Compressor (not really needed) ***/
 	public Compressor compressor;
-	//Intake solenoid (opens or closes claw)
+	
+	/***Intake solenoid (opens or closes claw)***/
 	public DoubleSolenoid intakeSolenoid;
-	//wrist solenoid (brings up or down claw)
+	/*** Wrist solenoid (brings up or down claw) **/
 	public DoubleSolenoid wristSolenoid;
-	//Gyro
+	/*** Gyro ***/
 	public Gyro mpu_gyro;
 	//public DigitalInput limitSwitch;
 	
 
-	// public CameraServer camera;
-	public Timer timer;
-	public Timer autoTimer;
-	public Timer teleopTimer;
-	//Power Distribution Panel (Gives electricity to all motors)
+	/*** Timers for robot status***/
+	public Timer timer, autoTimer, teleopTimer;
+	/***Power Distribution Panel (Gives electricity to all motors)***/
 	private PowerDistributionPanel pdp;
 	
 	CANStatus canStatus;
@@ -45,6 +50,7 @@ public class RobotModel {
 	 * TODO boolean enabled = c.enabled(); boolean pressureSwitch =
 	 * c.getPressureSwitchValue(); double current = c.getCompressorCurrent();
 	 */
+	/*** Initalizes all hardware ***/
 	public RobotModel() {
 		pdp = new PowerDistributionPanel();
 		// Pneumatics

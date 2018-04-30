@@ -24,11 +24,17 @@ import org.usfirst.frc.team3997.robot.hardware.*;
  * 
  */
 public class MasterController {
+	/*** Vision Controller ***/
 	private VisionController vision;
+	/*** Drive Controller ***/
 	private DriveController driveTrain;
+	/*** Light Controller ***/
 	private LightController lights;
+	/*** Robot Model ***/
 	private RobotModel robot;
+	/*** Motion Profiling Controller ***/
 	private MotionController motion;
+	/*** Arm Controller ***/
 	private ArmController armController;
 
 	/**
@@ -58,7 +64,7 @@ public class MasterController {
 	}
 
 	/**
-	 * Returns VisionController object initialization in Robot.java
+	 * Returns VisionController object from Robot.java
 	 *
 	 **/
 	public VisionController getVisionController() {
@@ -66,7 +72,7 @@ public class MasterController {
 	}
 
 	/**
-	 * Returns RobotModel object initialization in Robot.java
+	 * Returns RobotModel object from Robot.java
 	 *
 	 **/
 	public RobotModel getRobotModel() {
@@ -74,7 +80,7 @@ public class MasterController {
 	}
 
 	/**
-	 * Returns DriveController object initialization in Robot.java
+	 * Returns DriveController object from Robot.java
 	 *
 	 **/
 	public DriveController getDriveController() {
@@ -82,7 +88,7 @@ public class MasterController {
 	}
 
 	/**
-	 * Returns LightController object initialization in Robot.java
+	 * Returns LightController object from Robot.java
 	 *
 	 **/
 	public LightController getLightController() {
@@ -90,13 +96,17 @@ public class MasterController {
 	}
 
 	/**
-	 * Returns MotionController object initialization in Robot.java
+	 * Returns MotionController object from Robot.java
 	 *
 	 **/
 	public MotionController getMotionController() {
 		return motion;
 	}
 
+	/**
+	 * Returns ArmController object from Robot.java
+	 *
+	 **/
 	public ArmController getArmController() {
 		return armController;
 	}

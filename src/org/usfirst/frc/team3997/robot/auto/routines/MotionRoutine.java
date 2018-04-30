@@ -4,7 +4,6 @@ import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 
-import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 

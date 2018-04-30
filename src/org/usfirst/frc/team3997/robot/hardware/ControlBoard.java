@@ -16,15 +16,15 @@ public class ControlBoard extends RemoteControl {
 	//Operator Buttons
 /** Operator Buttons **/
 	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, intakeButton, outtakeButton;
+	/*** Arm Override Trigger ***/
 	public ToggleButtonReader armManualButton;
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
 	/** Operator Triggers **/
 	public TriggerReader relaxWristButton;
-	
+	/*** Booleans for relax wrist TODO for offseason streamline ***/
 	private boolean relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
 			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired;
-
 
 	/** Driver joystick axes **/
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
@@ -181,28 +181,32 @@ public class ControlBoard extends RemoteControl {
 		return 0.0;
 	}
 	
-
-	/** Checks if driver wants arcade drive **/
+	/*
+	 * Commented in RemoteControl.java
+	 * (non-Javadoc)
+	 * 
+	 */
+	
+	@Override
 	public boolean getArcadeDriveDesired() {
 		return arcadeDriveDesired;
 	}
-	/** Checks if driver wants first brake **/
+	@Override
 	public boolean getSlowDriveTier1Desired() {
 		return slowDriveTier1Desired;
 	}
-	/** Checks if driver wants second brake **/
+	@Override
 	public boolean getSlowDriveTier2Desired() {
 		return slowDriveTier2Desired;
 	}
-	/** Checks if driver wants inverse drive **/
+	@Override
 	public boolean getDriveBackDesired() {
 		return driveBackDesired;
 	}
-	/** I have no clue **/
+	@Override
 	public boolean getDriveBackOtherDesired() {
 		return driveBackOtherDesired;
 	}
-	
 	
 
 	@Override

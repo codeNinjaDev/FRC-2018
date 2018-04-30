@@ -2,6 +2,9 @@ package org.usfirst.frc.team3997.robot;
 
 import org.usfirst.frc.team3997.robot.feed.DashboardVariables;
 
+/***
+ * Paramter Constants
+ */
 public class Params {
 
 	// Params.h: Preferences for the robot
@@ -15,18 +18,16 @@ public class Params {
 	public static double X_ARCADE_DRIVE_LEFT_RIGHT = 6.25;
 	public static double X_ARCADE_DRIVE_STRAIGHT = 6.25;
 
-
-
 	// ARM PARAMS
 	public static double ARM_FEED_SETPOINT = 0;
-	public static double ARM_SWITCH_SETPOINT 	= 48;
+	public static double ARM_SWITCH_SETPOINT = 48;
 	public static double ARM_SCALE_SETPOINT = 125; // 0.575
 	public static double ARM_CLIMB_SETPOINT = 150;
-	public static double ARM_REST_SETPOINT = 0; 
+	public static double ARM_REST_SETPOINT = 0;
 
 	public static double MAX_SPEED = 1;
 	public static double HARDSET_DRIVE_SPEED_MAX = MAX_SPEED;
-	//Wheel diameter in inches
+	// Wheel diameter in inches
 	public static double WHEEL_DIAMETER = 6;
 	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
@@ -80,23 +81,23 @@ public class Params {
 	public static double arm_i = 0;
 	public static double arm_d = 0;
 	public static double arm_f = 0;
-	
-	//[MOTION PROFILING] inches
-	public static final double maximum_velocity = 86; //TODO add maximum velocity in inches/s
-	public static final double maximum_acceleration = 0.12; //TODO add maximum velocity in inches/s/s
-	public static final double maximum_jerk = .23; //TODO add maximum velocity in a/s
-    public static final double dt = .7; 
 
-    public static final double kp = 0.8; //1.2;
-    public static final double kd = 0.0;
-    public static final double ki = 0.0;
-    
-    public static final double kv = 1.0 / maximum_velocity; // Calculated for test Drivetrain
-    public static final double ka = 0.05; //0.015
-    //Center of front wheel to center of back wheel
-    //public static final double wheel_base_width = 0.72;
-    public static final double wheel_base_width = 24.5;
-    //Center of front left wheel to center of front right wheel
-    public static final double track_base_width = 25;
+	// [MOTION PROFILING] inches
+	public static final double maximum_velocity = 86; // TODO add maximum velocity in inches/s
+	public static final double maximum_acceleration = 0.12; // TODO add maximum velocity in inches/s/s
+	public static final double maximum_jerk = .23; // TODO add maximum velocity in a/s
+	public static final double dt = .7;
+
+	public static final double kp = 0.8; // 1.2;
+	public static final double kd = 0.0;
+	public static final double ki = 0.0;
+
+	public static final double kv = 1.0 / maximum_velocity; // Calculated for test Drivetrain
+	public static final double ka = 0.05; // 0.015
+	// Center of front wheel to center of back wheel
+	// public static final double wheel_base_width = 0.72;
+	public static final double wheel_base_width = 24.5;
+	// Center of front left wheel to center of front right wheel
+	public static final double track_base_width = 25;
 
 }

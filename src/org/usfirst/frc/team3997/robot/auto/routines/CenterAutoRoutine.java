@@ -7,8 +7,6 @@ import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 
-import jaci.pathfinder.Trajectory;
-
 /**
  * @author peter
  *

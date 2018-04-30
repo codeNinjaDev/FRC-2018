@@ -9,8 +9,6 @@ import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-import jaci.pathfinder.Trajectory;
-
 /**
  * @author peter
  *

@@ -1,9 +1,7 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 public class StepVoltageRoutine extends AutoRoutine {

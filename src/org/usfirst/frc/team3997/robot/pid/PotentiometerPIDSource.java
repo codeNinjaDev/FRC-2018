@@ -5,14 +5,19 @@ import org.usfirst.frc.team3997.robot.hardware.TenTurnPotentiometer;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
-
+/*** Sets 10 turn Potentiometer as a PID Source ***/
 public class PotentiometerPIDSource implements PIDSource {
+	/*** Ten Turn Potentiometer ***/
 	TenTurnPotentiometer pot;
+	/*** Current Angle from pot***/
 	double currentAngle;
+	/*** Past Angle from pot ***/
 	double pastAngle;
-	
+	/*** Current Time ***/
 	double currentTime;
+	/*** Past Time ***/
 	double pastTime;
+	/*** Timer to calculate arm rate ***/
 	Timer armTimer;
 
 	public PotentiometerPIDSource(TenTurnPotentiometer pot) {

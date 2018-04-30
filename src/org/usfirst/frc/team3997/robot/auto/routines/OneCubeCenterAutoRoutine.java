@@ -2,10 +2,7 @@ package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
-
-import edu.wpi.first.wpilibj.Timer;
 
 public class OneCubeCenterAutoRoutine extends AutoRoutine {
 	private MasterController controllers;

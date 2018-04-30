@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj.*;
 import java.lang.Math;
 
 /**
+ * MPU9250 Gyro class
  * @author peter
- *
+ * 
  */
 public class MPU9250Gyro extends GyroBase implements PIDSource {
 

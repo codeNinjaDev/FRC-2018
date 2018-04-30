@@ -1,16 +1,7 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import java.io.File;
-
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Timer;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 
 public class PassAutoLineRoutine extends AutoRoutine {
 	private MasterController controllers;

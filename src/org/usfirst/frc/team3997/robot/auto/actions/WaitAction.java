@@ -1,9 +1,12 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.Timer;
-
+/*** Waits for n seconds ***/
 public class WaitAction extends Action {
-	
+	/**
+	 * Delays auto
+	 * @param seconds Num seconds of delay
+	 */
 	public WaitAction(double seconds) {
 		goal_time = seconds;
 		

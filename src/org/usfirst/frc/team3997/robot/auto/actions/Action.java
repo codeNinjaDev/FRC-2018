@@ -10,10 +10,13 @@ public abstract class Action {
 	/*** Function for code to run when action is starting ***/
 	public abstract void start();
 	
-	/*** Easy variables for simple auto to start out with ***/
+	/*** Goal end time for autonomous action ***/
 	protected double goal_time;
+	/** Start time for autonomous ***/
 	protected double start_time;
+	/*** Rotation value for autonomous action ***/
 	protected double x_drive;
+	/*** Forward value for autonomous action ***/
 	protected double y_drive;
 
 }

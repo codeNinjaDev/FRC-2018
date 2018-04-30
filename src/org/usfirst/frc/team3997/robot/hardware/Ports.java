@@ -1,9 +1,9 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.I2C.Port;
-
+/***************** DEALS WITH PORTS *****************/
 public class Ports {
-	// ***************** PWM PORTS *****************
+	
 	public static final int LEFT_ARM_MOTOR_PWM_PORT                = 8;
 	public static final int RIGHT_ARM_MOTOR_PWM_PORT               = 3;
 	public static final int LEFT_INTAKE_MOTOR_PWM_PORT             = 9;

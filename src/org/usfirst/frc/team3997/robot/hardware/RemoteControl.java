@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
-
+/*** Abstract class for all input for robot functionality ***/
 public abstract class RemoteControl {
 	/*** Whose controllers (driver or operator)
 	 * 
