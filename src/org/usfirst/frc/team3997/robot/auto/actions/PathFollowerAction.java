@@ -40,7 +40,7 @@ public class PathFollowerAction extends Action{
 	@Override
 	/*** Runs in loop and updates PIDVA motion pid controller ***/
 	public void update() {
-		motion.update();
+		
 	}
 
 	@Override

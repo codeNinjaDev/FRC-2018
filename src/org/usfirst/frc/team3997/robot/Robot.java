@@ -224,6 +224,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledPeriodic() {
+	
 		//Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
 		//Put Gyro Angle on SmartDashboard

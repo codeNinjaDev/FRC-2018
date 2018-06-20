@@ -226,7 +226,11 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	final int GFS_500DPS = 0x02;
 	final int GFS_1000DPS = 0x04;
 	final int GFS_2000DPS = 0x06;
-
+	final int NUM_SAMPLES = 10;
+	double[] gyroSamples = new double[NUM_SAMPLES];
+	double offset = 0;
+	
+	
 	I2C i2c;
 	PIDSourceType pidSourceType;
 	int gScale;
@@ -247,8 +251,10 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		if (i2c.addressOnly()) {
 			SmartDashboard.putString("GYRO", "FOUND");
 			getGyroRes(gScale);
-			calibrate();
 			init();
+			calibrate();
+			reset();
+			
 
 		} else {
 			SmartDashboard.putString("GYRO", "NOTFOUND");
@@ -509,7 +515,7 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	@Override
 	public double getAngle() {
 		update();
-		return yaw;
+		return yaw - offset;
 	}
 
 	@Override
@@ -531,19 +537,21 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
 
 		// TODO change to account for drift
-		double rotation_threshold = 0;
+		double rotation_threshold = .5;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
 		//I think gz is rate of change
 		gx = gyroData[0] * gRes;
 		gy = gyroData[1] * gRes;
 		gz = gyroData[2] * gRes;
-
+		
+		//Scale gz based on averaged samples
+		gz = sampleGyroData(gz);
+		
 		double deltaTime = currentTimestamp - currentTime;
 		// I have a bad feeling about having it exactly equal to 20
 		// Do I really need to have deltaTime be greater than or equal to 20?
-		
-		boolean drift_control = (gz < rotation_threshold);
+		SmartDashboard.putNumber("GZ ", gz);
 		if ((deltaTime >= 20)) {
 			/**
 			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
@@ -595,5 +603,27 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 
 		return getAngle();
 
+	}
+	
+	public double sampleGyroData(double gz) {
+		double sampledGyroData = 0;
+		//Shift samples
+		for(int i = 0; i < (NUM_SAMPLES - 1); i++) {
+			gyroSamples[i] = gyroSamples[i + 1];
+		}
+		//Set current sample to last cell
+		gyroSamples[NUM_SAMPLES] = gz;
+		//Average samples
+		for(int i = 0; i < NUM_SAMPLES; i++) {
+			sampledGyroData += gyroSamples[i];
+		}
+		sampledGyroData /= NUM_SAMPLES;
+		
+		return sampledGyroData;
+		
+	}
+	
+	public void setOffset() {
+		offset = getAngle();
 	}
 }

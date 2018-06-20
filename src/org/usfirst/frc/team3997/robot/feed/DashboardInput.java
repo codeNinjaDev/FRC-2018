@@ -33,7 +33,8 @@ public class DashboardInput {
 		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
 
 		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
-		
+		SmartDashboard.putNumber("ARM P", Params.arm_p);
+
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
 		System.out.println("PREFS: " + preferences.getDouble("Max Speed", 1));
 	}
@@ -78,6 +79,7 @@ public class DashboardInput {
 
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
 		SmartDashboard.putNumber("Params Max Speed", Params.MAX_SPEED);
+		SmartDashboard.putNumber("ARM P", Params.arm_p);
 
 
 	}

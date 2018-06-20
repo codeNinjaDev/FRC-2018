@@ -1,10 +1,14 @@
 package org.usfirst.frc.team3997.robot.controllers;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
+import java.util.TimerTask;
 
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.*;
@@ -21,6 +25,7 @@ import jaci.pathfinder.modifiers.TankModifier;
  **/
 public class MotionController {
 	private RobotModel robot;
+	private java.util.Timer controlLoopTimer;
 	boolean isProfileFinished = false;
 
 	/**
@@ -82,11 +87,23 @@ public class MotionController {
 	 */
 	public EncoderFollower right;
 	private boolean isEnabled;
+	private class PathTask extends TimerTask {
+	    private PIDController m_controller;
 
+	    PathTask() {
+
+	    }
+
+	    @Override
+	    public void run() {
+	    	update();
+	    }
+	  }
 	/** Gets RobotModel object and sets boolean isEnabled to false **/
 	public MotionController(RobotModel robot) {
 		this.robot = robot;
 		isEnabled = false;
+		controlLoopTimer = new java.util.Timer();
 		
 	}
 	/** Sets up config, trajectory, tank modifier, and encoderFollowers using an array of Waypoints **/
@@ -153,7 +170,6 @@ public class MotionController {
 	}
 	/** Enables motion profiling **/
 	public void enable() {
-		
 		//Sets enabled to true
 		isEnabled = true;
 		//Configures Encoders
@@ -163,6 +179,7 @@ public class MotionController {
 		left.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 		right.configurePIDVA(Params.kp, Params.ki, Params.kd, Params.kv, Params.ka);
 
+		controlLoopTimer.schedule(new PathTask(), 0L, 20);
 
 	}
 	
@@ -192,6 +209,7 @@ public class MotionController {
 
 	        if (left.isFinished() && right.isFinished()) {
 	            isProfileFinished = true;
+	            controlLoopTimer.cancel();
 	        }
 		}
 		
@@ -205,5 +223,7 @@ public class MotionController {
 		robot.setLeftMotors(0);
 		robot.setRightMotors(0);
 	}
+	
+	
 
 }
