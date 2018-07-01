@@ -63,10 +63,10 @@ public class RighScale extends AutoRoutine {
 		robot.intakeWheels(-1);
 		waitTime(1);
 		robot.stopIntake();
-		arm.goToScalePosition();
-		waitTime(2.5);
+		goToScale(controllers);
+		//waitTime(2.5);
 		outtake(controllers, 1, -1);
-		arm.goToFeedPosition();
+		goToFeed(controllers);
 	}
 
 

@@ -62,9 +62,10 @@ void goToScale() {
 		waitTime(1);
 		robot.stopIntake();
 		arm.goToScalePosition();
-		waitTime(2.5);
+		goToScale(controllers);
+		//waitTime(2.5);
 		outtake(controllers, 1, -1);
-		arm.goToFeedPosition();
+		goToFeed(controllers);
 
 		
 	}

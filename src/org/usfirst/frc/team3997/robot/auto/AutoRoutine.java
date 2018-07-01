@@ -6,8 +6,11 @@ import org.usfirst.frc.team3997.robot.auto.actions.ArcadeStraightAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
 import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
 import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.ScaleAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
 import org.usfirst.frc.team3997.robot.auto.actions.VisionAction;
 import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 
@@ -109,6 +112,15 @@ public abstract class AutoRoutine {
 		runAction(new WaitAction(seconds));
 	}
 	
+	public void goToScale(MasterController controllers) {
+		runAction(new ScaleAction(controllers));
+	}
+	public void goToSwitch(MasterController controllers) {
+		runAction(new SwitchAction(controllers));
+	}
+	public void goToFeed(MasterController controllers) {
+		runAction(new FeedAction(controllers));
+	}
 	/*** If autonomous structure is active ***/
 	public boolean isActive() {
 		return m_active;
@@ -140,6 +152,8 @@ public abstract class AutoRoutine {
 		//Finishes action
 		action.finish();
 	}
+	
+	
 	
 	/*** Abstract function that runs before we start autonomous ***/
 	public abstract void prestart(); 
