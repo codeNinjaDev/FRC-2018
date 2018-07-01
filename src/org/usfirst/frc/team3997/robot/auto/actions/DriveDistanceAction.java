@@ -7,9 +7,10 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Drives Left and Right Side PID independently ***/
-public class DriveDistanceAction extends Action{
+public class DriveDistanceAction extends Command {
 
 	private DriveController driveTrain;
 	private RobotModel robot;
@@ -25,7 +26,7 @@ public class DriveDistanceAction extends Action{
 	 */
 	private double P, I, D;
 	/*** The residual distance of encoders (error basically) ***/
-	private double leftEncoderStartDistance, rightEncoderStartDistance;
+	private double leftEncoderStartDistance, rightEncoderStartDistance, start_time;
 	/*** Checks if reached desired setpoint ***/
 	private boolean reachedSetpoint;
 	/*** If true, it waits until timeout is complete, even if PID has hit the setpoint ***/
@@ -45,7 +46,7 @@ public class DriveDistanceAction extends Action{
 		this.robot = controllers.getRobotModel();
 		this.maxSpeed = maxSpeed;
 		this.waitForTimeout = waitForTimeout;
-		
+		start_time = 0;
 		reachedSetpoint = false;
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
@@ -60,9 +61,9 @@ public class DriveDistanceAction extends Action{
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
 
 	}
-	@Override
+
 	/*** Checks if action is finished ***/
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		//Check if we want to only wait for Timeout
 		if(waitForTimeout) 
 			return (Timer.getFPGATimestamp() >= start_time + timeout);
@@ -70,9 +71,8 @@ public class DriveDistanceAction extends Action{
 			return (Timer.getFPGATimestamp() >= start_time + timeout) || reachedSetpoint;
 	}
 
-	@Override
 	/*** Updates action code in a loop ***/
-	public void update() {
+	protected void execute() {
 		//Checks if pid controllers are reached setpoint
 		if(driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
@@ -81,18 +81,16 @@ public class DriveDistanceAction extends Action{
 		}
 	}
 
-	@Override
 	/*** Code that runs when action ends ***/
-	public void finish() {
+	protected void end() {
 		//Disables PID and stops drive
 		driveTrain.leftPID.disable();
 		driveTrain.rightPID.disable();
 		driveTrain.stop();
 	}
 
-	@Override
 	/*** Starts action ***/
-	public void start() {
+	protected void initialize() {
 		//Starts Timer
 		start_time = Timer.getFPGATimestamp();
 		//Configures encoders to measuring magnitude, not rate

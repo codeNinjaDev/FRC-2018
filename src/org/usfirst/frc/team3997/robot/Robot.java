@@ -5,9 +5,8 @@ import org.opencv.core.Point;
 import org.opencv.core.Point3;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team3997.robot.auto.Auto;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutineRunner;
-import org.usfirst.frc.team3997.robot.auto.actions.Action;
+import org.usfirst.frc.team3997.robot.auto.AutoSelector;
+
 import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
@@ -28,7 +27,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -54,7 +56,9 @@ public class Robot extends IterativeRobot {
 	MotionController motion;
 
 	MasterController masterController;
-	Auto auto;
+	AutoSelector autoSelector;
+	SendableChooser<CommandGroup> autoChooser;
+	CommandGroup selectedAutonomous;
 	Timer timer;
 
 
@@ -76,18 +80,19 @@ public class Robot extends IterativeRobot {
 		armController = new ArmController(robot, humanControl);
 		masterController = new MasterController(driveController, robot, motion, visionController,
 				lights, armController);
-		auto = new Auto(masterController);
 		timer = new Timer();
 		
 		// Sets enabled lights
 		lights.setEnabledLights();
 		// Resets autonomous
-		auto.reset();
-		//List autonomous routines on Dashboard
-		auto.listOptions();
+		
 		//Updates input from Robot Preferences
 		input.updateInput();
-
+		autoSelector = new AutoSelector(masterController);
+		autoChooser = autoSelector.listOptions();
+		SmartDashboard.putData(autoChooser);
+		
+		
 		/*** Starts camera stream ***/
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -120,19 +125,17 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		/*** Reset all hardware ***/
 		robot.reset();
-		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
+		
 		//Update robot preferences
 		input.updateInput();
-		//Stop autonomous before starting
-		auto.stop();
+		
 		//Reset timer
 		timer.reset();
 		//Start timer
 		timer.start();
-		//Starts Autonomous Routine
-		auto.start();
 		
+		selectedAutonomous = autoChooser.getSelected();
+		selectedAutonomous.start();
 	}
 
 	/**
@@ -147,6 +150,7 @@ public class Robot extends IterativeRobot {
 		//Log data to the Dashboard
 		dashboardLogger.updateData();
 
+		Scheduler.getInstance().run();
 	}
 
 	/**
@@ -156,7 +160,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		//Stop autonomous
-		auto.stop();
+		selectedAutonomous.cancel();
 		//Reset Gyro
 		robot.resetGyro();
 		//Reset hardware timer
@@ -207,8 +211,7 @@ public class Robot extends IterativeRobot {
 
 	public void disabledInit() {
 		robot.resetGyro();
-		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
+		
 		//Reset drive
 		driveController.reset();
 		//Reset hardware
@@ -221,8 +224,6 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 	
-		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
 		//Put Gyro Angle on SmartDashboard
 		SmartDashboard.putNumber("gyro", robot.getAngle());
 		//Update input from Dashboard

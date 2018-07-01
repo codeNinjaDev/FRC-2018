@@ -4,16 +4,24 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.ScaleAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * @author peter
  *
  */
-public class LeftAutoRoutine extends AutoRoutine {
+public class LeftAutoRoutine extends CommandGroup {
 	private MasterController controllers;
 	private ArmController arm;
 	private RobotModel robot;
@@ -21,15 +29,8 @@ public class LeftAutoRoutine extends AutoRoutine {
 	public LeftAutoRoutine(MasterController controllers) {
 		this.controllers = controllers;
 		arm = controllers.getArmController();
-	}
-
-	@Override
-	public void prestart() {
 		controllers.getRobotModel().closeIntake();
-	}
 
-	@Override
-	protected void routine() {
 		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
 		if (isLeftSwitch) {
 			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
@@ -43,7 +44,7 @@ public class LeftAutoRoutine extends AutoRoutine {
 			 * 
 			 ***/
 			if (isLeftScale) {
-				goToScale();
+
 			} else if (isRightScale) {
 				goToSwitch();
 			}
@@ -61,10 +62,9 @@ public class LeftAutoRoutine extends AutoRoutine {
 				/***
 				 * Right Side:
 				 * 
-				 * If Right Switch: 
+				 * If Right Switch:
 				 * 
-				 * If Right Scale: PASS AutoLine Drive Forward 200 in Outtake
-				 * Block 
+				 * If Right Scale: PASS AutoLine Drive Forward 200 in Outtake Block
 				 * 
 				 * If Left Scale: Go TO SCALE: Arm to switch pos Drive 240 inches turn 30
 				 * degrees outtake block
@@ -75,31 +75,26 @@ public class LeftAutoRoutine extends AutoRoutine {
 			// trajectory = MotionController.generateTrajectory(rightRightPath);
 		}
 	}
-	
+
+
 	void goToSwitch() {
-		arm.goToSwitchPosition();
-		driveDistanceStraight(controllers, 103, .7, 3, true);
+		addSequential(new SwitchAction(controllers));
+		addSequential(new DriveDistanceAction(controllers, 103, .7, 3, true));
 		robot.relaxWrist();
-		driveRotate(controllers, -90, 1, 3, true);
-		arm.outtakePowerCube();
-		driveDistanceStraight(controllers, -30, .7, 5, true);
+		addSequential(new DriveRotateAction(controllers, -90, 1, 3, true));
+		addSequential(new OuttakeAction(controllers, 1, 1));
+		addSequential(new DriveDistanceAction(controllers, -30, .7, 5, true));
 		arm.goToFeedPosition();
 	}
-	
+
 	void passAutoLine() {
-		driveDistanceStraight(controllers, -90, .7, 5, true);
+		addSequential(new DriveDistanceAction(controllers, -90, .7, 5, true));
 	}
-	
+
 	void goToScale() {
-		
-		driveDistanceStraight(controllers, -191, .6, 7, true);
-		robot.relaxWrist();
-		waitTime(1);
-		arm.goToScalePosition();
-		arm.outtakePowerCube();
-		waitTime(2);
-		driveDistanceStraight(controllers, 30, .8, 4, true);
-		arm.goToFeedPosition();
+
+		addSequential(new LeftScale(controllers));
+
 	}
 
 }

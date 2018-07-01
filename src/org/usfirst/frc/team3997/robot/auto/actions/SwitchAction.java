@@ -3,7 +3,9 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 
-public class SwitchAction extends Action {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class SwitchAction extends Command {
 	private ArmController arm;
 	private Boolean setpointReached;
 	public SwitchAction(MasterController controllers) {
@@ -11,13 +13,13 @@ public class SwitchAction extends Action {
 		this.setpointReached = false;
 	}
 	@Override
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		// TODO Auto-generated method stub
 		return setpointReached;
 	}
 
 	@Override
-	public void update() {
+	protected void execute() {
 		if(arm.armPIDController.onTarget()) {
 			setpointReached = true;
 		} else {
@@ -26,15 +28,17 @@ public class SwitchAction extends Action {
 		
 	}
 
-	@Override
-	public void finish() {
+	protected void end() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void start() {
+	protected void intialize() {
 		arm.goToSwitchPosition();
+	}
+	
+	protected void interrupt() {
+		end();
 	}
 
 }

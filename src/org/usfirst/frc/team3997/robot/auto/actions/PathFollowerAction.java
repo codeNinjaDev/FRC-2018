@@ -6,14 +6,15 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 /*** Autonomous Action that follows trajectory ***/
-public class PathFollowerAction extends Action{
+public class PathFollowerAction extends Command {
 	private MotionController motion;
 	private RobotModel robot;
-	private double timeout;
+	private double timeout, start_time;
 	/****
 	 * Constructor for PathFollower Action
 	 * @param controllers All the controllers for robot functionality
@@ -30,28 +31,24 @@ public class PathFollowerAction extends Action{
 		SmartDashboard.putString("MOTIONPROFILING", "FINISHED_SETTING_UP");
 
 	}
-	@Override
+
 	/*** Checks if Trajectory is finished or we went over timeout ***/
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		return (motion.isProfileFinished()) || (Timer.getFPGATimestamp() >= start_time + timeout);
 	}
 	
-
-	@Override
 	/*** Runs in loop and updates PIDVA motion pid controller ***/
-	public void update() {
+	protected void execute() {
 		
 	}
 
-	@Override
 	/*** Disables motion profiling when finished ***/
-	public void finish() {
+	protected void end() {
 		motion.disable();
 	}
 
-	@Override
 	/*** Starts Profile following ***/
-	public void start() {
+	protected void initialize() {
 		//Starts timer
 		start_time = Timer.getFPGATimestamp();
 		//Sets up sensors
@@ -65,4 +62,7 @@ public class PathFollowerAction extends Action{
 
 	}
 
+	protected void interrupt() {
+		end();
+	}
 }

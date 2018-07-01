@@ -7,9 +7,10 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Drive Forward action that uses arcade drive **/
-public class ArcadeStraightAction extends Action {
+public class ArcadeStraightAction extends Command {
 	private DriveController driveTrain;
 	private RobotModel robot;
 	/*** Instance variable for desired distance ***/
@@ -23,7 +24,7 @@ public class ArcadeStraightAction extends Action {
 	/*** Residual distance of left and right encoder ***/
 	private double leftEncoderStartDistance, rightEncoderStartDistance;
 	//Not sure
-	private double afterSetpointTime, timeAfterHit;
+	private double afterSetpointTime, timeAfterHit, start_time;
 	/*** Boolean checks if reached distance ***/
 	private boolean reachedSetpoint;
 	//Not sure
@@ -70,17 +71,15 @@ public class ArcadeStraightAction extends Action {
 
 	}
 
-	@Override
 	/*** Checks if timeout is finished or reached setpoint ***/
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		//Checks if current time is greater than timeout 
 		return (Timer.getFPGATimestamp() >= start_time + timeout) || reachedSetpoint;
 
 	}
 
-	@Override
 	/*** Checks if PID is complete ***/
-	public void update() {
+	protected void execute() {
 		if (driveTrain.straightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {
@@ -88,17 +87,15 @@ public class ArcadeStraightAction extends Action {
 		}
 	}
 
-	@Override
 	/*** Disables PID ***/
-	public void finish() {
+	protected void end() {
 		driveTrain.leftPID.disable();
 		driveTrain.rightPID.disable();
 		driveTrain.straightPID.disable();
 	}
 
-	@Override
 	/*** Starts timer and PID ***/
-	public void start() {
+	protected void initialize() {
 		//Starts the timer
 		start_time = Timer.getFPGATimestamp();
 		

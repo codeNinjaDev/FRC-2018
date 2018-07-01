@@ -7,9 +7,10 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionAction extends Action{
+public class VisionAction extends Command {
 	private DriveController driveTrain;
 	private RobotModel robot;
 	private VisionController vision;
@@ -19,7 +20,7 @@ public class VisionAction extends Action{
 	private double timeout;
 	private double maxSpeed;
 	private double P, I, D;
-	private double leftEncoderStartDistance, rightEncoderStartDistance;
+	private double leftEncoderStartDistance, rightEncoderStartDistance, start_time;
 	
 	private boolean reachedSetpoint, waitForTimeout;
 	
@@ -46,16 +47,15 @@ public class VisionAction extends Action{
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
 
 	}
-	@Override
-	public boolean isFinished() {
+
+	protected boolean isFinished() {
 		if(waitForTimeout) 
 			return (Timer.getFPGATimestamp() >= start_time + timeout);
 		else
 			return (Timer.getFPGATimestamp() >= start_time + timeout);// ||(driveTrain.visionPID.onTarget());
 	}
 
-	@Override
-	public void update() {
+	protected void execute() {
 
 		/*
 		 * if(driveTrain.visionPID.getRightContour() == 0.0) {
@@ -69,17 +69,15 @@ public class VisionAction extends Action{
 		 * }
 		 */
 	}
-
-	@Override
-	public void finish() {
+	
+	protected void end() {
 		//driveTrain.visionPID.disable();
 		
 		driveTrain.stop();
 		SmartDashboard.putString("Running_VISION", "DONE");
 	}
 
-	@Override
-	public void start() {
+	protected void intialize() {
 		start_time = Timer.getFPGATimestamp();
 		
 		robot.leftDriveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
@@ -102,5 +100,8 @@ public class VisionAction extends Action{
 		 * 
 		 * driveTrain.visionPID.enable();
 		 * */
+	}
+	protected void interrupt() {
+		end();
 	}
 }

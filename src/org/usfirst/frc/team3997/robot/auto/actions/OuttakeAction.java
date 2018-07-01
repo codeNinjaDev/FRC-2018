@@ -5,14 +5,15 @@ import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 /***
  * Outtakes block for certain amount
  * @author peter
  *
  */
-public class OuttakeAction extends Action {
+public class OuttakeAction extends Command {
 	
-	double speed;
+	double speed, goal_time, start_time;
 	RobotModel robot;
 	/***
 	 * Outtakes block given time and speeed
@@ -28,20 +29,18 @@ public class OuttakeAction extends Action {
 	}
 	
 	/*** Checks if action exceeded timeout ***/
-	public boolean isFinished() {
+	protected boolean isFinished() {
 		return ((Timer.getFPGATimestamp() >= start_time + goal_time));
 	}
 
-	@Override
 	/*** Runs outtake wheels ***/
-	public void update() {
+	protected void execute() {
 		robot.intakeWheels(-speed);
 
 	}
 
-	@Override
 	/*** Opens intake and stops wheels***/
-	public void finish() {
+	protected void end() {
 
 		//robot.outtakeBlock();
 		robot.openIntake();
@@ -49,10 +48,12 @@ public class OuttakeAction extends Action {
 
 	}
 
-	@Override
 	/*** starts timer ***/
-	public void start() {
+	protected void initialize() {
 		start_time = Timer.getFPGATimestamp();
 	}
 
+	protected void interrupt() {
+		end();
+	}
 }

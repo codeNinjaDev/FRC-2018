@@ -6,9 +6,10 @@ import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Rotate to a specified angle with encoders as sensor ***/
-public class DriveRotateAction extends Action{
+public class DriveRotateAction extends Command {
 	private DriveController driveTrain;
 	private RobotModel robot;
 	/*** Distance Setpoint (Converted from angle in degrees to inches) ***/
@@ -22,7 +23,7 @@ public class DriveRotateAction extends Action{
 	 */
 	private double P, I, D;
 	/*** The residual distance of encoders (error basically) ***/
-	private double leftEncoderStartDistance, rightEncoderStartDistance;
+	private double leftEncoderStartDistance, rightEncoderStartDistance, start_time;
 	/*** Checks if reached desired setpoint ***/
 	private boolean reachedSetpoint;
 	/*** If true, it waits until timeout is complete, even if PID has hit the setpoint ***/
@@ -45,6 +46,7 @@ public class DriveRotateAction extends Action{
 		this.maxSpeed = maxSpeed;
 		this.waitForTimeout = waitForTimeout;
 		
+		start_time = 0;
 		reachedSetpoint = false;
 		leftEncoderStartDistance = 0.0; 
 		rightEncoderStartDistance = 0.0;
@@ -59,8 +61,8 @@ public class DriveRotateAction extends Action{
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
 
 	}
-	@Override
-	public boolean isFinished() {
+
+	protected boolean isFinished() {
 		if((Timer.getFPGATimestamp() >= start_time + timeout) && !(reachedSetpoint)) {
 			
 		}
@@ -70,8 +72,8 @@ public class DriveRotateAction extends Action{
 			return (Timer.getFPGATimestamp() >= start_time + timeout) || reachedSetpoint;
 	}
 
-	@Override
-	public void update() {
+
+	protected void execute() {
 		if(driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {
@@ -79,15 +81,15 @@ public class DriveRotateAction extends Action{
 		}
 	}
 
-	@Override
-	public void finish() {
+
+	protected void end() {
 		driveTrain.leftPID.disable();
 		driveTrain.rightPID.disable();
 		driveTrain.stop();
 	}
 
-	@Override
-	public void start() {
+
+	protected void initialize() {
 		start_time = Timer.getFPGATimestamp();
 		
 		robot.leftDriveEncoder.reset();
@@ -107,5 +109,7 @@ public class DriveRotateAction extends Action{
 		driveTrain.leftPID.enable();
 		driveTrain.rightPID.enable();
 	}
-
+	protected void interrupt() {
+		end();
+	}
 }

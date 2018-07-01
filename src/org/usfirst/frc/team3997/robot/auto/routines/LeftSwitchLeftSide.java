@@ -2,12 +2,19 @@ package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-public class LeftSwitchLeftSide extends AutoRoutine {
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+public class LeftSwitchLeftSide extends CommandGroup {
 	RobotModel robot;
 	ArmController arm;
 	MasterController controllers;
@@ -16,38 +23,28 @@ public class LeftSwitchLeftSide extends AutoRoutine {
 		arm = controllers.getArmController();
 		robot = controllers.getRobotModel();
 		this.controllers = controllers;
-	}
-
-	@Override
-	public void prestart() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void routine() {
-		waitTime(Params.TIME_DELAY);
+		addSequential(new WaitAction(Params.TIME_DELAY));
 		// Put cube in switch
 		if (PlateDetector.getSwitchColor() == 'L') {
 			goToSwitch();
 		} else {
-			//Drive Past Line
+			// Drive Past Line
 			passAutoLine();
 		}
+	}
 
-	}
 	void goToSwitch() {
-		arm.goToSwitchPosition();
-		driveDistanceStraight(controllers, 103, .7, 3, true);
-		driveRotate(controllers, -90, .6, 2, true);
-		waitTime(1.5);
-		outtake(controllers, 1, -1);
-		driveDistanceStraight(controllers, -30, .7, 5, true);
-		arm.goToFeedPosition();
+		addSequential(new SwitchAction(controllers));
+		addSequential(new DriveDistanceAction(controllers, 103, .7, 3, true));
+		addSequential(new DriveRotateAction(controllers, -90, .6, 2, true));
+		addSequential(new WaitAction(1.5));
+		addSequential(new OuttakeAction(controllers, 1, -1));
+		addSequential(new DriveDistanceAction(controllers, -30, .7, 5, true));
+		addSequential(new FeedAction(controllers));
 	}
-	
+
 	void passAutoLine() {
-		driveDistanceStraight(controllers, 90, .7, 5, true);
+		addSequential(new DriveDistanceAction(controllers, 90, .7, 5, true));
 	}
 
 }
