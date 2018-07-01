@@ -61,7 +61,6 @@ void goToScale() {
 		robot.intakeWheels(-1);
 		waitTime(1);
 		robot.stopIntake();
-		arm.goToScalePosition();
 		goToScale(controllers);
 		//waitTime(2.5);
 		outtake(controllers, 1, -1);
