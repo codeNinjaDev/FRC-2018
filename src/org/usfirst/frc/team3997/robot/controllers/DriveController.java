@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *         Friedlander
  * 
  **/
-public class DriveController {
+public class DriveController extends Subsystem{
 
 	private RobotModel robot;
 	// Handles the math for arcade, curvature, and tank drive
@@ -72,7 +73,9 @@ public class DriveController {
 	enum DriveState {
 		kInitialize, kTeleopDrive
 	};
-
+	public void initDefaultCommand() {
+		
+	}
 	/**
 	 * Initalizes all drive variables
 	 * 
