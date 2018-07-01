@@ -50,9 +50,8 @@ public class OuttakeAction extends Action {
 	}
 
 	@Override
-	/*** Brings wrist up and starts timer ***/
+	/*** starts timer ***/
 	public void start() {
-		robot.flexWrist();
 		start_time = Timer.getFPGATimestamp();
 	}
 

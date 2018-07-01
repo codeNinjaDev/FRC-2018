@@ -4,6 +4,7 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
@@ -28,12 +29,14 @@ public class RighScale extends AutoRoutine {
 
 	@Override
 	public void prestart() {
-		controllers.getRobotModel().closeIntake();
 	}
 
 	@Override
 	protected void routine() {
-		
+		waitTime(Params.TIME_DELAY);
+
+		controllers.getRobotModel().closeIntake();
+
 		boolean isRightScale = (PlateDetector.getScaleColor() == 'R');
 		if (isRightScale) {
 			goToScale();
@@ -52,15 +55,18 @@ public class RighScale extends AutoRoutine {
 	
 	void goToScale() {
 		
-		driveDistanceStraight(controllers, 290, .6, 4, true);
-		/*waitTime(1);
-		driveRotate(controllers, -90, .5, 2, false);
+		driveDistanceStraight(controllers, 298, .6, 4, true);
+		waitTime(1);
+		driveRotate(controllers, 90, .5, 2, false);
 		robot.relaxWrist();
 		waitTime(1);
-		arm.goToScalePosition();
+		robot.intakeWheels(-1);
 		waitTime(1);
-		outtake(controllers, 1, 1);
-		arm.goToFeedPosition();*/
+		robot.stopIntake();
+		arm.goToScalePosition();
+		waitTime(2.5);
+		outtake(controllers, 1, -1);
+		arm.goToFeedPosition();
 	}
 
 

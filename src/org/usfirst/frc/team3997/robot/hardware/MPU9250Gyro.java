@@ -16,6 +16,7 @@ import java.lang.Math;
 
 /**
  * MPU9250 Gyro class
+ * 
  * @author peter
  * 
  */
@@ -206,7 +207,8 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	// scheme.
 	double beta = Math.sqrt(3.0f / 4.0f) * GyroMeasError; // compute beta
 	double zeta = Math.sqrt(3.0f / 4.0f) * GyroMeasDrift; // compute zeta, the other free parameter in the Madgwick
-	//Yaw is side to side rotation,  most important														// scheme usually set to a small or zero value
+	// Yaw is side to side rotation, most important // scheme usually set to a small
+	// or zero value
 	double yaw, pitch, roll;
 	int delt_t = 0, count = 0, sumCount = 0; // used to control display output rate
 	double a12, a22, a31, a32, a33; // rotation matrix coefficients for Euler angles and gravity components
@@ -217,7 +219,7 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	int Now = 0; // used to calculate integration interval
 	double Kp = 5 * 2;
 	double Ki = 0;
-	/***Rate of change of gyro (I think)***/
+	/*** Rate of change of gyro (I think) ***/
 	double gx, gy, gz; // variables to hold latest sensor data values
 	// Set initial input parameters
 	double currentTime = 0;
@@ -229,8 +231,7 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	final int NUM_SAMPLES = 10;
 	double[] gyroSamples = new double[NUM_SAMPLES];
 	double offset = 0;
-	
-	
+
 	I2C i2c;
 	PIDSourceType pidSourceType;
 	int gScale;
@@ -254,7 +255,6 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 			init();
 			calibrate();
 			reset();
-			
 
 		} else {
 			SmartDashboard.putString("GYRO", "NOTFOUND");
@@ -531,7 +531,8 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		yaw = 0;
 		Timer.delay(0.1);
 	}
-	//Updates in loop 
+
+	// Updates in loop
 	public void update() {
 		// Multiply timer.getTimestamp * 1000 to get millis
 		double currentTimestamp = Timer.getFPGATimestamp() * 1000;
@@ -540,14 +541,14 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		double rotation_threshold = .5;
 		SmartDashboard.putBoolean("RUN UPDATE", true);
 		readGyroData(gyroData);
-		//I think gz is rate of change
+		// I think gz is rate of change
 		gx = gyroData[0] * gRes;
 		gy = gyroData[1] * gRes;
 		gz = gyroData[2] * gRes;
-		
-		//Scale gz based on averaged samples
+
+		// Scale gz based on averaged samples
 		gz = sampleGyroData(gz);
-		
+
 		double deltaTime = currentTimestamp - currentTime;
 		// I have a bad feeling about having it exactly equal to 20
 		// Do I really need to have deltaTime be greater than or equal to 20?
@@ -556,10 +557,9 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 			/**
 			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
 			 */
-			
-			
+
 			gz /= (1000 / deltaTime);
-			//Increment yaw based off of gz
+			// Increment yaw based off of gz
 			yaw += gz;
 			if (yaw < 0)
 				yaw += 360;
@@ -604,26 +604,28 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		return getAngle();
 
 	}
-	
+
 	public double sampleGyroData(double gz) {
 		double sampledGyroData = 0;
-		//Shift samples
-		for(int i = 0; i < (NUM_SAMPLES - 1); i++) {
+		// Shift samples
+		for (int i = 0; i < (NUM_SAMPLES - 1); i++) {
 			gyroSamples[i] = gyroSamples[i + 1];
 		}
-		//Set current sample to last cell
-		gyroSamples[NUM_SAMPLES] = gz;
-		//Average samples
-		for(int i = 0; i < NUM_SAMPLES; i++) {
+		// Set current sample to last cell
+		gyroSamples[NUM_SAMPLES - 1] = gz;
+		// Average samples
+		for (int i = 0; i < NUM_SAMPLES; i++) {
 			sampledGyroData += gyroSamples[i];
 		}
 		sampledGyroData /= NUM_SAMPLES;
-		
+
 		return sampledGyroData;
-		
+
 	}
-	
+
 	public void setOffset() {
 		offset = getAngle();
 	}
+
+	
 }

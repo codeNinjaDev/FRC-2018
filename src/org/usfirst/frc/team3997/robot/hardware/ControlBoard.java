@@ -19,12 +19,10 @@ public class ControlBoard extends RemoteControl {
 	/*** Arm Override Trigger ***/
 	public ToggleButtonReader armManualButton;
 /** Driver Triggers **/
-	public TriggerReader slowDriveTier1Button, slowDriveTier2Button;
-	/** Operator Triggers **/
-	public TriggerReader relaxWristButton;
+	public TriggerReader slowDriveTier1Button, slowDriveTier2Button, outtakeWheelsButton;
 	/*** Booleans for relax wrist TODO for offseason streamline ***/
-	private boolean relaxWristDesired, arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
-			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired;
+	private boolean arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired, outtakeWheelsDesired;
 
 	/** Driver joystick axes **/
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
@@ -56,8 +54,7 @@ public class ControlBoard extends RemoteControl {
 			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
 			
 			
-			
-			relaxWristButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
+			outtakeWheelsButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
 			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
 			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
 			
@@ -86,7 +83,7 @@ public class ControlBoard extends RemoteControl {
 		
 		intakeDesired = false;
 		outtakeDesired = false;
-		relaxWristDesired = false;
+		outtakeWheelsDesired = false;
 	}
 	/** Reads all controller inputs **/
 	public void readControls() {
@@ -116,9 +113,9 @@ public class ControlBoard extends RemoteControl {
 		armScaleDesired = armScaleButton.isDown();
 		armFeedDesired = armFeedButton.isDown();
 		toggleArmManualDesired = armManualButton.getState();
-		relaxWristDesired = relaxWristButton.isDown();
 		intakeDesired = intakeButton.isDown();
 		outtakeDesired = outtakeButton.isDown();
+		outtakeWheelsDesired = outtakeWheelsButton.isDown();
 
 	}
 	/** Reads all controller buttons **/
@@ -141,7 +138,7 @@ public class ControlBoard extends RemoteControl {
 		outtakeButton.readValue();
 		intakeButton.readValue();
 		outtakeButton.readValue();
-		relaxWristButton.readValue();
+		outtakeWheelsButton.readValue();
 
 	}
 
@@ -251,11 +248,10 @@ public class ControlBoard extends RemoteControl {
 		return outtakeDesired;
 	}
 	
+	
 	@Override
-	public boolean relaxWristDesired() {
-		SmartDashboard.putString("OPERATOR", "FLEX_WRIST");
-
-		return relaxWristDesired;
+	public boolean outtakeWheels() {
+		return outtakeWheelsDesired;
 	}
 
 

@@ -35,6 +35,8 @@ public abstract class RemoteControl {
 	
 	/*** ARM Manual Override  --Back Button ***/
 	public abstract boolean toggleManualArmDesired();
+	/*** OUTTAKE WHEELS  --Back Button ***/
+	public abstract boolean outtakeWheels();
 	/*** Go to Switch Position (PID) --Green (A) Button ***/
 	public abstract boolean getSwitchArmDesired();
 	/*** Go to Scale Position (PID) --Yellow (Y) Button***/
@@ -46,9 +48,7 @@ public abstract class RemoteControl {
 	public abstract boolean getIntakeDesired();
 	/*** Outtake block --Left Bumper***/
 	public abstract boolean getOuttakeDesired();
-	/*** bring wrist down ***/
-	public abstract boolean relaxWristDesired();
-
+	
 
 
 

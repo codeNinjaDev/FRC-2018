@@ -115,8 +115,8 @@ public class RobotModel {
 		//TODO Probably Inverted twice
 		leftDriveMotorA.setInverted(false);
 		leftDriveMotorB.setInverted(false);
-		//rightDriveMotorA.setInverted(true);
-		//rightDriveMotorB.setInverted(true);
+		rightDriveMotorA.setInverted(true);
+		rightDriveMotorB.setInverted(true);
 
 
 		timer = new Timer();
@@ -281,10 +281,7 @@ public class RobotModel {
 	public void closeIntake() {
 		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
-	/*** Brings intake up ***/
-	public void flexWrist() {
-		wristSolenoid.set(DoubleSolenoid.Value.kReverse);
-	}
+
 	/*** Brings intake down ***/
 	public void relaxWrist() {
 		wristSolenoid.set(DoubleSolenoid.Value.kForward);

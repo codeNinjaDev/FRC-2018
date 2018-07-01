@@ -34,7 +34,7 @@ public class DashboardInput {
 
 		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
 		SmartDashboard.putNumber("ARM P", Params.arm_p);
-
+		Params.TIME_DELAY = preferences.getDouble("AUTO_DELAY", 0);
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
 		System.out.println("PREFS: " + preferences.getDouble("Max Speed", 1));
 	}
@@ -70,16 +70,17 @@ public class DashboardInput {
 		SmartDashboard.putNumber("Dash Max Speed", DashboardVariables.max_speed);
 
 		//Gets Drive PID and logs it
-		Params.drive_p = preferences.getDouble("Drive P Value", 0);
+		Params.drive_p = preferences.getDouble("DRIVE_P_VALUE", 0);
 		SmartDashboard.putNumber("Drive P", Params.drive_p);
-		Params.drive_i = preferences.getDouble("Drive I Value", 0);
+		Params.drive_i = preferences.getDouble("DRIVE_I_VALUE", 0);
 		SmartDashboard.putNumber("Drive I", Params.drive_i);
-		Params.drive_d = preferences.getDouble("Drive D Value", 0);
+		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
 		SmartDashboard.putNumber("Drive D", Params.drive_d);
 
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
 		SmartDashboard.putNumber("Params Max Speed", Params.MAX_SPEED);
 		SmartDashboard.putNumber("ARM P", Params.arm_p);
+		Params.TIME_DELAY = preferences.getDouble("AUTO_DELAY", 0);
 
 
 	}

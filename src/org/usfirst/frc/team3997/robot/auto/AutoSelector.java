@@ -69,9 +69,9 @@ public class AutoSelector {
 		autoChooser.addObject("Single Cube Center", 9);
 		autoChooser.addObject("Left Switch", 10);
 		autoChooser.addObject("Rightt Switch", 11);
-		autoChooser.addObject("Left Scale", 10);
-		autoChooser.addObject("Rightt Scale", 11);
-		autoChooser.addObject("Motion Profling Routine", 12);
+		autoChooser.addObject("Left Scale", 12);
+		autoChooser.addObject("Right Scale", 13);
+		autoChooser.addObject("Motion Profling Routine", 14);
 		
 		SmartDashboard.putString("AUTO CHOOSER", "TRUE");
 		//SmartDashboard.putData("Autonomous: ", autoChooser);

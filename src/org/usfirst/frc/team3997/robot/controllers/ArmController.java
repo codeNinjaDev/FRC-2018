@@ -28,7 +28,7 @@ public class ArmController {
 	/*** Instance variable for communicating with game pads ***/
 	private RemoteControl humanControl;
 	/*** PID controller for arm; purpose is to follow setpoints ***/
-	private PIDController armPIDController;
+	public PIDController armPIDController;
 	/*** Handles PID output from absolute arm encoder ***/
 	private PIDOutput armPIDOutput;
 	/*** Sets up arm encoder as a PIDSource ***/
@@ -42,8 +42,9 @@ public class ArmController {
 	private boolean toggleArmManual;
 	/*** Boolean for collapsing intake ***/
 	private boolean toggleCollapse;
-	
+
 	private boolean toggleIntake;
+
 	/*** Enum that lets us shift our status from init to teleop and vice versa ***/
 	public enum ArmState {
 		kInitialize, kTeleop
@@ -78,7 +79,7 @@ public class ArmController {
 		toggleArmManual = false;
 		toggleCollapse = false;
 		toggleIntake = false;
-		
+
 		armPIDSource = new PotentiometerPIDSource(robot.pot);
 		armPIDOutput = new ArmPIDOutput(robot);
 		armPIDController = new PIDController(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f, armPIDSource,
@@ -104,9 +105,9 @@ public class ArmController {
 	 * <h2>Runs in teleop periodic
 	 ***/
 	public void update() {
-		//Switches based off of current state
+		// Switches based off of current state
 		switch (m_stateVal) {
-		//If initializing
+		// If initializing
 		case kInitialize:
 
 			// Intitalize Variables and PId
@@ -116,7 +117,6 @@ public class ArmController {
 			// Toggle variables to false
 			toggleArmManual = false;
 			toggleCollapse = false;
-			robot.flexWrist();
 			// Sets next state to teleop
 			nextState = ArmState.kTeleop;
 			break;
@@ -125,27 +125,25 @@ public class ArmController {
 
 			// If armManualDesired, Toggle the arm override
 			toggleArmManual = humanControl.toggleManualArmDesired();
-			
 
-			
 			// Arm Behavior
 			if (toggleArmManual) {
-				//Disable PID if in manual
+				// Disable PID if in manual
 				if (armPIDController.isEnabled()) {
 					armPIDController.disable();
 				}
 				SmartDashboard.putString("ARM", "OVERIDE");
 				// Move arm based off of the Right Y of Operator Joystick
-				robot.moveArm((humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY)*.75));
-				//Intake normally
+				robot.moveArm((humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY) * .75));
+				// Intake normally
 				intakeFunctions();
 
 			} else {
 				SmartDashboard.putString("ARM", "PID");
-				
-				//Intake normally
+
+				// Intake normally
 				intakeFunctions();
-				//Go to set point position
+				// Go to set point position
 				if (humanControl.getScaleArmDesired()) {
 					goToScalePosition();
 				} else if (humanControl.getSwitchArmDesired()) {
@@ -154,101 +152,120 @@ public class ArmController {
 				} else if (humanControl.getFeedArmDesired()) {
 					goToFeedPosition();
 				} else {
-					//Disable PID
-					if(armPIDController.isEnabled())
+					// Disable PID
+					if (armPIDController.isEnabled())
 						armPIDController.disable();
 				}
 			}
-			//Set next state to teleop
+			// Set next state to teleop
 			nextState = ArmState.kTeleop;
 			break;
 		}
-		//Set current state to next state
+		// Set current state to next state
 		m_stateVal = nextState;
 	}
 
-	/*** <h2> Moves arm to scoring position for the switch **/
+	/***
+	 * <h2>Moves arm to scoring position for the switch
+	 **/
 	public void goToSwitchPosition() {
-		//Sets PID, outputrange, setpoint, and enables
+		// Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
 		armPIDController.setSetpoint(Params.ARM_SWITCH_SETPOINT);
 		armPIDController.enable();
 	}
-	/*** <h2> Moves arm to scoring position for the scale **/
+
+	/***
+	 * <h2>Moves arm to scoring position for the scale
+	 **/
 	public void goToScalePosition() {
-		//Sets PID, outputrange, setpoint, and enables
+		// Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
-		armPIDController.setSetpoint(125);
+		armPIDController.setSetpoint(130);
 		armPIDController.enable();
-		
+
 	}
-	/*** <h2> Moves arm to scoring position for the climb **/
+
+	/***
+	 * <h2>Moves arm to scoring position for the climb
+	 **/
 	public void goToClimbPosition() {
-		//Sets PID, outputrange, setpoint, and enables
+		// Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
 		armPIDController.setSetpoint(Params.ARM_CLIMB_SETPOINT);
 		armPIDController.enable();
 	}
-	/*** <h2> Moves arm to scoring position for the vault **/
+
+	/***
+	 * <h2>Moves arm to scoring position for the vault
+	 **/
 	public void goToFeedPosition() {
-		//Sets PID, outputrange, setpoint, and enables
+		// Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
 		armPIDController.setSetpoint(Params.ARM_FEED_SETPOINT);
 		armPIDController.enable();
 	}
-	/*** <h2> Stops all arm movement **/
+
+	/***
+	 * <h2>Stops all arm movement
+	 **/
 	public void stop() {
-		//Disables PID
+		// Disables PID
 		armPIDController.disable();
-		//Stops arm
+		// Stops arm
 		robot.moveArm(0);
-		//Stops intake
+		// Stops intake
 		robot.stopIntake();
 	}
-	
+
 	/*** Intakes Power Cube ***/
 	public void intakePowerCube() {
-		//Intake wheels
+		// Intake wheels
 		robot.intakeBlock();
-		//Closes intakes
+		// Closes intakes
 	}
 
 	public void outtakePowerCube() {
 		robot.outtakeBlock();
-		//Open intake
+		// Open intake
 	}
 
 	public void intakeFunctions() {
-		//Keep wrist relaxed
+		// Keep wrist relaxed
 		robot.relaxWrist();
-		
+
 		// If intake button pressed, open intake and then run intake wheels
 		if (humanControl.getIntakeDesired()) {
 			robot.openIntake();
 			intakePowerCube();
-			
-		// If outtake button pressed run outtake wheels
+
+			// If outtake button pressed run outtake wheels
 		} else if (humanControl.getOuttakeDesired()) {
-			
+
 			outtakePowerCube();
-			//If going to scale, Keep intake closed
-			if(humanControl.getScaleArmDesired()) {
+			// If going to scale, Keep intake closed
+			if (humanControl.getScaleArmDesired()) {
 				robot.closeIntake();
-			//If going to switch, open intake
+				// If going to switch, open intake
 			} else {
 				robot.openIntake();
 			}
-		} else {
-			//If not pressing anything, keep intake closed and stop intake wheels.
+		} else if(humanControl.outtakeWheels()){ 
+			outtakeWheels();
+		} else	{
+			// If not pressing anything, keep intake closed and stop intake wheels.
 			robot.closeIntake();
 			robot.stopIntake();
 		}
-		
-		
+
+	}
+
+	public void outtakeWheels() {
+		robot.intakeWheels(1);
 	}
 
 }
