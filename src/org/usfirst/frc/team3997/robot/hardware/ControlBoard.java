@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * **/
 public class ControlBoard extends RemoteControl {
 	/** Driver Buttons **/
-	public ButtonReader arcadeDriveButton, tankDriveButton, driveBackButton, driveBackOtherButton;
+	public ButtonReader driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
 	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, intakeButton, outtakeButton;
@@ -21,7 +21,7 @@ public class ControlBoard extends RemoteControl {
 /** Driver Triggers **/
 	public TriggerReader slowDriveTier1Button, slowDriveTier2Button, outtakeWheelsButton;
 	/*** Booleans for relax wrist TODO for offseason streamline ***/
-	private boolean arcadeDriveDesired, slowDriveTier1Desired, slowDriveTier2Desired,
+	private boolean slowDriveTier1Desired, slowDriveTier2Desired,
 			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired, outtakeWheelsDesired;
 
 	/** Driver joystick axes **/
@@ -39,24 +39,23 @@ public class ControlBoard extends RemoteControl {
 
 		if (Ports.USING_WIN_DRIVER_STATION) {
 			//Driver Controls
-			arcadeDriveButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_START_BUTTON);
-			tankDriveButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_BACK_BUTTON);
-			driveBackButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
-			driveBackOtherButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
 			
-			slowDriveTier1Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
-			slowDriveTier2Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS);
+			driveBackButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "DRIVE_BACK");
+			driveBackOtherButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "DRIVE_OTHER_BACK");
+			
+			slowDriveTier1Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS, "BRAKE_1");
+			slowDriveTier2Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS, "BRAKE_2");
 			
 			//Operator Controls
-			armScaleButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON);
-			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON);
-			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON);
-			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON);
+			armScaleButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_YELLOW_BUTTON, "SCALE");
+			armSwitchButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_GREEN_BUTTON, "SWITCH");
+			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON, "FEED");
+			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON, "ARM_MANUAL");
 			
 			
-			outtakeWheelsButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS);
-			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER);
-			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER);
+			outtakeWheelsButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS, "OUT_WHEELS");
+			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "INTAKE");
+			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "OUTTAKE");
 			
 			
 		}
@@ -66,10 +65,7 @@ public class ControlBoard extends RemoteControl {
 		driverRightJoyX = 0;
 		driverRightJoyY = 0;
 
-		// Driver variables
-		arcadeDriveDesired = Params.USE_ARCADE_DRIVE;
-		
-		
+		// Driver variableS		
 		slowDriveTier1Desired = false;
 		slowDriveTier2Desired = false;
 		driveBackDesired = false;
@@ -101,7 +97,6 @@ public class ControlBoard extends RemoteControl {
 		}
 
 		// Driver Variables
-		arcadeDriveDesired = arcadeDriveButton.isDown();
 
 		slowDriveTier1Desired = slowDriveTier1Button.isDown();
 		slowDriveTier2Desired = slowDriveTier2Button.isDown();
@@ -121,8 +116,6 @@ public class ControlBoard extends RemoteControl {
 	/** Reads all controller buttons **/
 	public void readAllButtons() {
 		//Driver
-		arcadeDriveButton.readValue();
-		tankDriveButton.readValue();
 		slowDriveTier1Button.readValue();
 		slowDriveTier2Button.readValue();
 		driveBackButton.readValue();
@@ -184,10 +177,7 @@ public class ControlBoard extends RemoteControl {
 	 * 
 	 */
 	
-	@Override
-	public boolean getArcadeDriveDesired() {
-		return arcadeDriveDesired;
-	}
+	
 	@Override
 	public boolean getSlowDriveTier1Desired() {
 		return slowDriveTier1Desired;

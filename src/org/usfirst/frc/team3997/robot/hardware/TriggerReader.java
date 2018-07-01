@@ -1,17 +1,18 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Reads Trigger Input *****/
 public class TriggerReader {
 	private Joystick joystick;
 	private int triggerAxis;
 	private boolean lastState;
 	private boolean currState;
-
-	public TriggerReader(Joystick joystick, int triggerAxis) {
+	private String triggerName;
+	public TriggerReader(Joystick joystick, int triggerAxis, String triggerName) {
 		this.joystick = joystick;
 		this.triggerAxis = triggerAxis;
-		
+		this.triggerName = triggerName + "_TRIGGER";
 		if(joystick.getRawAxis(triggerAxis) > 0.8) {
 			currState = true;
 		} else {
@@ -22,6 +23,7 @@ public class TriggerReader {
 	
 	public void readValue() {
 		lastState = currState;
+		SmartDashboard.putNumber(triggerName + "_AXIS", joystick.getRawAxis(triggerAxis));
 		if(joystick.getRawAxis(triggerAxis) > 0.8) {
 			currState = true;
 		} else {
@@ -42,6 +44,7 @@ public class TriggerReader {
 	}
 	
 	public boolean isDown() {
+		SmartDashboard.putBoolean(triggerName, currState);
 		return currState;
 	}
 

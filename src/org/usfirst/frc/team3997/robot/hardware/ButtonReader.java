@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /** Debounces and reads controller values 
  * @category hardware
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
@@ -14,12 +15,16 @@ public class ButtonReader {
 	/** Current state of the button **/
 	private boolean currState;
 
+	/*** Description of Button ***/
+	private String buttonName;
 	/** Initializes controller variables 
 	 * @param joystick The controller joystick
-	 * @param buttonNum The controller button number **/
-	public ButtonReader(Joystick joystick, int buttonNum) {
+	 * @param buttonNum The controller button number
+	 * @param buttonName Describes function of the button **/
+	public ButtonReader(Joystick joystick, int buttonNum, String buttonName) {
 		this.joystick = joystick;
 		this.buttonNum = buttonNum;
+		this.buttonName = buttonName + "_BUTTON";
 		currState = this.joystick.getRawButton(buttonNum);
 		lastState = currState;
 	}
@@ -30,6 +35,7 @@ public class ButtonReader {
 	}
 	/** Checks if the button is down **/
 	public boolean isDown() {
+		SmartDashboard.putBoolean(buttonName, currState);
 		return currState;
 	}
 	/** Checks if the button was just pressed **/

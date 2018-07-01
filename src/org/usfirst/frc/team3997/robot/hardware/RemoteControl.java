@@ -21,8 +21,6 @@ public abstract class RemoteControl {
 	/*** Get value of joystick axis ***/
 	public abstract double getJoystickValue(Joysticks j, Axes a);
 
-	/***If we want to drive in arcade (deprecated ***/
-	public abstract boolean getArcadeDriveDesired();
 	/*** Brake 1 (Slow down a little) --Right Trigger ***/
 	public abstract boolean getSlowDriveTier1Desired();
 	/*** Brake 2 (Slow down a lot) --Left Trigger ***/

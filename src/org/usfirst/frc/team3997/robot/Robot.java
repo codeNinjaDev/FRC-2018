@@ -110,7 +110,6 @@ public class Robot extends IterativeRobot {
             }
         }).start();
 		/*** Update Dashboard ***/
-		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -147,7 +146,6 @@ public class Robot extends IterativeRobot {
 		lights.setAutoLights();
 		//Log data to the Dashboard
 		dashboardLogger.updateData();
-		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -193,7 +191,6 @@ public class Robot extends IterativeRobot {
 		//Set enabled Light pattern
 		lights.setEnabledLights();
 		//Log Data to Dashboard
-		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -219,7 +216,6 @@ public class Robot extends IterativeRobot {
 		//Update input from Dashboard
 		input.updateInput();
 		//Log Data
-		dashboardLogger.updateEssentialData();
 
 	}
 
@@ -235,7 +231,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
 		//Log Dashboard
 		dashboardLogger.updateData();
-		dashboardLogger.updateEssentialData();
 		//Read Gamepad Controlls
 		humanControl.readControls();
 		//Set Disabled pattern for led strips
