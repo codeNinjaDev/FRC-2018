@@ -256,7 +256,10 @@ public class ArmController {
 			}
 		} else if(humanControl.outtakeWheels()){ 
 			outtakeWheels();
-		} else	{
+		} else if(humanControl.intakeWheels()){
+			intakeWheels();
+			
+		} else {
 			// If not pressing anything, keep intake closed and stop intake wheels.
 			robot.closeIntake();
 			robot.stopIntake();
@@ -266,6 +269,9 @@ public class ArmController {
 
 	public void outtakeWheels() {
 		robot.intakeWheels(1);
+	}
+	public void intakeWheels() {
+		robot.intakeWheels(-1);
 	}
 
 }

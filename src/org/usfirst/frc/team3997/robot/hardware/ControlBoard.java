@@ -11,18 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  * **/
 public class ControlBoard extends RemoteControl {
-	/** Driver Buttons **/
-	public ButtonReader driveBackButton, driveBackOtherButton;
 	//Operator Buttons
 /** Operator Buttons **/
-	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, intakeButton, outtakeButton;
+	public ButtonReader armSwitchButton, armScaleButton, armFeedButton, intakeOperatorButton, outtakeOperatorButton, intakeDriverButton, outtakeDriverButton;
 	/*** Arm Override Trigger ***/
 	public ToggleButtonReader armManualButton;
 /** Driver Triggers **/
-	public TriggerReader slowDriveTier1Button, slowDriveTier2Button, outtakeWheelsButton;
+	public TriggerReader slowDriveTier1Button, slowDriveTier2Button, outtakeWheelsButton, intakeWheelsButton;
 	/*** Booleans for relax wrist TODO for offseason streamline ***/
-	private boolean slowDriveTier1Desired, slowDriveTier2Desired,
-			driveBackDesired, driveBackOtherDesired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired, outtakeWheelsDesired;
+	private boolean slowDriveTier1Desired, slowDriveTier2Desired, toggleArmManualDesired, armSwitchDesired, armScaleDesired, armFeedDesired, intakeDesired, outtakeDesired, armShifterDesired, outtakeWheelsDesired, intakeWheelsDesired;
 
 	/** Driver joystick axes **/
 	private double driverLeftJoyX, driverLeftJoyY, driverRightJoyX, driverRightJoyY;
@@ -40,8 +37,8 @@ public class ControlBoard extends RemoteControl {
 		if (Ports.USING_WIN_DRIVER_STATION) {
 			//Driver Controls
 			
-			driveBackButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "DRIVE_BACK");
-			driveBackOtherButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "DRIVE_OTHER_BACK");
+			intakeDriverButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "INTAKE_DRIVER");
+			outtakeDriverButton = new ButtonReader(driverJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "OUTTAKE_DRIVER");
 			
 			slowDriveTier1Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS, "BRAKE_1");
 			slowDriveTier2Button = new TriggerReader(driverJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS, "BRAKE_2");
@@ -52,10 +49,10 @@ public class ControlBoard extends RemoteControl {
 			armFeedButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_BLUE_BUTTON, "FEED");
 			armManualButton = new ToggleButtonReader(operatorJoy, XInput.XINPUT_WIN_BACK_BUTTON, "ARM_MANUAL");
 			
-			
+			intakeWheelsButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_LEFT_TRIGGER_AXIS, "IN_WHEELS");
 			outtakeWheelsButton = new TriggerReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_TRIGGER_AXIS, "OUT_WHEELS");
-			intakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "INTAKE");
-			outtakeButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "OUTTAKE");
+			intakeOperatorButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_RIGHT_BUMPER, "INTAKE_OP");
+			outtakeOperatorButton = new ButtonReader(operatorJoy, XInput.XINPUT_WIN_LEFT_BUMPER, "OUTTAKE_OP");
 			
 			
 		}
@@ -68,8 +65,7 @@ public class ControlBoard extends RemoteControl {
 		// Driver variableS		
 		slowDriveTier1Desired = false;
 		slowDriveTier2Desired = false;
-		driveBackDesired = false;
-		driveBackOtherDesired = false;
+		
 		
 		//Operator Vars
 		armSwitchDesired = false;
@@ -80,6 +76,7 @@ public class ControlBoard extends RemoteControl {
 		intakeDesired = false;
 		outtakeDesired = false;
 		outtakeWheelsDesired = false;
+		intakeWheelsDesired = false;
 	}
 	/** Reads all controller inputs **/
 	public void readControls() {
@@ -100,17 +97,19 @@ public class ControlBoard extends RemoteControl {
 
 		slowDriveTier1Desired = slowDriveTier1Button.isDown();
 		slowDriveTier2Desired = slowDriveTier2Button.isDown();
-		driveBackDesired = driveBackButton.isDown();
-		driveBackOtherDesired = driveBackOtherButton.isDown();
-		
+	
 		//Operator Vars
 		armSwitchDesired = armSwitchButton.isDown();
 		armScaleDesired = armScaleButton.isDown();
 		armFeedDesired = armFeedButton.isDown();
+		
 		toggleArmManualDesired = armManualButton.getState();
-		intakeDesired = intakeButton.isDown();
-		outtakeDesired = outtakeButton.isDown();
+		
+		intakeDesired = intakeDriverButton.isDown() || intakeOperatorButton.isDown();
+		outtakeDesired = outtakeDriverButton.isDown() || outtakeOperatorButton.isDown();
+		
 		outtakeWheelsDesired = outtakeWheelsButton.isDown();
+		intakeWheelsDesired = intakeWheelsButton.isDown();
 
 	}
 	/** Reads all controller buttons **/
@@ -118,8 +117,7 @@ public class ControlBoard extends RemoteControl {
 		//Driver
 		slowDriveTier1Button.readValue();
 		slowDriveTier2Button.readValue();
-		driveBackButton.readValue();
-		driveBackOtherButton.readValue();
+		
 		//Operator 
 		
 		armSwitchButton.readValue();
@@ -127,11 +125,13 @@ public class ControlBoard extends RemoteControl {
 		armFeedButton.readValue();
 		armManualButton.readValue();
 		
-		intakeButton.readValue();
-		outtakeButton.readValue();
-		intakeButton.readValue();
-		outtakeButton.readValue();
+		intakeDriverButton.readValue();
+		outtakeDriverButton.readValue();
+		intakeOperatorButton.readValue();
+		outtakeOperatorButton.readValue();
+		
 		outtakeWheelsButton.readValue();
+		intakeWheelsButton.readValue();
 
 	}
 
@@ -185,55 +185,39 @@ public class ControlBoard extends RemoteControl {
 	@Override
 	public boolean getSlowDriveTier2Desired() {
 		return slowDriveTier2Desired;
-	}
-	@Override
-	public boolean getDriveBackDesired() {
-		return driveBackDesired;
-	}
-	@Override
-	public boolean getDriveBackOtherDesired() {
-		return driveBackOtherDesired;
-	}
+	}	
 	
-
 	@Override
 	public boolean toggleManualArmDesired() {
-		SmartDashboard.putString("OPERATOR", "TOGGLE ARM");
 		return toggleArmManualDesired;
 	}
 
 	@Override
 	public boolean getSwitchArmDesired() {
-		SmartDashboard.putString("OPERATOR", "SWITCH_POSITION");
 
 		return armSwitchDesired;
 	}
 
 	@Override
 	public boolean getScaleArmDesired() {
-		SmartDashboard.putString("OPERATOR", "SCALE_POSITION");
 		return armScaleDesired;
 	}
 
 	@Override
 	public boolean getFeedArmDesired() {
-		SmartDashboard.putString("OPERATOR", "FEED_POSITION");
 
 		return armFeedDesired;
 	}
 
-	
 
 	@Override
 	public boolean getIntakeDesired() {
-		SmartDashboard.putString("OPERATOR", "INTAKE");
 
 		return intakeDesired;
 	}
 
 	@Override
 	public boolean getOuttakeDesired() {
-		SmartDashboard.putString("OPERATOR", "OUTTAKE");
 
 		return outtakeDesired;
 	}
@@ -242,6 +226,10 @@ public class ControlBoard extends RemoteControl {
 	@Override
 	public boolean outtakeWheels() {
 		return outtakeWheelsDesired;
+	}
+	@Override
+	public boolean intakeWheels() {
+		return intakeWheelsDesired;
 	}
 
 

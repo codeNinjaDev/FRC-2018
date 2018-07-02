@@ -25,16 +25,14 @@ public abstract class RemoteControl {
 	public abstract boolean getSlowDriveTier1Desired();
 	/*** Brake 2 (Slow down a lot) --Left Trigger ***/
 	public abstract boolean getSlowDriveTier2Desired();
-	
-	/*** Have no idea whatsoever ***/
-	public abstract boolean getDriveBackDesired();
-	/**** Also no idea whatsoever ***/
-	public abstract boolean getDriveBackOtherDesired();
+
 	
 	/*** ARM Manual Override  --Back Button ***/
 	public abstract boolean toggleManualArmDesired();
 	/*** OUTTAKE WHEELS  --Back Button ***/
 	public abstract boolean outtakeWheels();
+	/*** INTAKE WHEELS  --Back Button ***/
+	public abstract boolean intakeWheels();
 	/*** Go to Switch Position (PID) --Green (A) Button ***/
 	public abstract boolean getSwitchArmDesired();
 	/*** Go to Scale Position (PID) --Yellow (Y) Button***/
