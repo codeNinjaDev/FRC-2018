@@ -4,25 +4,26 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.can.CANStatus;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
-
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.Params;
+
 /*** Hardware (motors, pneumatics, sensors) for robot ***/
 public class RobotModel {
-	/***Drive Motors***/
+	/*** Drive Motors ***/
 	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
 	/*** Arm Motors ***/
 	public Spark leftArmMotor, rightArmMotor;
-	/***Intake Motors***/
+	/*** Intake Motors ***/
 	public Spark leftIntakeMotor, rightIntakeMotor;
-	/***Motor Groups for Drive***/
+	/*** Motor Groups for Drive ***/
 	public SpeedControllerGroup leftDriveMotors, rightDriveMotors;
-	/***Motor Groups for Arm ***/
+	/*** Motor Groups for Arm ***/
 	public SpeedControllerGroup armMotors;
-	/***Motor Groups for Intake ***/
+	/*** Motor Groups for Intake ***/
 	public SpeedControllerGroup intakeMotors;;
 	/*** Drive Encoder ***/
 	public Encoder leftDriveEncoder, rightDriveEncoder;
@@ -30,22 +31,24 @@ public class RobotModel {
 	public TenTurnPotentiometer pot;
 	/*** Compressor (not really needed) ***/
 	public Compressor compressor;
-	
-	/***Intake solenoid (opens or closes claw)***/
+
+	/*** Intake solenoid (opens or closes claw) ***/
 	public DoubleSolenoid intakeSolenoid;
 	/*** Wrist solenoid (brings up or down claw) **/
 	public DoubleSolenoid wristSolenoid;
 	/*** Gyro ***/
 	public Gyro mpu_gyro;
-	//public DigitalInput limitSwitch;
-	
+	// public DigitalInput limitSwitch;
 
-	/*** Timers for robot status***/
+	public Accelerometer accel;
+
+	/*** Timers for robot status ***/
 	public Timer timer, autoTimer, teleopTimer;
-	/***Power Distribution Panel (Gives electricity to all motors)***/
+	/*** Power Distribution Panel (Gives electricity to all motors) ***/
 	private PowerDistributionPanel pdp;
-	
+
 	CANStatus canStatus;
+
 	/*
 	 * TODO boolean enabled = c.enabled(); boolean pressureSwitch =
 	 * c.getPressureSwitchValue(); double current = c.getCompressorCurrent();
@@ -56,10 +59,10 @@ public class RobotModel {
 		// Pneumatics
 		compressor = new Compressor(0);
 		compressor.setClosedLoopControl(true);
-		//Solenoids for intake
+		// Solenoids for intake
 		intakeSolenoid = new DoubleSolenoid(Ports.INTAKE_SOLENOIDS[0], Ports.INTAKE_SOLENOIDS[1]);
 		wristSolenoid = new DoubleSolenoid(Ports.WRIST_SOLENOIDS[0], Ports.WRIST_SOLENOIDS[1]);
-		
+
 		// Init drive motors
 		leftDriveMotorA = new VictorSP(Ports.LEFT_DRIVE_MOTOR_A_PWM_PORT);
 		leftDriveMotorB = new VictorSP(Ports.LEFT_DRIVE_MOTOR_B_PWM_PORT);
@@ -84,22 +87,22 @@ public class RobotModel {
 		// Invert right intake motor
 		leftIntakeMotor.setInverted(false);
 		rightIntakeMotor.setInverted(false);
-		
-		//Speedcontroller group for intake motors
+
+		// Speedcontroller group for intake motors
 		intakeMotors = new SpeedControllerGroup(leftIntakeMotor, rightIntakeMotor);
-		//Limit switch for intake to detect cube
-		//limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
+		// Limit switch for intake to detect cube
+		// limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
 
-		//Initialize arm sensor
+		// Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
 		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
-		
-		//Initialize drive encoders
+
+		// Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);
 		rightDriveEncoder = new Encoder(Ports.RIGHT_DRIVE_ENCODER_PORTS[0], Ports.RIGHT_DRIVE_ENCODER_PORTS[1]);
 
-		//Encoder setup
+		// Encoder setup
 		leftDriveEncoder.setReverseDirection(false);
 		leftDriveEncoder.setDistancePerPulse(((1.0) / Params.PULSES_PER_ROTATION) * (Params.WHEEL_CIRCUMFERENCE));
 		leftDriveEncoder.setSamplesToAverage(1);
@@ -112,16 +115,16 @@ public class RobotModel {
 		rightDriveMotorA.setSafetyEnabled(false);
 		rightDriveMotorB.setSafetyEnabled(false);
 
-		//TODO Probably Inverted twice
+		// TODO Probably Inverted twice
 		leftDriveMotorA.setInverted(false);
 		leftDriveMotorB.setInverted(false);
 		rightDriveMotorA.setInverted(true);
 		rightDriveMotorB.setInverted(true);
 
-
+		accel = new BuiltInAccelerometer();
 		timer = new Timer();
 		timer.start();
-		
+
 		mpu_gyro = new MPU9250Gyro(Port.kOnboard);
 
 		autoTimer = new Timer();
@@ -129,8 +132,6 @@ public class RobotModel {
 		// camera.addServer("Server");
 
 	}
-
-
 
 	public enum Wheels {
 		LeftWheels, RightWheels, AllWheels
@@ -144,16 +145,16 @@ public class RobotModel {
 			leftDriveMotorB.set(speed);
 			break;
 		case RightWheels:
-			rightDriveMotorA.set(speed); 
-											
-			rightDriveMotorB.set(speed); 
-											
+			rightDriveMotorA.set(speed);
+
+			rightDriveMotorB.set(speed);
+
 			break;
 		case AllWheels:
 			leftDriveMotorA.set(speed);
 			leftDriveMotorB.set(speed);
-			rightDriveMotorA.set(speed); 					
-			rightDriveMotorB.set(speed); 
+			rightDriveMotorA.set(speed);
+			rightDriveMotorB.set(speed);
 			break;
 		}
 	}
@@ -176,7 +177,6 @@ public class RobotModel {
 		resetGyro();
 	}
 
-
 	/*** returns the voltage from PDP ***/
 	public double getVoltage() {
 		return pdp.getVoltage();
@@ -196,7 +196,6 @@ public class RobotModel {
 	public double getTotalPower() {
 		return pdp.getTotalPower();
 	}
-
 
 	/*** resets the timer ***/
 	public void resetTimer() {
@@ -220,22 +219,23 @@ public class RobotModel {
 		rightDriveEncoder.reset();
 
 	}
+
 	/*** Returns difference between left and right encoder ***/
 	public double getEncoderError() {
 		return leftDriveEncoder.getDistance() - rightDriveEncoder.getDistance();
 	}
 
-	
 	/*** Sets Left Drive output ***/
 	public void setLeftMotors(double output) {
 		leftDriveMotors.set(output);
 
 	}
+
 	/*** Sets Right Drive output ***/
 	public void setRightMotors(double output) {
 		rightDriveMotors.set(output);
 	}
-	
+
 	/*** Sets arm output ***/
 	public void moveArm(double speed) {
 		armMotors.set(speed);
@@ -249,24 +249,29 @@ public class RobotModel {
 	/*** Get pot raw value ***/
 	public double getArmEncoderRawValue() {
 		return pot.getValue();
-		
+
 	}
+
 	/*** Get average pot raw value ***/
 	public double getAverageArmEncoderRawValue() {
 		return pot.getAverageValue();
 	}
+
 	/*** Get average pot voltage ***/
 	public double getAverageArmVoltage() {
 		return pot.getAverageVoltage();
 	}
+
 	/*** Get pot voltage ***/
 	public double getArmVoltage() {
 		return pot.getVoltage();
 	}
+
 	/*** Get arm angle ***/
 	public double getArmAngle() {
 		return pot.getAngle();
 	}
+
 	/*** set intae speed ***/
 	public void intakeWheels(double speed) {
 		intakeMotors.set(speed);
@@ -277,6 +282,7 @@ public class RobotModel {
 	public void openIntake() {
 		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
+
 	/*** Closes Intake claw ***/
 	public void closeIntake() {
 		intakeSolenoid.set(DoubleSolenoid.Value.kForward);
@@ -286,37 +292,53 @@ public class RobotModel {
 	public void relaxWrist() {
 		wristSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
+
 	/*** Not used yet ***/
 	public boolean getBlockTouching() {
-		//return limitSwitch.get();
+		// return limitSwitch.get();
 		return false;
 	}
+
 	/*** Intake block ***/
 	public void intakeBlock() {
 		intakeWheels(1);
 	}
-	
+
 	/*** Outtake block ***/
 	public void outtakeBlock() {
 		intakeWheels(-1);
 	}
+
 	/*** Stops intake ***/
 	public void stopIntake() {
 		intakeWheels(0);
 	}
+
 	/*** Gets robot angle ***/
 	public double getAngle() {
 		return mpu_gyro.getAngle();
 	}
+
 	/*** Resets Gyro ***/
 	public void resetGyro() {
 		mpu_gyro.reset();
 	}
-	
+
+	public double getAccelX() {
+		return accel.getX();
+	}
+
+	public double getAccelY() {
+		return accel.getY();
+	}
+
+	public double getAccelZ() {
+		return accel.getZ();
+	}
+
 	/*** Runs in loop ***/
 	public void update() {
 		mpu_gyro.getAngle();
 	}
 
-	
 }

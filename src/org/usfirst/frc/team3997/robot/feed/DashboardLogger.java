@@ -120,6 +120,13 @@ public class DashboardLogger {
 	public void putSensors() {
 		SmartDashboard.putNumber("LEFT_ENC_DISTANCE", robot.leftDriveEncoder.getDistance());
 		SmartDashboard.putNumber("RIGHT_ENC_DISTANCE", robot.rightDriveEncoder.getDistance());
+		SmartDashboard.putNumber("LEFT_ENC_VELOCITY", robot.leftDriveEncoder.getRate());
+		SmartDashboard.putNumber("RIGHT_ENC_VELOCITY", robot.rightDriveEncoder.getRate());
+		
+		SmartDashboard.putNumber("ACCELEROMETER_X", robot.getAccelX());
+		SmartDashboard.putNumber("ACCELEROMETER_Y", robot.getAccelY());
+		SmartDashboard.putNumber("ACCELEROMETER_Z", robot.getAccelZ());
+
 		SmartDashboard.putNumber("ARM_ANGLE", robot.getArmAngle());
 		SmartDashboard.putNumber("GYRO", robot.getAngle());
 		SmartDashboard.putNumber("DEBUG_GZ", robot.mpu_gyro.getRate());
