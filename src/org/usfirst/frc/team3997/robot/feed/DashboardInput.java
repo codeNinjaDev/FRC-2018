@@ -28,16 +28,27 @@ public class DashboardInput {
 		Params.ARM_FEED_SETPOINT = preferences.getDouble("FEED_ARM_ANGLE", 10);
 		//Set Max Speed to preferences Max Speed
 		DashboardVariables.max_speed = preferences.getDouble("MAX_SPEED", 1);
+		
 		Params.drive_p = preferences.getDouble("DRIVE_P_VALUE", 0);
 		Params.drive_i = preferences.getDouble("DRIVE_I_VALUE", 0);
 		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
 
+		Params.turn_drive_p = preferences.getDouble("TURN_DRIVE_P_VALUE", 0);
+		Params.turn_drive_i = preferences.getDouble("TURN_DRIVE_I_VALUE", 0);
+		Params.turn_drive_d = preferences.getDouble("TURN_DRIVE_D_VALUE", 0);
+		
 		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
-		SmartDashboard.putNumber("ARM P", Params.arm_p);
+
 		Params.TIME_DELAY = preferences.getDouble("AUTO_DELAY", 0);
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
-		System.out.println("PREFS: " + preferences.getDouble("Max Speed", 1));
+		
+		Params.track_base_width = preferences.getDouble("TRACK_BASE_WIDTH", 0);
+		Params.wheel_base_width = preferences.getDouble("WHEEL_BASE_WIDTH", 0);
+		Params.dt = preferences.getDouble("DELTA_TIME_MP", 0);
 	}
+	
+	
+	
 	/*** Updates input from Dashboard ***/
 	public void updateInput() {
 		//Gets information from dashboard
@@ -47,23 +58,15 @@ public class DashboardInput {
 		
 		//Gets ARM PID from dashboard, and logs it
 		Params.arm_p = preferences.getDouble("ARM_P_VALUE", 0);
-		SmartDashboard.putNumber("Arm P", Params.arm_p);
 		Params.arm_i = preferences.getDouble("ARM_I_VALUE", 0);
-		SmartDashboard.putNumber("Arm I", Params.arm_i);
 		Params.arm_d = preferences.getDouble("ARM_D_VALUE", 0);
-		SmartDashboard.putNumber("Arm D", Params.arm_d);
 		Params.arm_f = preferences.getDouble("ARM_F_VALUE", 0);
-		SmartDashboard.putNumber("Arm F", Params.arm_f);
 
 		//Gets ARM SETPOINTS and logs it
 		Params.ARM_CLIMB_SETPOINT = preferences.getDouble("CLIMB_ARM_ANGLE", 150);
-		SmartDashboard.putNumber("CLimb Setpoint", Params.ARM_CLIMB_SETPOINT);
 		Params.ARM_SCALE_SETPOINT = preferences.getDouble("SCALE_ARM_ANGLE", 125);
-		SmartDashboard.putNumber("Scale Setpoint", Params.ARM_SCALE_SETPOINT);
 		Params.ARM_SWITCH_SETPOINT = preferences.getDouble("SWITCH_ARM_ANGLE", 48);
-		SmartDashboard.putNumber("Switch Setpoint", Params.ARM_SWITCH_SETPOINT);
 		Params.ARM_FEED_SETPOINT = preferences.getDouble("FEED_ARM_ANGLE", 10);
-		SmartDashboard.putNumber("Feed Setpoint", Params.ARM_FEED_SETPOINT);
 
 		//Gets max speed
 		DashboardVariables.max_speed = preferences.getDouble("MAX_SPEED", 1);
@@ -71,17 +74,20 @@ public class DashboardInput {
 
 		//Gets Drive PID and logs it
 		Params.drive_p = preferences.getDouble("DRIVE_P_VALUE", 0);
-		SmartDashboard.putNumber("Drive P", Params.drive_p);
 		Params.drive_i = preferences.getDouble("DRIVE_I_VALUE", 0);
-		SmartDashboard.putNumber("Drive I", Params.drive_i);
 		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
-		SmartDashboard.putNumber("Drive D", Params.drive_d);
 
+		Params.turn_drive_p = preferences.getDouble("TURN_DRIVE_P_VALUE", 0);
+		Params.turn_drive_i = preferences.getDouble("TURN_DRIVE_I_VALUE", 0);
+		Params.turn_drive_d = preferences.getDouble("TURN_DRIVE_D_VALUE", 0);
+		
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
-		SmartDashboard.putNumber("Params Max Speed", Params.MAX_SPEED);
-		SmartDashboard.putNumber("ARM P", Params.arm_p);
+		
 		Params.TIME_DELAY = preferences.getDouble("AUTO_DELAY", 0);
 
+		Params.track_base_width = preferences.getDouble("TRACK_BASE_WIDTH", 0);
+		Params.wheel_base_width = preferences.getDouble("WHEEL_BASE_WIDTH", 0);
+		Params.dt = preferences.getDouble("DELTA_TIME_MP", 0);
 
 	}
 

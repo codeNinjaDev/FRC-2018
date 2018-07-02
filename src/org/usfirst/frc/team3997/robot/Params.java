@@ -32,7 +32,7 @@ public class Params {
 	public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 	public static double CLIMBER_HARDSET_MOTOR_SPEED = 1.0;
 	public static double DESIRED_VOLTAGE = 12;
-	
+
 	public static double TIME_DELAY = 0;
 	// ENCODER PARAMS
 	public static final double PULSES_PER_ROTATION = 250;
@@ -72,6 +72,11 @@ public class Params {
 	public static double drive_i = 0.0;
 	public static double drive_d = 0.05;
 
+	// [TURN DRIVE_PID]
+	public static double turn_drive_p = 1;
+	public static double turn_drive_i = 0.0;
+	public static double turn_drive_d = 0.1;
+
 	// [NEW_DRIVE_PID]
 	public static double new_drive_p = DashboardVariables.DRIVE_P;
 	public static double new_drive_i = DashboardVariables.DRIVE_I;
@@ -87,7 +92,7 @@ public class Params {
 	public static final double maximum_velocity = 86; // TODO add maximum velocity in inches/s
 	public static final double maximum_acceleration = 0.12; // TODO add maximum velocity in inches/s/s
 	public static final double maximum_jerk = .23; // TODO add maximum velocity in a/s
-	public static final double dt = .7;
+	public static double dt = .7;
 
 	public static final double kp = 0.8; // 1.2;
 	public static final double kd = 0.0;
@@ -97,8 +102,8 @@ public class Params {
 	public static final double ka = 0.05; // 0.015
 	// Center of front wheel to center of back wheel
 	// public static final double wheel_base_width = 0.72;
-	public static final double wheel_base_width = 24.5;
+	public static double wheel_base_width = 24.5;
 	// Center of front left wheel to center of front right wheel
-	public static final double track_base_width = 25;
+	public static double track_base_width = 25;
 
 }

@@ -109,6 +109,12 @@ public class Robot extends IterativeRobot {
                 outputStream.putFrame(output);
             }
         }).start();
+		Thread t = new Thread(() -> {
+            while (!Thread.interrupted()) {
+            	robot.mpu_gyro.getAngle();
+            }
+        });
+        t.start();
 		/*** Update Dashboard ***/
 
 	}

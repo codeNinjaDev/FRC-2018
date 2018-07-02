@@ -27,10 +27,22 @@ public class DashboardLogger {
 	public void updateData() {
 		
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
+		if(DriverStation.getInstance().isFMSAttached()) {
+			putMatchInfo();
+		}
 		putRobotElectricalData();
 		putJoystickAxesData();
 		putMotorOutputs();
 		putSensors();
+		if(DriverStation.getInstance().isAutonomous()) {
+			SmartDashboard.putString("DS_MODE", "AUTONOMOUS");
+		}  else if(DriverStation.getInstance().isOperatorControl()) {
+			SmartDashboard.putString("DS_MODE", "TELEOP");
+		} else {
+			SmartDashboard.putString("DS_MODE", "DISABLED");
+		}
+		
+
 	}
 
 
@@ -58,6 +70,8 @@ public class DashboardLogger {
 		SmartDashboard.putString("ALLIANCE", DriverStation.getInstance().getAlliance().toString());
 		SmartDashboard.putNumber("LOCATION", DriverStation.getInstance().getLocation());
 		SmartDashboard.putString("GAME_DATA", DriverStation.getInstance().getGameSpecificMessage());
+		SmartDashboard.putNumber("MATCH_TIME", DriverStation.getInstance().getMatchTime());
+
 	}
 	
 	public void putJoystickAxesData() {
@@ -114,7 +128,32 @@ public class DashboardLogger {
 	}
 
 	
-	
+	public void putParamData() {
+		SmartDashboard.putNumber("ARM_P", Params.arm_p);
+		SmartDashboard.putNumber("ARM_I", Params.arm_i);
+		SmartDashboard.putNumber("ARM_D", Params.arm_d);
+		SmartDashboard.putNumber("DRIVE_P", Params.drive_p);
+		SmartDashboard.putNumber("DRIVE_I", Params.drive_i);
+		SmartDashboard.putNumber("DRIVE_D", Params.drive_d);
+		SmartDashboard.putNumber("TURN_P", Params.turn_drive_p);		
+		SmartDashboard.putNumber("TURN_I", Params.turn_drive_i);
+		SmartDashboard.putNumber("TURN_D", Params.turn_drive_d);
+		SmartDashboard.putNumber("ARM_SCALE_SETPOINT", Params.ARM_SCALE_SETPOINT);
+		SmartDashboard.putNumber("ARM_SWITCH_SETPOINT", Params.ARM_SWITCH_SETPOINT);
+		SmartDashboard.putNumber("ARM_FEED_SETPOINT", Params.ARM_FEED_SETPOINT);
+		SmartDashboard.putNumber("MAX_SPEED", Params.MAX_SPEED);
+		SmartDashboard.putNumber("DELTA_TIME_MP", Params.dt);
+		SmartDashboard.putNumber("WHEEL_CIRCUMFERENCE", Params.WHEEL_CIRCUMFERENCE);
+		SmartDashboard.putNumber("WHEEL_DIAMETER", Params.WHEEL_DIAMETER);
+		SmartDashboard.putNumber("TRACK_BASE_WIDTH", Params.track_base_width);
+		SmartDashboard.putNumber("WHEEL_BASE_WIDTH", Params.wheel_base_width);
+		SmartDashboard.putNumber("X_SPEED_MULTIPLIER", Params.GLOBAL_X_DRIVE_SPEED_MULTIPLIER);
+		SmartDashboard.putNumber("Y_SPEED_MULTIPLIER", Params.GLOBAL_Y_DRIVE_SPEED_MULTIPLIER);
+		
+
+
+
+	}
 	
 	
 	public void putSensors() {
