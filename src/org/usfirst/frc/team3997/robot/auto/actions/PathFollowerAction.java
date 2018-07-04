@@ -1,5 +1,12 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
+import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -62,7 +69,19 @@ public class PathFollowerAction extends Action{
 		robot.rightDriveEncoder.reset();
 		//Starts following path
 		motion.enable();
+		ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
+		Runnable motionRunnable = new Runnable() {
+			
+			public void run() {
+				motion.update();
+				if (motion.isProfileFinished() || (Timer.getFPGATimestamp() >= start_time + timeout)) {
+					scheduledExecutorService.shutdown();
+				}
+			}
+		};
+		
+		scheduledExecutorService.scheduleAtFixedRate(motionRunnable, 0, 20, TimeUnit.MILLISECONDS);
 	}
 
 }

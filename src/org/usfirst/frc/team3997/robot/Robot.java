@@ -1,5 +1,10 @@
 package org.usfirst.frc.team3997.robot;
 
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
@@ -110,9 +115,16 @@ public class Robot extends IterativeRobot {
             }
         }).start();
 		Thread t = new Thread(() -> {
-            while (!Thread.interrupted()) {
-            	robot.mpu_gyro.getAngle();
-            }
+			ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+
+			Runnable gyroRunnable = new Runnable() {
+				
+				public void run() {
+					robot.getAngle();
+				}
+			};
+			
+			scheduledExecutorService.scheduleAtFixedRate(gyroRunnable, 0, 20, TimeUnit.MICROSECONDS);
         });
         t.start();
 		/*** Update Dashboard ***/
