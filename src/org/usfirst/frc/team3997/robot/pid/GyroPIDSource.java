@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 /*** Sets MPU9250 gyro as a PID Source ***/
 public class GyroPIDSource implements PIDSource {
 	MPU9250Gyro gyro;
-	public GyroPIDSource() {
-		gyro = new MPU9250Gyro(Ports.gyroPort);
+	public GyroPIDSource(MPU9250Gyro gyro) {
+		this.gyro = gyro;
 	}
 	@Override
 	public PIDSourceType getPIDSourceType() {

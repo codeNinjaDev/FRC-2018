@@ -6,6 +6,7 @@ import org.usfirst.frc.team3997.robot.controllers.ArmController;
 public class FeedAction extends Action {
 	private ArmController arm;
 	private Boolean setpointReached;
+	
 	public FeedAction(MasterController controllers) {
 		arm = controllers.getArmController();
 		this.setpointReached = false;
