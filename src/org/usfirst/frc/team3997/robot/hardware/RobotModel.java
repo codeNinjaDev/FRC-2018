@@ -31,6 +31,8 @@ public class RobotModel {
 	public TenTurnPotentiometer pot;
 	/*** Compressor (not really needed) ***/
 	public Compressor compressor;
+	/*** Is tripped if arm is in resting position ***/
+	DigitalInput armZeroSensor;
 
 	/*** Intake solenoid (opens or closes claw) ***/
 	public DoubleSolenoid intakeSolenoid;
@@ -94,6 +96,7 @@ public class RobotModel {
 		// limitSwitch = new DigitalInput(Ports.LIMIT_SWITCH);
 		// TODO add real input channel
 
+		armZeroSensor = new DigitalInput(Ports.HALL_EFFECT_PORT);
 		// Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
 		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
@@ -339,6 +342,10 @@ public class RobotModel {
 	/*** Runs in loop ***/
 	public void update() {
 		mpu_gyro.getAngle();
+	}
+	/*** If arm is in resting/zero position ***/
+	public boolean isArmResting() {
+		return armZeroSensor.get();
 	}
 
 }

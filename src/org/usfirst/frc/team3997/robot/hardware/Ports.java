@@ -26,7 +26,7 @@ public class Ports {
 	//Top Ports
 	public static final int RIGHT_DRIVE_ENCODER_PORTS[]           = {7, 6};
 	public static final int LIMIT_SWITCH                              = 1;
-
+	public static final int HALL_EFFECT_PORT 					  = 6;
 
 	// ******************* ANALOG IN PORTS*******************
 	public static final int ARM_ENCODER                              = 0;

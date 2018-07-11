@@ -18,7 +18,7 @@ public class TenTurnPotentiometer{
 	  private static final int[] kAccumulatorChannels = {0, 1};
 	  //Gear 4 to 1 ratio
 	  private static final int VOLT_TO_DEGREES = 720/4;
-	  double starting_error;
+	  public double starting_error;
 	  protected PIDSourceType m_pidSource = PIDSourceType.kDisplacement;
 
 	  /**

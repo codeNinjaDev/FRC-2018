@@ -11,6 +11,7 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 import org.usfirst.frc.team3997.robot.pid.ArmPIDOutput;
 import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -44,6 +45,9 @@ public class ArmController {
 	private boolean toggleCollapse;
 
 	private boolean toggleIntake;
+
+	/*** Boolean that checks if arm is homed ***/
+	private boolean homed;
 
 	/*** Enum that lets us shift our status from init to teleop and vice versa ***/
 	public enum ArmState {
@@ -79,6 +83,7 @@ public class ArmController {
 		toggleArmManual = false;
 		toggleCollapse = false;
 		toggleIntake = false;
+		homed = false;
 
 		armPIDSource = new PotentiometerPIDSource(robot.pot);
 		armPIDOutput = new ArmPIDOutput(robot);
@@ -117,44 +122,59 @@ public class ArmController {
 			// Toggle variables to false
 			toggleArmManual = false;
 			toggleCollapse = false;
+
+			robot.armMotors.set(-0.2);
 			// Sets next state to teleop
 			nextState = ArmState.kTeleop;
+
 			break;
 		case kTeleop:
 			// *** TOGGLE ZONE ***//
 
 			// If armManualDesired, Toggle the arm override
 			toggleArmManual = humanControl.toggleManualArmDesired();
-
-			// Arm Behavior
-			if (toggleArmManual) {
-				// Disable PID if in manual
-				if (armPIDController.isEnabled()) {
-					armPIDController.disable();
-				}
-				SmartDashboard.putString("ARM", "OVERIDE");
-				// Move arm based off of the Right Y of Operator Joystick
-				robot.moveArm((humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY) * .75));
-				// Intake normally
-				intakeFunctions();
-
-			} else {
-				SmartDashboard.putString("ARM", "PID");
-
-				// Intake normally
-				intakeFunctions();
-				// Go to set point position
-				if (humanControl.getScaleArmDesired()) {
-					goToScalePosition();
-				} else if (humanControl.getSwitchArmDesired()) {
-					SmartDashboard.putString("ARM", "SWITCH");
-					goToSwitchPosition();
-				} else if (humanControl.getFeedArmDesired()) {
-					goToFeedPosition();
-				} else {
-					// Disable PID
-					if (armPIDController.isEnabled())
+			/*
+			 * If arm is resting, but is not homed, then we set this as the potentiometer's
+			 * zero. We set homed equal to true and stop the motors
+			 */
+			if (robot.isArmResting() && (!homed)) {
+				robot.pot.starting_error = robot.getArmAngle();
+				homed = true;
+				robot.armMotors.set(0);
+			}
+			//If we are homed
+			if (homed) {
+				// Arm Behavior
+				if (toggleArmManual) {
+					// Disable PID if in manual
+					if (armPIDController.isEnabled()) {
 						armPIDController.disable();
+					}
+					SmartDashboard.putString("ARM", "OVERIDE");
+					// Move arm based off of the Right Y of Operator Joystick
+					robot.moveArm(
+							(humanControl.getJoystickValue(Joysticks.kOperatorJoy, RemoteControl.Axes.kRY) * .75));
+					// Intake normally
+					intakeFunctions();
+
+				} else {
+					SmartDashboard.putString("ARM", "PID");
+
+					// Intake normally
+					intakeFunctions();
+					// Go to set point position
+					if (humanControl.getScaleArmDesired()) {
+						goToScalePosition();
+					} else if (humanControl.getSwitchArmDesired()) {
+						SmartDashboard.putString("ARM", "SWITCH");
+						goToSwitchPosition();
+					} else if (humanControl.getFeedArmDesired()) {
+						goToFeedPosition();
+					} else {
+						// Disable PID
+						if (armPIDController.isEnabled())
+							armPIDController.disable();
+					}
 				}
 			}
 			// Set next state to teleop
@@ -254,11 +274,11 @@ public class ArmController {
 			} else {
 				robot.openIntake();
 			}
-		} else if(humanControl.outtakeWheels()){ 
+		} else if (humanControl.outtakeWheels()) {
 			outtakeWheels();
-		} else if(humanControl.intakeWheels()){
+		} else if (humanControl.intakeWheels()) {
 			intakeWheels();
-			
+
 		} else {
 			// If not pressing anything, keep intake closed and stop intake wheels.
 			robot.closeIntake();
@@ -270,6 +290,7 @@ public class ArmController {
 	public void outtakeWheels() {
 		robot.intakeWheels(1);
 	}
+
 	public void intakeWheels() {
 		robot.intakeWheels(-1);
 	}

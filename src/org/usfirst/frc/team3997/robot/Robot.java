@@ -1,5 +1,5 @@
 package org.usfirst.frc.team3997.robot;
-
+import java.lang.Thread;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -44,15 +44,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
-	
+
 	RobotModel robot;
 	RemoteControl humanControl;
 	DriveController driveController;
 	VisionController visionController;
 	LightController lights;
 	ArmController armController;
-	
+
 	DashboardLogger dashboardLogger;
 	DashboardInput input;
 
@@ -62,10 +61,9 @@ public class Robot extends IterativeRobot {
 	Auto auto;
 	Timer timer;
 
-
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -79,54 +77,55 @@ public class Robot extends IterativeRobot {
 		input = new DashboardInput();
 		motion = new MotionController(robot);
 		armController = new ArmController(robot, humanControl);
-		masterController = new MasterController(driveController, robot, motion, visionController,
-				lights, armController);
+		masterController = new MasterController(driveController, robot, motion, visionController, lights,
+				armController);
 		auto = new Auto(masterController);
 		timer = new Timer();
-		
+
 		// Sets enabled lights
 		lights.setEnabledLights();
 		// Resets autonomous
 		auto.reset();
-		//List autonomous routines on Dashboard
+		// List autonomous routines on Dashboard
 		auto.listOptions();
-		//Updates input from Robot Preferences
+		// Updates input from Robot Preferences
 		input.updateInput();
 
 		/*** Starts camera stream ***/
 		new Thread(() -> {
 			UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            
-            camera.setResolution(640, 480);
-            
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Line", 640, 480);
-            
-            Mat source = new Mat();
-            Mat output = new Mat();
-            
-            while(!Thread.interrupted()) {
-                cvSink.grabFrame(output);
-                int thickness = 2;
-                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
 
-                Imgproc.line(output, new Point((output.size().width / 2), 0), new Point((output.size().width / 2), (output.size().height)), new Scalar(0, 0, 0), thickness);
-                outputStream.putFrame(output);
-            }
-        }).start();
+			camera.setResolution(640, 480);
+
+			CvSink cvSink = CameraServer.getInstance().getVideo();
+			CvSource outputStream = CameraServer.getInstance().putVideo("Line", 640, 480);
+
+			Mat source = new Mat();
+			Mat output = new Mat();
+
+			while (!Thread.interrupted()) {
+				cvSink.grabFrame(output);
+				int thickness = 2;
+				Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+
+				Imgproc.line(output, new Point((output.size().width / 2), 0),
+						new Point((output.size().width / 2), (output.size().height)), new Scalar(0, 0, 0), thickness);
+				outputStream.putFrame(output);
+			}
+		}).start();
 		Thread t = new Thread(() -> {
 			ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
 			Runnable gyroRunnable = new Runnable() {
-				
+
 				public void run() {
 					robot.getAngle();
 				}
 			};
-			
+
 			scheduledExecutorService.scheduleAtFixedRate(gyroRunnable, 0, 20, TimeUnit.MICROSECONDS);
-        });
-        t.start();
+		});
+		t.start();
 		/*** Update Dashboard ***/
 
 	}
@@ -138,54 +137,54 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		/*** Reset all hardware ***/
 		robot.reset();
-		//Reset auto timer
+		// Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
-		//Update robot preferences
+		// Update robot preferences
 		input.updateInput();
-		//Stop autonomous before starting
+		// Stop autonomous before starting
 		auto.stop();
-		//Reset timer
+		// Reset timer
 		timer.reset();
-		//Start timer
+		// Start timer
 		timer.start();
-		//Starts Autonomous Routine
+		// Starts Autonomous Routine
 		auto.start();
-		
+
 	}
 
 	/**
-	 * This function is called periodically during autonomous, but is mainly used for logging
+	 * This function is called periodically during autonomous, but is mainly used
+	 * for logging
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		//Log Gyro angle
+		// Log Gyro angle
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-		//Start auto pattern on led strip
+		// Start auto pattern on led strip
 		lights.setAutoLights();
-		//Log data to the Dashboard
+		// Log data to the Dashboard
 		dashboardLogger.updateData();
 
 	}
 
 	/**
-	 * This function is called once each time the robot enters tele-operated
-	 * mode
+	 * This function is called once each time the robot enters tele-operated mode
 	 */
 	@Override
 	public void teleopInit() {
-		//Stop autonomous
+		// Stop autonomous
 		auto.stop();
-		//Reset Gyro
+		// Reset Gyro
 		robot.resetGyro();
-		//Reset hardware timer
+		// Reset hardware timer
 		robot.resetTimer();
-		//Reset Encoders
+		// Reset Encoders
 		robot.resetEncoders();
-		//Reset Drive
+		// Reset Drive
 		driveController.reset();
-		//Reset Arm
+		// Reset Arm
 		armController.reset();
-		//Update input from Robot Preferences
+		// Update input from Robot Preferences
 		input.updateInput();
 	}
 
@@ -194,21 +193,21 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//Logs arm angle on Dashboard
+		// Logs arm angle on Dashboard
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
-		//Updates Gyro angle
+		// Updates Gyro angle
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-		//Logs data to Dashboard
+		// Logs data to Dashboard
 		dashboardLogger.updateData();
-		//Read input from Gamepad
+		// Read input from Gamepad
 		humanControl.readControls();
-		//Updates Drive e.g arcadeDrive
+		// Updates Drive e.g arcadeDrive
 		driveController.update();
-		//Updates Intake and arm
+		// Updates Intake and arm
 		armController.update();
-		//Set enabled Light pattern
+		// Set enabled Light pattern
 		lights.setEnabledLights();
-		//Log Data to Dashboard
+		// Log Data to Dashboard
 
 	}
 
@@ -218,40 +217,39 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 
-
 		input.updateInput();
 
 	}
 
 	public void disabledInit() {
 		robot.resetGyro();
-		//Reset auto timer
+		// Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
-		//Reset drive
+		// Reset drive
 		driveController.reset();
-		//Reset hardware
+		// Reset hardware
 		robot.reset();
-		//Update input from Dashboard
+		// Update input from Dashboard
 		input.updateInput();
-		//Log Data
+		// Log Data
 
 	}
 
 	public void disabledPeriodic() {
-	
-		//Reset auto timer
+
+		// Reset auto timer
 		AutoRoutineRunner.getTimer().reset();
-		//Put Gyro Angle on SmartDashboard
+		// Put Gyro Angle on SmartDashboard
 		SmartDashboard.putNumber("gyro", robot.getAngle());
-		//Update input from Dashboard
+		// Update input from Dashboard
 		input.updateInput();
-		//Logs arm angle on Dashboard
+		// Logs arm angle on Dashboard
 		SmartDashboard.putNumber("Arm Angle", robot.getArmAngle());
-		//Log Dashboard
+		// Log Dashboard
 		dashboardLogger.updateData();
-		//Read Gamepad Controlls
+		// Read Gamepad Controlls
 		humanControl.readControls();
-		//Set Disabled pattern for led strips
+		// Set Disabled pattern for led strips
 		lights.setDisabledLights();
 	}
 
