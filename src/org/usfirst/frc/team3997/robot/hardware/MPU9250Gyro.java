@@ -514,7 +514,6 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 
 	@Override
 	public double getAngle() {
-		update();
 		return yaw - offset;
 	}
 	/*** Angular Acceleration ***/

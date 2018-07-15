@@ -120,7 +120,7 @@ public class Robot extends IterativeRobot {
 			Runnable gyroRunnable = new Runnable() {
 				
 				public void run() {
-					robot.getAngle();
+					robot.mpu_gyro.update();
 				}
 			};
 			

@@ -37,7 +37,7 @@ public class RobotModel {
 	/*** Wrist solenoid (brings up or down claw) **/
 	public DoubleSolenoid wristSolenoid;
 	/*** Gyro ***/
-	public Gyro mpu_gyro;
+	public MPU9250Gyro mpu_gyro;
 	// public DigitalInput limitSwitch;
 
 	public Accelerometer accel;
