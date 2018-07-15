@@ -20,9 +20,9 @@ public class OneCubeCenterAutoRoutine extends CommandGroup {
 		this.controllers = controllers;
 		addSequential(new WaitAction(Params.TIME_DELAY));
 		controllers.getRobotModel().closeIntake();
-		;
+		
 		controllers.getRobotModel().relaxWrist();
-		;
+		
 
 		// previous 47 in
 		addSequential(new DriveDistanceAction(controllers, 40, .6, 1, true));
@@ -37,7 +37,7 @@ public class OneCubeCenterAutoRoutine extends CommandGroup {
 		// Timer.delay(.25);
 		addSequential(new DriveDistanceAction(controllers, 64, .6, 3, true));
 		addSequential(new OuttakeAction(controllers, .8, 1));
-		controllers.getArmController().goToSwitchPosition();
+		addSequential(new SwitchAction(controllers));
 		controllers.getRobotModel().closeIntake();
 		if (PlateDetector.getSwitchColor() == 'R')
 			addSequential(new DriveRotateAction(controllers, -45, .6, 1.5, true));

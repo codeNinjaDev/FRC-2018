@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *         Friedlander
  * 
  **/
-public class DriveController extends Subsystem{
+public class DriveController{
 
 	private RobotModel robot;
 	// Handles the math for arcade, curvature, and tank drive
@@ -73,9 +73,7 @@ public class DriveController extends Subsystem{
 	enum DriveState {
 		kInitialize, kTeleopDrive
 	};
-	public void initDefaultCommand() {
-		
-	}
+	
 	/**
 	 * Initalizes all drive variables
 	 * 

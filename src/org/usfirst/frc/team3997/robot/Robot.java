@@ -160,7 +160,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		//Stop autonomous
-		selectedAutonomous.cancel();
 		//Reset Gyro
 		robot.resetGyro();
 		//Reset hardware timer
@@ -223,7 +222,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void disabledPeriodic() {
-	
+		
+		SmartDashboard.putData(armController.armPIDController);
+		SmartDashboard.putBoolean("PIDEnabled", armController.armPIDController.isEnabled());
+
 		//Put Gyro Angle on SmartDashboard
 		SmartDashboard.putNumber("gyro", robot.getAngle());
 		//Update input from Dashboard

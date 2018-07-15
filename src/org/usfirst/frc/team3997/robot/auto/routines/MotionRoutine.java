@@ -15,7 +15,7 @@ public class MotionRoutine extends CommandGroup {
 
 	public MotionRoutine(MasterController controllers) {
 		this.controllers = controllers;
-		trajectory = MotionController.generateTrajectory(points);
+		//trajectory = MotionController.generateTrajectory(points);
 
 	}
 

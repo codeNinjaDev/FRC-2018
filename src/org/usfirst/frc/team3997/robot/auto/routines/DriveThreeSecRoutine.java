@@ -10,7 +10,9 @@ public class DriveThreeSecRoutine extends CommandGroup {
 	
 	public DriveThreeSecRoutine(MasterController controllers) {
 		this.controllers = controllers;
-		addSequential(new DriveIntervalAction(controllers, 1, .25, 0));
+		addSequential(new DriveIntervalAction(controllers, 3, 1, 0));
+
+
 	}
 
 

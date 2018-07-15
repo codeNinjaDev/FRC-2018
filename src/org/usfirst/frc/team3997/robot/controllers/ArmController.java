@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
  *         Friedlander
  ***/
-public class ArmController extends Subsystem {
+public class ArmController {
 	/*** Instance variable with Hardware class for arm and intake ***/
 	private RobotModel robot;
 	/*** Instance variable for communicating with game pads ***/
@@ -112,9 +112,9 @@ public class ArmController extends Subsystem {
 		case kInitialize:
 
 			// Intitalize Variables and PId
-			armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
-			armPIDController.setOutputRange(-1, 1);
-			armPIDController.setSetpoint(Params.ARM_REST_SETPOINT);
+			//armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
+			//armPIDController.setOutputRange(-1, 1);
+			//armPIDController.setSetpoint(Params.ARM_REST_SETPOINT);
 			// Toggle variables to false
 			toggleArmManual = false;
 			toggleCollapse = false;
@@ -170,6 +170,7 @@ public class ArmController extends Subsystem {
 	 * <h2>Moves arm to scoring position for the switch
 	 **/
 	public void goToSwitchPosition() {
+		SmartDashboard.putString("Go to Switch Position", "True");
 		// Sets PID, outputrange, setpoint, and enables
 		armPIDController.setPID(Params.arm_p, Params.arm_i, Params.arm_d, Params.arm_f);
 		armPIDController.setOutputRange(-1, 1);
@@ -269,10 +270,5 @@ public class ArmController extends Subsystem {
 		robot.intakeWheels(1);
 	}
 
-	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

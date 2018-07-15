@@ -199,12 +199,15 @@ public class ControlBoard extends RemoteControl {
 	@Override
 	public boolean toggleManualArmDesired() {
 		SmartDashboard.putString("OPERATOR", "TOGGLE ARM");
+		SmartDashboard.putBoolean("TOGGLE ARM", toggleArmManualDesired);
+
 		return toggleArmManualDesired;
 	}
 
 	@Override
 	public boolean getSwitchArmDesired() {
 		SmartDashboard.putString("OPERATOR", "SWITCH_POSITION");
+		SmartDashboard.putBoolean("SWITCH_POSITION", armSwitchDesired);
 
 		return armSwitchDesired;
 	}
@@ -212,6 +215,7 @@ public class ControlBoard extends RemoteControl {
 	@Override
 	public boolean getScaleArmDesired() {
 		SmartDashboard.putString("OPERATOR", "SCALE_POSITION");
+		SmartDashboard.putBoolean("SCALE_POSITION", armScaleDesired);
 		return armScaleDesired;
 	}
 

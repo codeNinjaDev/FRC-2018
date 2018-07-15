@@ -4,6 +4,7 @@ import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwitchAction extends Command {
 	private ArmController arm;
@@ -29,12 +30,12 @@ public class SwitchAction extends Command {
 	}
 
 	protected void end() {
-		// TODO Auto-generated method stub
-		
+		arm.armPIDController.disable();
 	}
 
 	protected void intialize() {
 		arm.goToSwitchPosition();
+		SmartDashboard.putString("PID Switch", "RUnning");
 	}
 	
 	protected void interrupt() {

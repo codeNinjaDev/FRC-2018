@@ -28,7 +28,7 @@ public class FeedAction extends Command {
 	}
 
 	protected void end() {
-		// TODO Auto-generated method stub
+		arm.armPIDController.disable();
 		
 	}
 
