@@ -135,7 +135,8 @@ public class Robot extends IterativeRobot {
 		timer.start();
 		
 		selectedAutonomous = autoChooser.getSelected();
-		selectedAutonomous.start();
+		if(selectedAutonomous != null)
+			selectedAutonomous.start();
 	}
 
 	/**
@@ -159,6 +160,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		Scheduler.getInstance().removeAll();
 		//Stop autonomous
 		//Reset Gyro
 		robot.resetGyro();
