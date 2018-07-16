@@ -3,8 +3,9 @@ package org.usfirst.frc.team3997.robot.controllers;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class LightController {
+public class LightController extends Subsystem {
 	static final boolean HIGH = true;
 	static final boolean LOW = false;
 	private DigitalOutput pin1;
@@ -44,6 +45,11 @@ public class LightController {
 	    pin2.set(HIGH);
 	    pin3.set(HIGH);
 	    pin4.set(LOW);
+	}
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

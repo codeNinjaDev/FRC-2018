@@ -23,12 +23,15 @@ public class PathFollowerAction extends Command {
 	 */
 	public PathFollowerAction(MasterController controllers, Trajectory trajectory, double timeout) {
 		this.motion = controllers.getMotionController();
+		requires(this.motion);
+
 		this.robot = controllers.getRobotModel();
 		this.timeout = timeout;
 		SmartDashboard.putString("MOTIONPROFILING", "SETTING_UP");
 		//Sets up configuration, modifiers, and encoder followers
 		this.motion.setUp(trajectory);
 		SmartDashboard.putString("MOTIONPROFILING", "FINISHED_SETTING_UP");
+
 
 	}
 

@@ -41,6 +41,7 @@ public class DriveDistanceAction extends Command {
 	 */
 	public DriveDistanceAction(MasterController controllers, double distance, double maxSpeed, double timeout, boolean waitForTimeout) {
 		this.driveTrain = controllers.getDriveController();
+		requires(this.driveTrain);
 		this.distance = distance;
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();
@@ -59,6 +60,7 @@ public class DriveDistanceAction extends Command {
 		SmartDashboard.putNumber("DRIVE_PID_P", P);
 		SmartDashboard.putNumber("DRIVE_PID_I", I);
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
+
 
 	}
 

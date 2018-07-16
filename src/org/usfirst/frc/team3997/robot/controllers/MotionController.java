@@ -10,6 +10,7 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.*;
 import jaci.pathfinder.followers.EncoderFollower;
@@ -23,7 +24,7 @@ import jaci.pathfinder.modifiers.TankModifier;
  *         Friedlander
  * 
  **/
-public class MotionController {
+public class MotionController extends Subsystem{
 	private RobotModel robot;
 	private java.util.Timer controlLoopTimer;
 	boolean isProfileFinished = false;
@@ -222,6 +223,11 @@ public class MotionController {
 		isEnabled = false;
 		robot.setLeftMotors(0);
 		robot.setRightMotors(0);
+	}
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

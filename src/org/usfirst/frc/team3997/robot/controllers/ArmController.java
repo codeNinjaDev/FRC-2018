@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot
  *         Friedlander
  ***/
-public class ArmController {
+public class ArmController extends Subsystem {
 	/*** Instance variable with Hardware class for arm and intake ***/
 	private RobotModel robot;
 	/*** Instance variable for communicating with game pads ***/
@@ -268,6 +268,12 @@ public class ArmController {
 
 	public void outtakeWheels() {
 		robot.intakeWheels(1);
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

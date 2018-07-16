@@ -10,6 +10,8 @@ public class ScaleAction extends Command {
 	private Boolean setpointReached;
 	public ScaleAction(MasterController controllers) {
 		arm = controllers.getArmController();
+		requires(this.arm);
+
 		this.setpointReached = false;
 	}
 

@@ -26,7 +26,11 @@ public class VisionAction extends Command {
 	
 	public VisionAction(MasterController controllers, int setpoint, double maxSpeed, double timeout, boolean waitForTimeout) {
 		this.driveTrain = controllers.getDriveController();
+		requires(this.driveTrain);
+
 		this.vision = controllers.getVisionController();
+		requires(this.vision);
+
 		this.setpoint = setpoint;
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();

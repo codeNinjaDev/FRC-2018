@@ -31,9 +31,12 @@ public class DriveIntervalAction extends Command {
 		x_drive = x;
 		y_drive = y;
 		this.kDrive = controllers.getDriveController();
+		requires(this.kDrive);
 		this.robot = controllers.getRobotModel();
 		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime.csv", double[].class);
 		System.out.println("Action Drive ");
+		
+
 	}
 	
 	protected boolean isFinished() {

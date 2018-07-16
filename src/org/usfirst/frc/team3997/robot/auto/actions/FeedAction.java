@@ -10,7 +10,11 @@ public class FeedAction extends Command {
 	private Boolean setpointReached;
 	public FeedAction(MasterController controllers) {
 		arm = controllers.getArmController();
+		requires(this.arm);
+
 		this.setpointReached = false;
+		
+
 	}
 	
 	protected boolean isFinished() {

@@ -68,6 +68,8 @@ public class ArcadeStraightAction extends Command {
 		SmartDashboard.putNumber("DRIVE_PID_P", P);
 		SmartDashboard.putNumber("DRIVE_PID_I", I);
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
+		
+		requires(driveTrain);
 
 	}
 
