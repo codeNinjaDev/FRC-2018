@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		driveController = new DriveController(robot, humanControl);
 		visionController = new VisionController();
 		lights = new LightController();
-		dashboardLogger = new DashboardLogger(robot, humanControl);
+		dashboardLogger = new DashboardLogger(robot, humanControl, driveController, armController);
 		input = new DashboardInput();
 		motion = new MotionController(robot);
 		armController = new ArmController(robot, humanControl);

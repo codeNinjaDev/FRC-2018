@@ -1,6 +1,8 @@
 package org.usfirst.frc.team3997.robot.feed;
 
 import org.usfirst.frc.team3997.robot.Params;
+import org.usfirst.frc.team3997.robot.controllers.ArmController;
+import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -13,12 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DashboardLogger {
 	private RemoteControl humanControl;
 	private RobotModel robot;
-	
+	private ArmController arm;
+	private DriveController driveController;
 
-	public DashboardLogger(RobotModel robot, RemoteControl humanControl) {
+	public DashboardLogger(RobotModel robot, RemoteControl humanControl, DriveController driveController, ArmController arm) {
 		this.robot = robot;
 		this.humanControl = humanControl;
-		
+		this.arm = arm;
+		this.driveController = driveController;
 		if(DriverStation.getInstance().isFMSAttached()) {
 			putMatchInfo();
 		}
@@ -34,6 +38,8 @@ public class DashboardLogger {
 		putJoystickAxesData();
 		putMotorOutputs();
 		putSensors();
+		putPID();
+		putPneumatics();
 		if(DriverStation.getInstance().isAutonomous()) {
 			SmartDashboard.putString("DS_MODE", "AUTONOMOUS");
 		}  else if(DriverStation.getInstance().isOperatorControl()) {
@@ -42,7 +48,7 @@ public class DashboardLogger {
 			SmartDashboard.putString("DS_MODE", "DISABLED");
 		}
 		
-
+		
 	}
 
 
@@ -96,6 +102,7 @@ public class DashboardLogger {
 	
 
 	public void putMotorOutputs() {
+		
 		SmartDashboard.putBoolean("MOTOR_leftDriveMotorA_REVERSED", robot.leftDriveMotorA.getInverted());
 		SmartDashboard.putBoolean("MOTOR_leftDriveMotorB_REVERSED", robot.leftDriveMotorB.getInverted());
 		SmartDashboard.putBoolean("MOTOR_rightDriveMotorA_REVERSED", robot.leftDriveMotorA.getInverted());
@@ -125,6 +132,10 @@ public class DashboardLogger {
 
 		
 		SmartDashboard.putNumber("ARM_MOTORS", robot.armMotors.get());
+		SmartDashboard.putData("ARM_SENDABLE", robot.armMotors);
+		SmartDashboard.putData("LEFT_DRIVE_SENDABLE", robot.leftDriveMotors);
+		SmartDashboard.putData("RIGHT_DRIVE_SENDABLE", robot.rightDriveMotors);
+		SmartDashboard.putData("INTAKE_WHEELS_SENDABLE", robot.intakeMotors);
 	}
 
 	
@@ -155,6 +166,14 @@ public class DashboardLogger {
 
 	}
 	
+	public void putPID() {
+		SmartDashboard.putData("ARM PID", arm.armPIDController);
+		SmartDashboard.putData("Drive Arcade PID", driveController.straightPID);
+		SmartDashboard.putData("Drive Left PID", driveController.leftPID);
+		SmartDashboard.putData("Drive Right PID", driveController.rightPID);
+
+	}
+	
 	
 	public void putSensors() {
 		SmartDashboard.putNumber("LEFT_ENC_DISTANCE", robot.leftDriveEncoder.getDistance());
@@ -169,8 +188,16 @@ public class DashboardLogger {
 		SmartDashboard.putNumber("ARM_ANGLE", robot.getArmAngle());
 		SmartDashboard.putNumber("GYRO", robot.getAngle());
 		SmartDashboard.putNumber("DEBUG_GZ", robot.mpu_gyro.getRate());
+		SmartDashboard.putData("RIGHT_DRIVE_ENCODER_SENDABLE", robot.rightDriveEncoder);
+		SmartDashboard.putData("LEFT_DRIVE_ENCODER_SENDABLE", robot.leftDriveEncoder);
+		SmartDashboard.putData("GYRO_SENDABLE", robot.mpu_gyro);
+
 	}
 	
 	
-
+	public void putPneumatics() {
+		SmartDashboard.putData("WRIST_PISTON_SENDABLE", robot.wristSolenoid);
+		SmartDashboard.putData("Compressor_SENDABLE", robot.compressor);
+		SmartDashboard.putData("INTAKE_PISTON_SENDABLE", robot.intakeSolenoid);
+	}
 }

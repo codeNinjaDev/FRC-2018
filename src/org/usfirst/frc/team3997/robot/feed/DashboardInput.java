@@ -14,13 +14,6 @@ public class DashboardInput {
 		//Get overall Input from preferences
 		preferences = Preferences.getInstance();
 
-
-		//Set ARM PID equal to preferences ARM PID
-		Params.arm_p = preferences.getDouble("ARM_P_VALUE", 0);
-		Params.arm_i = preferences.getDouble("ARM_I_VALUE", 0);
-		Params.arm_d = preferences.getDouble("ARM_D_VALUE", 0);
-		Params.arm_f = preferences.getDouble("ARM_F_VALUE", 0);
-
 		//Set ARM Setpoints equal to preferences ARM Setpoints
 		Params.ARM_CLIMB_SETPOINT = preferences.getDouble("CLIMB_ARM_ANGLE", 150);
 		Params.ARM_SCALE_SETPOINT = preferences.getDouble("SCALE_ARM_ANGLE", 125);
@@ -29,13 +22,6 @@ public class DashboardInput {
 		//Set Max Speed to preferences Max Speed
 		DashboardVariables.max_speed = preferences.getDouble("MAX_SPEED", 1);
 		
-		Params.drive_p = preferences.getDouble("DRIVE_P_VALUE", 0);
-		Params.drive_i = preferences.getDouble("DRIVE_I_VALUE", 0);
-		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
-
-		Params.turn_drive_p = preferences.getDouble("TURN_DRIVE_P_VALUE", 0);
-		Params.turn_drive_i = preferences.getDouble("TURN_DRIVE_I_VALUE", 0);
-		Params.turn_drive_d = preferences.getDouble("TURN_DRIVE_D_VALUE", 0);
 		
 		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
 
@@ -56,11 +42,6 @@ public class DashboardInput {
 		//Gets Custom Autonomous Time
 		DashboardVariables.firstAutoTime = preferences.getDouble("AUTO_TIME", 0);
 		
-		//Gets ARM PID from dashboard, and logs it
-		Params.arm_p = preferences.getDouble("ARM_P_VALUE", 0);
-		Params.arm_i = preferences.getDouble("ARM_I_VALUE", 0);
-		Params.arm_d = preferences.getDouble("ARM_D_VALUE", 0);
-		Params.arm_f = preferences.getDouble("ARM_F_VALUE", 0);
 
 		//Gets ARM SETPOINTS and logs it
 		Params.ARM_CLIMB_SETPOINT = preferences.getDouble("CLIMB_ARM_ANGLE", 150);
@@ -72,14 +53,7 @@ public class DashboardInput {
 		DashboardVariables.max_speed = preferences.getDouble("MAX_SPEED", 1);
 		SmartDashboard.putNumber("Dash Max Speed", DashboardVariables.max_speed);
 
-		//Gets Drive PID and logs it
-		Params.drive_p = preferences.getDouble("DRIVE_P_VALUE", 0);
-		Params.drive_i = preferences.getDouble("DRIVE_I_VALUE", 0);
-		Params.drive_d = preferences.getDouble("DRIVE_D_VALUE", 0);
-
-		Params.turn_drive_p = preferences.getDouble("TURN_DRIVE_P_VALUE", 0);
-		Params.turn_drive_i = preferences.getDouble("TURN_DRIVE_I_VALUE", 0);
-		Params.turn_drive_d = preferences.getDouble("TURN_DRIVE_D_VALUE", 0);
+		
 		
 		Params.MAX_SPEED = preferences.getDouble("MAX_SPEED", 1);
 		
