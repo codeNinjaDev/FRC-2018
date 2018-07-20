@@ -10,8 +10,9 @@ public class SwitchAction extends Command {
 	private ArmController arm;
 	private Boolean setpointReached;
 	public SwitchAction(MasterController controllers) {
+		requires(controllers.getArmController());
+
 		arm = controllers.getArmController();
-		requires(this.arm);
 
 		this.setpointReached = false;
 	}

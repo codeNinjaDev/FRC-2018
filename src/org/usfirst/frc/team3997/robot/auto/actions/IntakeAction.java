@@ -10,6 +10,8 @@ public class IntakeAction extends Command {
 	double speed, goal_time, start_time;
 	RobotModel robot;
 	public IntakeAction(MasterController controllers, double seconds, double speed) {
+		requires(controllers.getRobotModel());
+
 		goal_time = seconds;
 		robot = controllers.getRobotModel();
 		this.speed = speed;

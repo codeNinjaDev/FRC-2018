@@ -15,13 +15,11 @@ import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class RightSwitchRightSide extends CommandGroup {
-	RobotModel robot;
-	ArmController arm;
+	
 	MasterController controllers;
 
 	public RightSwitchRightSide(MasterController controllers) {
-		arm = controllers.getArmController();
-		robot = controllers.getRobotModel();
+		
 		this.controllers = controllers;
 		
 		addSequential(new WaitAction(Params.TIME_DELAY));

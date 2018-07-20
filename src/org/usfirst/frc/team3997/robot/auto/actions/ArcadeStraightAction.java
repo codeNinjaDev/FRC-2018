@@ -49,6 +49,9 @@ public class ArcadeStraightAction extends Command {
 	 */
 	public ArcadeStraightAction(MasterController controllers, double distance, double maxSpeed, double timeout,
 			double timeAfterHit) {
+		requires(controllers.getRobotModel());
+		requires(controllers.getDriveController());
+
 		this.driveTrain = controllers.getDriveController();
 		this.distance = distance;
 		this.timeout = timeout;
@@ -69,7 +72,6 @@ public class ArcadeStraightAction extends Command {
 		SmartDashboard.putNumber("DRIVE_PID_I", I);
 		SmartDashboard.putNumber("DRIVE_PID_D", D);
 		
-		requires(driveTrain);
 
 	}
 

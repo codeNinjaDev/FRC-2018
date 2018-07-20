@@ -27,11 +27,14 @@ public class DriveIntervalAction extends Command {
 	DataWriter<double[]> positionVsTimeCSV;
 	double goal_time, x_drive, y_drive, start_time;
 	public DriveIntervalAction(MasterController controllers, double seconds, double y, double x) {
+		
+		requires(controllers.getRobotModel());
+		requires(controllers.getDriveController());
+		
 		goal_time = seconds;
 		x_drive = x;
 		y_drive = y;
 		this.kDrive = controllers.getDriveController();
-		requires(this.kDrive);
 		this.robot = controllers.getRobotModel();
 		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime.csv", double[].class);
 		System.out.println("Action Drive ");

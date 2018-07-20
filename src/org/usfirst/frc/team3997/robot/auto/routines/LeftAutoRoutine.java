@@ -4,10 +4,13 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Params;
+import org.usfirst.frc.team3997.robot.auto.actions.CloseAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
 import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
 import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.RelaxWristAction;
 import org.usfirst.frc.team3997.robot.auto.actions.ScaleAction;
 import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
 import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
@@ -28,8 +31,8 @@ public class LeftAutoRoutine extends CommandGroup {
 
 	public LeftAutoRoutine(MasterController controllers) {
 		this.controllers = controllers;
-		arm = controllers.getArmController();
-		controllers.getRobotModel().closeIntake();
+		addSequential(new WaitAction(Params.TIME_DELAY));
+		addSequential(new CloseAction(controllers));
 
 		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
 		if (isLeftSwitch) {
@@ -80,11 +83,11 @@ public class LeftAutoRoutine extends CommandGroup {
 	void goToSwitch() {
 		addSequential(new SwitchAction(controllers));
 		addSequential(new DriveDistanceAction(controllers, 103, .7, 3, true));
-		robot.relaxWrist();
+		addSequential(new RelaxWristAction(controllers));
 		addSequential(new DriveRotateAction(controllers, -90, 1, 3, true));
 		addSequential(new OuttakeAction(controllers, 1, 1));
 		addSequential(new DriveDistanceAction(controllers, -30, .7, 5, true));
-		arm.goToFeedPosition();
+		addSequential(new FeedAction(controllers));
 	}
 
 	void passAutoLine() {

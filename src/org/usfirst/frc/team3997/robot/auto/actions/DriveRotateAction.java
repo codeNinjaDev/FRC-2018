@@ -38,8 +38,10 @@ public class DriveRotateAction extends Command {
 	 * @param waitForTimeout Whether to wait the full timeout, even if the setpoint is reached
 	 */ 
 	public DriveRotateAction(MasterController controllers, double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
+		requires(controllers.getRobotModel());
+		requires(controllers.getDriveController());
+		
 		this.driveTrain = controllers.getDriveController();
-		requires(this.driveTrain);
 		//It takes 20 inches on the left side and -20 inches on the right side to turn 90 degrees
 		this.distance = (angle * 20.0) / (90.0);
 		this.timeout = timeout;

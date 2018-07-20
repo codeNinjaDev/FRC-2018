@@ -20,8 +20,7 @@ public class LeftSwitchLeftSide extends CommandGroup {
 	MasterController controllers;
 
 	public LeftSwitchLeftSide(MasterController controllers) {
-		arm = controllers.getArmController();
-		robot = controllers.getRobotModel();
+		
 		this.controllers = controllers;
 		addSequential(new WaitAction(Params.TIME_DELAY));
 		// Put cube in switch

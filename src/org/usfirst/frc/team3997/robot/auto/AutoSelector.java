@@ -13,7 +13,7 @@ import org.usfirst.frc.team3997.robot.auto.routines.LeftSwitchLeftSide;
 import org.usfirst.frc.team3997.robot.auto.routines.MotionRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.OneCubeCenterAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.PassAutoLineRoutine;
-import org.usfirst.frc.team3997.robot.auto.routines.RighScale;
+import org.usfirst.frc.team3997.robot.auto.routines.RightScale;
 import org.usfirst.frc.team3997.robot.auto.routines.RightAutoRoutine;
 import org.usfirst.frc.team3997.robot.auto.routines.RightSwitchRightSide;
 
@@ -35,11 +35,12 @@ public class AutoSelector {
 	public AutoSelector(MasterController controllers) {
 		selectedIndex = 0;
 		this.controllers = controllers;
+		autoChooser = new SendableChooser<CommandGroup>();
+
 		
 	} 
 	/*** Lists the auto routines on SmartDashboard ***/
-	public SendableChooser<CommandGroup> listOptions() {
-		autoChooser = new SendableChooser<CommandGroup>();
+	public void listOptions() {
 		autoChooser.addDefault("Nothing (Default)", new DoNothingRoutine());
 		autoChooser.addObject("Drive (3s)", new DriveThreeSecRoutine(controllers));
 		autoChooser.addObject("Pass Auto Line (Drive 100)", new PassAutoLineRoutine(controllers));
@@ -51,12 +52,14 @@ public class AutoSelector {
 		autoChooser.addObject("Left Switch", new LeftSwitchLeftSide(controllers));
 		autoChooser.addObject("Rightt Switch", new RightSwitchRightSide(controllers));
 		autoChooser.addObject("Left Scale", new LeftScale(controllers));
-		autoChooser.addObject("Right Scale", new RighScale(controllers));
+		autoChooser.addObject("Right Scale", new RightScale(controllers));
 		autoChooser.addObject("Motion Profling Routine", new MotionRoutine(controllers));
 		
-		return autoChooser;
+		
 	
 	}
 	
-	
+	public CommandGroup getSelectedAuto() {
+		return autoChooser.getSelected();
+	}
 }

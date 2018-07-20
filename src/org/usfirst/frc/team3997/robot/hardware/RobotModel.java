@@ -2,6 +2,7 @@ package org.usfirst.frc.team3997.robot.hardware;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.can.CANStatus;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import org.usfirst.frc.team3997.robot.hardware.Ports;
 import org.usfirst.frc.team3997.robot.Params;
 /*** Hardware (motors, pneumatics, sensors) for robot ***/
-public class RobotModel {
+public class RobotModel extends Subsystem{
 	/***Drive Motors***/
 	public VictorSP leftDriveMotorA, leftDriveMotorB, rightDriveMotorA, rightDriveMotorB;
 	/*** Arm Motors ***/
@@ -316,6 +317,12 @@ public class RobotModel {
 	/*** Runs in loop ***/
 	public void update() {
 		mpu_gyro.getAngle();
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

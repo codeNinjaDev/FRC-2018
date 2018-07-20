@@ -23,6 +23,7 @@ public class OuttakeAction extends Command {
 	 */
 	public OuttakeAction(MasterController controllers, double timeout, double speed) {
 		goal_time = timeout;
+		requires(controllers.getRobotModel());
 		robot = controllers.getRobotModel();
 		this.speed = speed;
 		

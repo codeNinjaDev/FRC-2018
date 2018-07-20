@@ -47,7 +47,7 @@ public class RightAutoRoutine extends CommandGroup {
 			if (isLeftScale) {
 				passAutoLine();
 			} else if (isRightScale) {
-				addSequential(new RighScale(controllers));
+				addSequential(new RightScale(controllers));
 			}
 
 			// trajectory = MotionController.generateTrajectory(rightLeftPath);
@@ -61,7 +61,7 @@ public class RightAutoRoutine extends CommandGroup {
 				goToSwitch();
 				;
 			} else if (isRightScale) {
-				addSequential(new RighScale(controllers));
+				addSequential(new RightScale(controllers));
 			}
 			// trajectory = MotionController.generateTrajectory(rightRightPath);
 		}

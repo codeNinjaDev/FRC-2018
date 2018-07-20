@@ -40,8 +40,10 @@ public class DriveDistanceAction extends Command {
 	 * @param waitForTimeout Whether to wait the full timeout, even if the setpoint is reached
 	 */
 	public DriveDistanceAction(MasterController controllers, double distance, double maxSpeed, double timeout, boolean waitForTimeout) {
+		requires(controllers.getRobotModel());
+		requires(controllers.getDriveController());
+		
 		this.driveTrain = controllers.getDriveController();
-		requires(this.driveTrain);
 		this.distance = distance;
 		this.timeout = timeout;
 		this.robot = controllers.getRobotModel();

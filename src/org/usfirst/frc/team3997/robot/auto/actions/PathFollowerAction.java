@@ -22,8 +22,10 @@ public class PathFollowerAction extends Command {
 	 * @param timeout Time allowed to follow path
 	 */
 	public PathFollowerAction(MasterController controllers, Trajectory trajectory, double timeout) {
+		requires(controllers.getMotionController());
+		requires(controllers.getRobotModel());
+
 		this.motion = controllers.getMotionController();
-		requires(this.motion);
 
 		this.robot = controllers.getRobotModel();
 		this.timeout = timeout;

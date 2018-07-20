@@ -25,11 +25,13 @@ public class VisionAction extends Command {
 	private boolean reachedSetpoint, waitForTimeout;
 	
 	public VisionAction(MasterController controllers, int setpoint, double maxSpeed, double timeout, boolean waitForTimeout) {
+		requires(controllers.getVisionController());
+		requires(controllers.getDriveController());
+		requires(controllers.getRobotModel());
+
 		this.driveTrain = controllers.getDriveController();
-		requires(this.driveTrain);
 
 		this.vision = controllers.getVisionController();
-		requires(this.vision);
 
 		this.setpoint = setpoint;
 		this.timeout = timeout;

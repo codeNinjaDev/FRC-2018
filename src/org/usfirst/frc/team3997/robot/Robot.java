@@ -57,7 +57,6 @@ public class Robot extends IterativeRobot {
 
 	MasterController masterController;
 	AutoSelector autoSelector;
-	SendableChooser<CommandGroup> autoChooser;
 	CommandGroup selectedAutonomous;
 	Timer timer;
 
@@ -89,8 +88,7 @@ public class Robot extends IterativeRobot {
 		//Updates input from Robot Preferences
 		input.updateInput();
 		autoSelector = new AutoSelector(masterController);
-		autoChooser = autoSelector.listOptions();
-		SmartDashboard.putData(autoChooser);
+		autoSelector.listOptions();
 		
 		
 		/*** Starts camera stream ***/
@@ -134,7 +132,7 @@ public class Robot extends IterativeRobot {
 		//Start timer
 		timer.start();
 		
-		selectedAutonomous = autoChooser.getSelected();
+		selectedAutonomous = autoSelector.getSelectedAuto();
 		if(selectedAutonomous != null)
 			selectedAutonomous.start();
 	}
