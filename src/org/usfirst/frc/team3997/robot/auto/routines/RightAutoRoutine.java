@@ -3,36 +3,32 @@
  */
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-import org.usfirst.frc.team3997.robot.controllers.ArmController;
+import org.usfirst.frc.team3997.robot.Params;
+import org.usfirst.frc.team3997.robot.auto.actions.CloseAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
+import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.RelaxWristAction;
+import org.usfirst.frc.team3997.robot.auto.actions.ScaleAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-import jaci.pathfinder.Trajectory;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * @author peter
  *
  */
-public class RightAutoRoutine extends AutoRoutine {
-	private MasterController controllers;
-	Trajectory trajectory;
-	ArmController arm;
-	RobotModel robot;
-	public RightAutoRoutine(MasterController controllers) {
-		this.controllers = controllers;
-		arm = controllers.getArmController();
-		robot = controllers.getRobotModel();
-	}
-
-	@Override
-	public void prestart() {
-		controllers.getRobotModel().closeIntake();
-	}
-
-	@Override
-	protected void routine() {
+public class RightAutoRoutine extends CommandGroup {
+	
+	public RightAutoRoutine() {
+		addSequential(new CloseAction());
+		addSequential(new WaitAction(Params.TIME_DELAY));
+		addSequential(new RelaxWristAction());
+		
 		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
 		if (isLeftSwitch) {
 			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
@@ -60,39 +56,40 @@ public class RightAutoRoutine extends AutoRoutine {
 
 			if (isLeftScale) {
 				goToSwitch();
-				;
 			} else if (isRightScale) {
 				goToScale();
 			}
 			// trajectory = MotionController.generateTrajectory(rightRightPath);
 		}
 	}
+
+	
 	
 
 	void goToSwitch() {
-		arm.goToSwitchPosition();
-		driveDistanceStraight(controllers, -103, .7, 3, true);
-		robot.relaxWrist();
-		driveRotate(controllers, 90, 1, 3, true);
-		arm.outtakePowerCube();
-		driveDistanceStraight(controllers, -30, .7, 5, true);
-		arm.goToFeedPosition();
+		addSequential(new SwitchAction());
+		addSequential(new DriveDistanceAction(103, .7, 3, true));
+		addSequential(new RelaxWristAction());
+		addSequential(new DriveRotateAction(90, 1, 3, true));
+		addSequential(new IntakeAction(1, -1));
+		addSequential(new DriveDistanceAction(-30, .7, 5, true));
+		addSequential(new FeedAction());
 	}
 	
 	void passAutoLine() {
-		driveDistanceStraight(controllers, -90, .7, 5, true);
+		addSequential(new DriveDistanceAction(90, .7, 5, true));
 	}
 	
 	void goToScale() {
-		
-		driveDistanceStraight(controllers, -191, .6, 7, true);
-		robot.relaxWrist();
-		waitTime(1);
-		arm.goToScalePosition();
-		arm.outtakePowerCube();
-		waitTime(2);
-		driveDistanceStraight(controllers, 30, .8, 4, true);
-		arm.goToFeedPosition();
+		addSequential(new DriveDistanceAction(298, .6, 4, true));
+		addSequential(new WaitAction(1));
+		addSequential(new DriveRotateAction(-90, .5, 2, false));
+		addSequential(new RelaxWristAction());
+		addSequential(new WaitAction(1));
+		addSequential(new IntakeAction(1, -1));
+		addSequential(new ScaleAction());
+		addSequential(new OuttakeAction(1, 1));
+		addSequential(new FeedAction());
 	}
 
 

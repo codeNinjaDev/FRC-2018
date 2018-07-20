@@ -3,38 +3,30 @@
  */
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-import org.usfirst.frc.team3997.robot.controllers.ArmController;
+import org.usfirst.frc.team3997.robot.auto.actions.CloseAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
+import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.RelaxWristAction;
+import org.usfirst.frc.team3997.robot.auto.actions.ScaleAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-import jaci.pathfinder.Trajectory;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * @author peter
  *
  */
-public class LeftScale extends AutoRoutine {
-	private MasterController controllers;
-	Trajectory trajectory;
-	ArmController arm;
-	RobotModel robot;
-	public LeftScale(MasterController controllers) {
-		this.controllers = controllers;
-		arm = controllers.getArmController();
-		robot = controllers.getRobotModel();
-	}
+public class LeftScale extends CommandGroup {
+	
 
-	@Override
-	public void prestart() {
-		controllers.getRobotModel().closeIntake();
-	}
-
-	@Override
-	protected void routine() {
-		waitTime(Params.TIME_DELAY);
+	public LeftScale() {
+		addSequential(new CloseAction());
+		addSequential(new WaitAction(Params.TIME_DELAY));
 		boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
 		if (isLeftScale) {
 			goToScale();
@@ -43,31 +35,24 @@ public class LeftScale extends AutoRoutine {
 			passAutoLine();
 		}
 	}
-	
 
-	
-	
+
 	void passAutoLine() {
-		driveDistanceStraight(controllers, 90, .7, 5, true);
-	}
-	
-void goToScale() {
-		
-		driveDistanceStraight(controllers, 298, .6, 4, true);
-		waitTime(1);
-		driveRotate(controllers, -90, .5, 2, false);
-		robot.relaxWrist();
-		waitTime(1);
-		robot.intakeWheels(-1);
-		waitTime(1);
-		robot.stopIntake();
-		goToScale(controllers);
-		//waitTime(2.5);
-		outtake(controllers, 1, -1);
-		goToFeed(controllers);
-
-		
+		addSequential(new DriveDistanceAction(90, .7, 5, true));
 	}
 
+	void goToScale() {
+
+		addSequential(new DriveDistanceAction(298, .6, 4, true));
+		addSequential(new WaitAction(1));
+		addSequential(new DriveRotateAction(90, .5, 2, false));
+		addSequential(new RelaxWristAction());
+		addSequential(new WaitAction(1));
+		addSequential(new IntakeAction(1, -1));
+		addSequential(new ScaleAction());
+		addSequential(new OuttakeAction(1, 1));
+		addSequential(new FeedAction());
+
+	}
 
 }

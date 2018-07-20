@@ -4,46 +4,36 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * @author peter
  *
  */
-public class CenterAutoRoutine extends AutoRoutine{
+public class CenterAutoRoutine extends CommandGroup {
 	private MasterController controllers;
-	public CenterAutoRoutine(MasterController controllers) {
-		this.controllers = controllers;
-	}
 
-	@Override
-	public void prestart() {
+	public CenterAutoRoutine() {
 		boolean isLeftSwitch = (PlateDetector.getSwitchColor() == 'L');
-		if(isLeftSwitch) {
+		if (isLeftSwitch) {
 			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
-			if(isLeftScale) {
-				
+			if (isLeftScale) {
+
 			} else {
-				
+
 			}
-			
 
 		} else {
 			boolean isLeftScale = (PlateDetector.getScaleColor() == 'L');
-			if(isLeftScale) {
-				
+			if (isLeftScale) {
+
 			} else {
-				
+
 			}
 
 		}
 	}
-
-	@Override
-	protected void routine() {
-
-	}
-
 
 }

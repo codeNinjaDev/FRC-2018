@@ -1,67 +1,44 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.actions.CloseAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.IntakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.RelaxWristAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class OneCubeCenterAutoRoutine extends AutoRoutine {
-	private MasterController controllers;
+public class OneCubeCenterAutoRoutine extends CommandGroup {
 
-	public OneCubeCenterAutoRoutine(MasterController controllers) {
-		this.controllers = controllers;
-	}
-	@Override
-	public void prestart() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void routine() {
-		waitTime(Params.TIME_DELAY);
-		controllers.getRobotModel().closeIntake();;
-		controllers.getRobotModel().relaxWrist();;
-
-		//previous 47 in 
-		driveDistanceStraight(controllers, 40, .6, 1, true);
-		outtake(controllers, .2, 1);
-		//Timer.delay(.25);
-		waitTime(0.5);
+	public OneCubeCenterAutoRoutine() {
+		addSequential(new CloseAction());
+		addSequential(new WaitAction(Params.TIME_DELAY));
+		addSequential(new RelaxWristAction());
+		addSequential(new DriveDistanceAction(40, .6, 1, true));
+		addSequential(new OuttakeAction(.2, 1));
 		if(PlateDetector.getSwitchColor() == 'R') 
-			driveRotate(controllers, 45, .6, 1.5, true);
+			addSequential(new DriveRotateAction(45, .6, 1.5, true));
 		else
-			driveRotate(controllers, -45, .6, 1.5, true);
-
-		//Timer.delay(.25);
-		driveDistanceStraight(controllers, 64, .6, 3, true);
-		outtake(controllers, .8, 1);
-		controllers.getArmController().goToSwitchPosition();
-		controllers.getRobotModel().closeIntake();
+			addSequential(new DriveRotateAction(-45, .6, 1.5, true));
+		addSequential(new DriveDistanceAction(64, .6, 3, true));
+		addSequential(new IntakeAction(.8, 1));
+		addSequential(new CloseAction());
 		if(PlateDetector.getSwitchColor() == 'R') 
-			driveRotate(controllers, -45, .6, 1, true);
+			addSequential(new DriveRotateAction(-45, .6, 1, true));
 		else
-			driveRotate(controllers, 45, .6, 1, true);
-		controllers.getArmController().goToSwitchPosition();
-		controllers.getRobotModel().closeIntake();
-		driveDistanceStraight(controllers, 12, .5, 2, true);
-		//It is reversed
-		waitTime(0.5);
-		controllers.getRobotModel().openIntake();
-		outtake(controllers, 1, -1);
-		waitTime(0.25);
-		//Timer.delay(.25);
-		controllers.getRobotModel().stopIntake();
+			addSequential(new DriveRotateAction(45, .6, 1, true));
+		addSequential(new SwitchAction());
+		addSequential(new DriveDistanceAction(12, .5, .2, true));
+		addSequential(new OuttakeAction(.8, -1));
+		addSequential(new DriveDistanceAction(-20, .5, .8, true));
 
-		
-		controllers.getDriveController().arcadeDrive(-.5, 0, false);
-		waitTime(.8);
-		controllers.getDriveController().arcadeDrive(0, 0, false);
-
-		
 
 	}
+	
 
 }

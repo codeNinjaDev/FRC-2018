@@ -1,24 +1,13 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 
-public class DriveThreeSecRoutine extends AutoRoutine {
-	private MasterController controllers;
-	public DriveThreeSecRoutine(MasterController controllers) {
-		this.controllers = controllers;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+public class DriveThreeSecRoutine extends CommandGroup {
+	public DriveThreeSecRoutine() {
+		addSequential(new DriveIntervalAction(1, .25, 0));
 	}
 
-	@Override
-	public void prestart() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void routine() {
-		driveInterval(controllers, 1, .25, 0);
-		
-	}
 
 }

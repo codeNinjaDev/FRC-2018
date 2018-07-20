@@ -1,34 +1,41 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionAction extends Action{
+public class VisionAction extends Command{
 	private DriveController driveTrain;
 	private RobotModel robot;
 	private VisionController vision;
 	
 	private int setpoint;
 	private double distance;
-	private double timeout;
+	private double timeout, start_time;
 	private double maxSpeed;
 	private double P, I, D;
 	private double leftEncoderStartDistance, rightEncoderStartDistance;
 	
 	private boolean reachedSetpoint, waitForTimeout;
 	
-	public VisionAction(MasterController controllers, int setpoint, double maxSpeed, double timeout, boolean waitForTimeout) {
-		this.driveTrain = controllers.getDriveController();
-		this.vision = controllers.getVisionController();
+	public VisionAction(int setpoint, double maxSpeed, double timeout, boolean waitForTimeout) {
+		requires(Robot.driveController);
+		requires(Robot.visionController);
+		requires(Robot.robot);
+
+
+		this.driveTrain = Robot.driveController;
+		this.vision = Robot.visionController;
 		this.setpoint = setpoint;
 		this.timeout = timeout;
-		this.robot = controllers.getRobotModel();
+		this.robot = Robot.robot;
 		this.maxSpeed = maxSpeed;
 		this.waitForTimeout = waitForTimeout;
 		
@@ -55,7 +62,7 @@ public class VisionAction extends Action{
 	}
 
 	@Override
-	public void update() {
+	public void execute() {
 
 		/*
 		 * if(driveTrain.visionPID.getRightContour() == 0.0) {
@@ -71,7 +78,7 @@ public class VisionAction extends Action{
 	}
 
 	@Override
-	public void finish() {
+	public void end() {
 		//driveTrain.visionPID.disable();
 		
 		driveTrain.stop();
@@ -79,7 +86,7 @@ public class VisionAction extends Action{
 	}
 
 	@Override
-	public void start() {
+	public void initialize() {
 		start_time = Timer.getFPGATimestamp();
 		
 		robot.leftDriveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
@@ -102,5 +109,8 @@ public class VisionAction extends Action{
 		 * 
 		 * driveTrain.visionPID.enable();
 		 * */
+	}
+	protected void interrupted() {
+		end();
 	}
 }

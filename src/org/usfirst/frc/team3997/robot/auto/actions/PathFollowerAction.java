@@ -8,28 +8,33 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 /*** Autonomous Action that follows trajectory ***/
-public class PathFollowerAction extends Action{
+public class PathFollowerAction extends Command{
 	private MotionController motion;
 	private RobotModel robot;
-	private double timeout;
+	private double timeout, start_time;
 	/****
 	 * Constructor for PathFollower Action
 	 * @param controllers All the controllers for robot functionality
 	 * @param trajectory Pathfinder @jaci Trajectory to follow
 	 * @param timeout Time allowed to follow path
 	 */
-	public PathFollowerAction(MasterController controllers, Trajectory trajectory, double timeout) {
-		this.motion = controllers.getMotionController();
-		this.robot = controllers.getRobotModel();
+	public PathFollowerAction(Trajectory trajectory, double timeout) {
+		requires(Robot.motion);
+		requires(Robot.robot);
+		
+		this.motion = Robot.motion;
+		this.robot = Robot.robot;
 		this.timeout = timeout;
 		SmartDashboard.putString("MOTIONPROFILING", "SETTING_UP");
 		//Sets up configuration, modifiers, and encoder followers
@@ -46,19 +51,19 @@ public class PathFollowerAction extends Action{
 
 	@Override
 	/*** Runs in loop and updates PIDVA motion pid controller ***/
-	public void update() {
+	public void execute() {
 		
 	}
 
 	@Override
 	/*** Disables motion profiling when finished ***/
-	public void finish() {
+	public void end() {
 		motion.disable();
 	}
 
 	@Override
 	/*** Starts Profile following ***/
-	public void start() {
+	public void initialize() {
 		//Starts timer
 		start_time = Timer.getFPGATimestamp();
 		//Sets up sensors
@@ -84,4 +89,7 @@ public class PathFollowerAction extends Action{
 		scheduledExecutorService.scheduleAtFixedRate(motionRunnable, 0, 20, TimeUnit.MILLISECONDS);
 	}
 
+	protected void interrupted() {
+		end();
+	}
 }

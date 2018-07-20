@@ -1,24 +1,17 @@
  package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.feed.DashboardVariables;
 
-public class CustomDistanceRoutine extends AutoRoutine {
-	MasterController controllers;
-	public CustomDistanceRoutine(MasterController controllers) {
-		this.controllers = controllers;
-	}
-	@Override
-	public void prestart() {
-		
-	}
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-	@Override
-	protected void routine() {
-		waitTime(Params.TIME_DELAY);
-		driveInterval(controllers, DashboardVariables.firstAutoTime, 1, 0);
+public class CustomDistanceRoutine extends CommandGroup {
+	public CustomDistanceRoutine() {
+		addSequential(new WaitAction(Params.TIME_DELAY));
+		addSequential(new DriveIntervalAction(DashboardVariables.firstAutoTime, 1, 0));
 	}
+	
 
 }

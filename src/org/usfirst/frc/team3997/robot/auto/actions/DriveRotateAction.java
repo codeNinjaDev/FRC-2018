@@ -2,19 +2,21 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Rotate to a specified angle with encoders as sensor ***/
-public class DriveRotateAction extends Action{
+public class DriveRotateAction extends Command{
 	private DriveController driveTrain;
 	private RobotModel robot;
 	/*** Distance Setpoint (Converted from angle in degrees to inches) ***/
 	private double distance;
 	/*** Max time for action to complete ***/
-	private double timeout;
+	private double timeout, start_time;
 	/*** Max speed action can run ***/
 	private double maxSpeed;
 	//P I D constants
@@ -36,12 +38,16 @@ public class DriveRotateAction extends Action{
 	 * @param timeout Max allowed time action runs for
 	 * @param waitForTimeout Whether to wait the full timeout, even if the setpoint is reached
 	 */ 
-	public DriveRotateAction(MasterController controllers, double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
-		this.driveTrain = controllers.getDriveController();
+	public DriveRotateAction(double angle, double maxSpeed, double timeout, boolean waitForTimeout) {
+		
+		requires(Robot.driveController);
+		requires(Robot.robot);
+		
+		this.driveTrain = Robot.driveController;
 		//It takes 20 inches on the left side and -20 inches on the right side to turn 90 degrees
 		this.distance = (angle * 20.0) / (90.0);
 		this.timeout = timeout;
-		this.robot = controllers.getRobotModel();
+		this.robot = Robot.robot;
 		this.maxSpeed = maxSpeed;
 		this.waitForTimeout = waitForTimeout;
 		
@@ -71,7 +77,7 @@ public class DriveRotateAction extends Action{
 	}
 
 	@Override
-	public void update() {
+	public void execute() {
 		if(driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
 		} else {
@@ -80,12 +86,16 @@ public class DriveRotateAction extends Action{
 	}
 
 	@Override
-	public void finish() {
+	public void end() {
 		driveTrain.leftPID.disable();
 		driveTrain.rightPID.disable();
 		driveTrain.stop();
 	}
 
+	public void interrupt() {
+		end();
+	}
+	
 	@Override
 	public void start() {
 		start_time = Timer.getFPGATimestamp();
@@ -106,6 +116,10 @@ public class DriveRotateAction extends Action{
 		
 		driveTrain.leftPID.enable();
 		driveTrain.rightPID.enable();
+	}
+	
+	protected void interrupted() {
+		end();
 	}
 
 }

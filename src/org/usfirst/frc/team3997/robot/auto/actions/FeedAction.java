@@ -1,14 +1,19 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 
-public class FeedAction extends Action {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class FeedAction extends Command {
 	private ArmController arm;
 	private Boolean setpointReached;
 	
-	public FeedAction(MasterController controllers) {
-		arm = controllers.getArmController();
+	public FeedAction() {
+		requires(Robot.armController);
+		
+		arm = Robot.armController;
 		this.setpointReached = false;
 	}
 	@Override
@@ -18,7 +23,7 @@ public class FeedAction extends Action {
 	}
 
 	@Override
-	public void update() {
+	public void execute() {
 		if(arm.armPIDController.onTarget()) {
 			setpointReached = true;
 		} else {
@@ -28,14 +33,17 @@ public class FeedAction extends Action {
 	}
 
 	@Override
-	public void finish() {
+	public void end() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void start() {
+	public void initialize() {
 		arm.goToScalePosition();
 	}
 
+	protected void interrupted() {
+		end();
+	}
 }

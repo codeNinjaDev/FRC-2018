@@ -2,14 +2,16 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Drives Left and Right Side PID independently ***/
-public class DriveDistanceAction extends Action{
+public class DriveDistanceAction extends Command{
 
 	private DriveController driveTrain;
 	private RobotModel robot;
@@ -17,7 +19,7 @@ public class DriveDistanceAction extends Action{
 	/*** Distance Setpoint ***/
 	private double distance;
 	/*** Max time for action to complete ***/
-	private double timeout;
+	private double timeout, start_time;
 	/*** Max speed action can run ***/
 	private double maxSpeed;
 	//P I D constants
@@ -38,11 +40,14 @@ public class DriveDistanceAction extends Action{
 	 * @param timeout Allowed time for action to take place
 	 * @param waitForTimeout Whether to wait the full timeout, even if the setpoint is reached
 	 */
-	public DriveDistanceAction(MasterController controllers, double distance, double maxSpeed, double timeout, boolean waitForTimeout) {
-		this.driveTrain = controllers.getDriveController();
+	public DriveDistanceAction(double distance, double maxSpeed, double timeout, boolean waitForTimeout) {
+		requires(Robot.driveController);
+		requires(Robot.robot);
+		
+		this.driveTrain = Robot.driveController;
 		this.distance = distance;
 		this.timeout = timeout;
-		this.robot = controllers.getRobotModel();
+		this.robot = Robot.robot;
 		this.maxSpeed = maxSpeed;
 		this.waitForTimeout = waitForTimeout;
 		
@@ -72,7 +77,7 @@ public class DriveDistanceAction extends Action{
 
 	@Override
 	/*** Updates action code in a loop ***/
-	public void update() {
+	public void execute() {
 		//Checks if pid controllers are reached setpoint
 		if(driveTrain.leftPID.onTarget() && driveTrain.rightPID.onTarget()) {
 			reachedSetpoint = true;
@@ -83,7 +88,7 @@ public class DriveDistanceAction extends Action{
 
 	@Override
 	/*** Code that runs when action ends ***/
-	public void finish() {
+	public void end() {
 		//Disables PID and stops drive
 		driveTrain.leftPID.disable();
 		driveTrain.rightPID.disable();
@@ -92,7 +97,7 @@ public class DriveDistanceAction extends Action{
 
 	@Override
 	/*** Starts action ***/
-	public void start() {
+	protected void initialize() {
 		//Starts Timer
 		start_time = Timer.getFPGATimestamp();
 		//Configures encoders to measuring magnitude, not rate
@@ -118,5 +123,9 @@ public class DriveDistanceAction extends Action{
 		//Starts PID
 		driveTrain.leftPID.enable();
 		driveTrain.rightPID.enable();
+	}
+	
+	protected void interrupted() {
+		end();
 	}
 }

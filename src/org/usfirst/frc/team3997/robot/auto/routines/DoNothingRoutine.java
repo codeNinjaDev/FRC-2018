@@ -1,18 +1,12 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
 
-public class DoNothingRoutine extends AutoRoutine {
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
+public class DoNothingRoutine extends CommandGroup {
 
-	@Override
-	public void prestart() {
-		
-	}
-
-	@Override
-	protected void routine() {
-		
+	public DoNothingRoutine() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

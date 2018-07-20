@@ -1,32 +1,22 @@
 package org.usfirst.frc.team3997.robot.auto.routines;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutine;
-import org.usfirst.frc.team3997.robot.controllers.ArmController;
+import org.usfirst.frc.team3997.robot.auto.actions.CloseAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveDistanceAction;
+import org.usfirst.frc.team3997.robot.auto.actions.DriveRotateAction;
+import org.usfirst.frc.team3997.robot.auto.actions.FeedAction;
+import org.usfirst.frc.team3997.robot.auto.actions.OuttakeAction;
+import org.usfirst.frc.team3997.robot.auto.actions.SwitchAction;
+import org.usfirst.frc.team3997.robot.auto.actions.WaitAction;
 import org.usfirst.frc.team3997.robot.feed.PlateDetector;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-public class LeftSwitchLeftSide extends AutoRoutine {
-	RobotModel robot;
-	ArmController arm;
-	MasterController controllers;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-	public LeftSwitchLeftSide(MasterController controllers) {
-		arm = controllers.getArmController();
-		robot = controllers.getRobotModel();
-		this.controllers = controllers;
-	}
-
-	@Override
-	public void prestart() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void routine() {
-		waitTime(Params.TIME_DELAY);
+public class LeftSwitchLeftSide extends CommandGroup {
+	
+	public LeftSwitchLeftSide() {
+		addSequential(new CloseAction());
+		addSequential(new WaitAction(Params.TIME_DELAY));
 		// Put cube in switch
 		if (PlateDetector.getSwitchColor() == 'L') {
 			goToSwitch();
@@ -34,20 +24,22 @@ public class LeftSwitchLeftSide extends AutoRoutine {
 			//Drive Past Line
 			passAutoLine();
 		}
-
 	}
+
+
+	
 	void goToSwitch() {
-		arm.goToSwitchPosition();
-		driveDistanceStraight(controllers, 103, .7, 3, true);
-		driveRotate(controllers, -90, .6, 2, true);
-		waitTime(1.5);
-		outtake(controllers, 1, -1);
-		driveDistanceStraight(controllers, -30, .7, 5, true);
-		arm.goToFeedPosition();
+		addSequential(new SwitchAction());
+		addSequential(new DriveDistanceAction(103, .7, 3, true));
+		addSequential(new DriveRotateAction(-90, .6, 2, true));
+		addSequential(new WaitAction(1.5));
+		addSequential(new OuttakeAction(1, -1));
+		addSequential(new DriveDistanceAction(-30, .7, 5, true));
+		addSequential(new FeedAction());
 	}
 	
 	void passAutoLine() {
-		driveDistanceStraight(controllers, 90, .7, 5, true);
+		addSequential(new DriveDistanceAction(90, .7, 5, true));
 	}
 
 }

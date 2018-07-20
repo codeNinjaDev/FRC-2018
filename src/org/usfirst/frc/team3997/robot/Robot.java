@@ -12,7 +12,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team3997.robot.auto.Auto;
 import org.usfirst.frc.team3997.robot.auto.AutoRoutineRunner;
-import org.usfirst.frc.team3997.robot.auto.actions.Action;
 import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
@@ -45,18 +44,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	
-	RobotModel robot;
-	RemoteControl humanControl;
-	DriveController driveController;
-	VisionController visionController;
-	LightController lights;
-	ArmController armController;
+	/*** Initializes all classes ***/
+
+	public static RobotModel robot = new RobotModel();;
+	public static RemoteControl humanControl = new ControlBoard();
+	public static DriveController driveController = new DriveController(robot, humanControl);
+	public static VisionController visionController = new VisionController();
+	public static LightController lights = new LightController();
+	public static ArmController armController = new ArmController(robot, humanControl);
 	
 	DashboardLogger dashboardLogger;
 	DashboardInput input;
 
-	MotionController motion;
+	public static MotionController motion = new MotionController(robot);
 
 	MasterController masterController;
 	Auto auto;
@@ -69,18 +69,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		/*** Initializes all classes ***/
-		robot = new RobotModel();
-		humanControl = new ControlBoard();
-		driveController = new DriveController(robot, humanControl);
-		visionController = new VisionController();
-		lights = new LightController();
 		dashboardLogger = new DashboardLogger(robot, humanControl, driveController, armController);
-		input = new DashboardInput();
-		motion = new MotionController(robot);
-		armController = new ArmController(robot, humanControl);
-		masterController = new MasterController(driveController, robot, motion, visionController,
-				lights, armController);
+		input  = new DashboardInput();
+		
+		masterController = new MasterController(driveController, robot, motion, visionController, lights, armController);
 		auto = new Auto(masterController);
 		timer = new Timer();
 		
@@ -254,5 +246,7 @@ public class Robot extends IterativeRobot {
 		//Set Disabled pattern for led strips
 		lights.setDisabledLights();
 	}
+	
+	
 
 }

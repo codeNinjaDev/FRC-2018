@@ -1,18 +1,20 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.MasterController;
+import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 /***
  * Outtakes block for certain amount
  * @author peter
  *
  */
-public class OuttakeAction extends Action {
+public class OuttakeAction extends Command {
 	
-	double speed;
+	double speed, goal_time, start_time;
 	RobotModel robot;
 	/***
 	 * Outtakes block given time and speeed
@@ -20,9 +22,11 @@ public class OuttakeAction extends Action {
 	 * @param timeout Time alotted for action
 	 * @param speed Speed of wheels
 	 */
-	public OuttakeAction(MasterController controllers, double timeout, double speed) {
+	public OuttakeAction(double timeout, double speed) {
+		requires(Robot.robot);
+		
 		goal_time = timeout;
-		robot = controllers.getRobotModel();
+		robot = Robot.robot;
 		this.speed = speed;
 		
 	}
@@ -34,24 +38,28 @@ public class OuttakeAction extends Action {
 
 	@Override
 	/*** Runs outtake wheels ***/
-	public void update() {
+	public void execute() {
 		robot.intakeWheels(-speed);
 
 	}
 
 	@Override
 	/*** Opens intake and stops wheels***/
-	public void finish() {
+	public void end() {
 
 		//robot.outtakeBlock();
 		robot.openIntake();
 		robot.stopIntake();
 
 	}
+	
+	public void interrupt() {
+		end();
+	}
 
 	@Override
 	/*** starts timer ***/
-	public void start() {
+	public void initialize() {
 		start_time = Timer.getFPGATimestamp();
 	}
 

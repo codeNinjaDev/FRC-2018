@@ -1,12 +1,14 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 /*** Waits for n seconds ***/
-public class WaitAction extends Action {
+public class WaitAction extends Command {
 	/**
 	 * Delays auto
 	 * @param seconds Num seconds of delay
 	 */
+	double goal_time, start_time;
 	public WaitAction(double seconds) {
 		goal_time = seconds;
 		
@@ -17,16 +19,20 @@ public class WaitAction extends Action {
 	}
 
 	@Override
-	public void update() {
+	public void execute() {
 		
 	}
 
 	@Override
-	public void finish() {
+	public void end() {
 	}
 
 	@Override
-	public void start() {
+	public void initialize() {
 		start_time = Timer.getFPGATimestamp();
+	}
+	
+	protected void interrupted() {
+		end();
 	}
 }

@@ -1,8 +1,9 @@
 package org.usfirst.frc.team3997.robot.controllers;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionController {
+public class VisionController extends Subsystem {
 	private boolean is_enabled;
 	private int left_contour, right_contour;
 	public VisionController() {
@@ -53,6 +54,12 @@ public class VisionController {
 	
 	public double getRightContour() {
 		return right_contour;
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
