@@ -1,12 +1,8 @@
 package org.usfirst.frc.team3997.robot.controllers;
 
-import java.util.ResourceBundle.Control;
-
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
-import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Axes;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Joysticks;
-
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 import org.usfirst.frc.team3997.robot.pid.ArmPIDOutput;
 import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;

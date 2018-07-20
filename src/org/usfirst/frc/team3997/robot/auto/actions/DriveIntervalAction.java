@@ -3,18 +3,14 @@
  */
 package org.usfirst.frc.team3997.robot.auto.actions;
 
-import org.usfirst.frc.team3997.robot.controllers.*;
+import org.usfirst.frc.team3997.robot.Robot;
+import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.feed.DataWriter;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.util.ArrayList;
-
-import org.usfirst.frc.team3997.robot.MasterController;
-import org.usfirst.frc.team3997.robot.Robot;
 
 /**
  * @author peter

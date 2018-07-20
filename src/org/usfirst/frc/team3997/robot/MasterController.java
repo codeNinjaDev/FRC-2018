@@ -1,7 +1,11 @@
 package org.usfirst.frc.team3997.robot;
 
-import org.usfirst.frc.team3997.robot.controllers.*;
-import org.usfirst.frc.team3997.robot.hardware.*;
+import org.usfirst.frc.team3997.robot.controllers.ArmController;
+import org.usfirst.frc.team3997.robot.controllers.DriveController;
+import org.usfirst.frc.team3997.robot.controllers.LightController;
+import org.usfirst.frc.team3997.robot.controllers.MotionController;
+import org.usfirst.frc.team3997.robot.controllers.VisionController;
+import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 /**
  * Getter and setter class that packages important classes for autonomous. e.g

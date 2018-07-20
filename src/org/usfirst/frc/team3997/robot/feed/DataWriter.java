@@ -1,16 +1,8 @@
 package org.usfirst.frc.team3997.robot.feed;
-import edu.wpi.first.wpilibj.Timer;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.stream.Collectors;
-
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.util.concurrent.ConcurrentLinkedDeque;
 /** @author team254 2017 **/
 public class DataWriter<T> {
 

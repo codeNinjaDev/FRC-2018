@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3997.robot.pid;
 
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+
 import edu.wpi.first.wpilibj.PIDOutput;
 /*** Sets both wheel sides as a PID output***/
 public class WheelsPIDOutput implements PIDOutput {

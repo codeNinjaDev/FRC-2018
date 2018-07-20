@@ -1,8 +1,6 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Robot;
-import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
 import edu.wpi.first.wpilibj.Timer;

@@ -1,9 +1,7 @@
 
 package org.usfirst.frc.team3997.robot.hardware;
 
-import org.usfirst.frc.team3997.robot.Params;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
 /** Handles inputs from controller 
  * @category hardware
  * @author Peter I. Chacko, Eric Warner, John Sullivan Jr, Jake Boothby, Elliot

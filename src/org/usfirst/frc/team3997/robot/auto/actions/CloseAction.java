@@ -3,8 +3,6 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
 
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CloseAction extends Command{

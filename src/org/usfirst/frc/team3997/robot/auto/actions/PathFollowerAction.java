@@ -1,13 +1,9 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
-import java.util.Date;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -17,7 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 /*** Autonomous Action that follows trajectory ***/
 public class PathFollowerAction extends Command{
 	private MotionController motion;

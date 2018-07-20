@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3997.robot.pid;
 
 import org.usfirst.frc.team3997.robot.hardware.MPU9250Gyro;
-import org.usfirst.frc.team3997.robot.hardware.Ports;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;

@@ -1,18 +1,14 @@
 package org.usfirst.frc.team3997.robot;
 
-import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-import org.opencv.core.Point3;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team3997.robot.auto.Auto;
-import org.usfirst.frc.team3997.robot.auto.AutoRoutineRunner;
-import org.usfirst.frc.team3997.robot.auto.actions.DriveIntervalAction;
+import org.usfirst.frc.team3997.robot.auto.AutoSelector;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.LightController;
@@ -20,7 +16,6 @@ import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
 import org.usfirst.frc.team3997.robot.feed.DashboardInput;
 import org.usfirst.frc.team3997.robot.feed.DashboardLogger;
-import org.usfirst.frc.team3997.robot.feed.PlateDetector;
 import org.usfirst.frc.team3997.robot.hardware.ControlBoard;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RobotModel;
@@ -30,9 +25,8 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -59,7 +53,7 @@ public class Robot extends IterativeRobot {
 	public static MotionController motion = new MotionController(robot);
 
 	MasterController masterController;
-	Auto auto;
+	AutoSelector auto;
 	Timer timer;
 
 
@@ -73,13 +67,12 @@ public class Robot extends IterativeRobot {
 		input  = new DashboardInput();
 		
 		masterController = new MasterController(driveController, robot, motion, visionController, lights, armController);
-		auto = new Auto(masterController);
+		auto = new AutoSelector();
 		timer = new Timer();
 		
 		// Sets enabled lights
 		lights.setEnabledLights();
 		// Resets autonomous
-		auto.reset();
 		//List autonomous routines on Dashboard
 		auto.listOptions();
 		//Updates input from Robot Preferences
@@ -131,18 +124,10 @@ public class Robot extends IterativeRobot {
 		/*** Reset all hardware ***/
 		robot.reset();
 		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
 		//Update robot preferences
 		input.updateInput();
-		//Stop autonomous before starting
-		auto.stop();
-		//Reset timer
-		timer.reset();
-		//Start timer
-		timer.start();
 		//Starts Autonomous Routine
-		auto.start();
-		
+		auto.getSelectedAuto().start();
 	}
 
 	/**
@@ -150,6 +135,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
 		//Log Gyro angle
 		SmartDashboard.putNumber("gyro", robot.getAngle());
 		//Start auto pattern on led strip
@@ -166,7 +152,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		//Stop autonomous
-		auto.stop();
+		Scheduler.getInstance().removeAll();
 		//Reset Gyro
 		robot.resetGyro();
 		//Reset hardware timer
@@ -217,8 +203,6 @@ public class Robot extends IterativeRobot {
 
 	public void disabledInit() {
 		robot.resetGyro();
-		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
 		//Reset drive
 		driveController.reset();
 		//Reset hardware
@@ -231,8 +215,6 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 	
-		//Reset auto timer
-		AutoRoutineRunner.getTimer().reset();
 		//Put Gyro Angle on SmartDashboard
 		SmartDashboard.putNumber("gyro", robot.getAngle());
 		//Update input from Dashboard

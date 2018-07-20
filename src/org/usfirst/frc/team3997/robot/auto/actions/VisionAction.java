@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
-import org.usfirst.frc.team3997.robot.MasterController;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;

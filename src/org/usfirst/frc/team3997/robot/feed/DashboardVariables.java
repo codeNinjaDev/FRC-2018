@@ -1,7 +1,5 @@
 package org.usfirst.frc.team3997.robot.feed;
 
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Waypoint;
 /*** Variables that get changed my DashboardInput; May deprecate ***/
 public class DashboardVariables {
 
