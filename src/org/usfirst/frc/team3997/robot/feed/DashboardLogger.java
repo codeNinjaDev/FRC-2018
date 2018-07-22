@@ -36,7 +36,6 @@ public class DashboardLogger {
 		putJoystickAxesData();
 		putMotorOutputs();
 		putSensors();
-		putPID();
 		putPneumatics();
 		if(DriverStation.getInstance().isAutonomous()) {
 			SmartDashboard.putString("DS_MODE", "AUTONOMOUS");
@@ -164,13 +163,7 @@ public class DashboardLogger {
 
 	}
 	
-	public void putPID() {
-		SmartDashboard.putData("ARM PID", arm.armPIDController);
-		SmartDashboard.putData("Drive Arcade PID", driveController.straightPID);
-		SmartDashboard.putData("Drive Left PID", driveController.leftPID);
-		SmartDashboard.putData("Drive Right PID", driveController.rightPID);
-
-	}
+	
 	
 	
 	public void putSensors() {
