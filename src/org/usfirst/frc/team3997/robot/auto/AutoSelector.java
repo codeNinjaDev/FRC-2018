@@ -15,6 +15,7 @@ import org.usfirst.frc.team3997.robot.auto.routines.RightSwitchRightSide;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Gets selected autonomous routine ***/
 public class AutoSelector {
 	/*** Radio buttons on SmartDashboard ***/
@@ -44,6 +45,7 @@ public class AutoSelector {
 		autoChooser.addObject("Left Scale", new LeftScale());
 		autoChooser.addObject("Right Scale", new RightScale());
 		autoChooser.addObject("Motion Profling Routine", new MotionRoutine());
+		SmartDashboard.putData(autoChooser);
 	}
 	
 	/*** Get selected Auto ***/

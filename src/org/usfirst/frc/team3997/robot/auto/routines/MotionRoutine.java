@@ -14,7 +14,7 @@ public class MotionRoutine extends CommandGroup{
 		    new Waypoint(0, 100, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
 		};
 	public MotionRoutine() {
-		trajectory = MotionController.generateTrajectory(points);
+		//trajectory = MotionController.generateTrajectory(points);
 	}
 
 	

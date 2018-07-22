@@ -39,7 +39,7 @@ public class FeedAction extends Command {
 
 	@Override
 	public void initialize() {
-		arm.goToScalePosition();
+		arm.goToFeedPosition();
 	}
 
 	protected void interrupted() {

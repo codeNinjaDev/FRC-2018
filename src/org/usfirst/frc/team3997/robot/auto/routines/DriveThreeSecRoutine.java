@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveThreeSecRoutine extends CommandGroup {
 	public DriveThreeSecRoutine() {
-		addSequential(new DriveIntervalAction(1, .25, 0));
+		addSequential(new DriveIntervalAction(3, .5, 0));
 	}
 
 
