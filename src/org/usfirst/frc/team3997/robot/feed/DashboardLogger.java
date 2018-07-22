@@ -188,7 +188,6 @@ public class DashboardLogger {
 	
 	public void putPneumatics() {
 		SmartDashboard.putData("WRIST_PISTON_SENDABLE", robot.wristSolenoid);
-		SmartDashboard.putData("Compressor_SENDABLE", robot.compressor);
 		SmartDashboard.putData("INTAKE_PISTON_SENDABLE", robot.intakeSolenoid);
 	}
 }
