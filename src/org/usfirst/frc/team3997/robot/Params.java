@@ -6,7 +6,7 @@ import org.usfirst.frc.team3997.robot.feed.DashboardVariables;
  * Paramter Constants
  */
 public class Params {
-
+	public static long GYRO_UPDATE_MICRO_SECONDS = 200; 
 	// Params.h: Preferences for the robot
 	public static boolean SQUARE_DRIVE_AXIS_INPUT = true;
 	public static boolean USE_ARCADE_DRIVE = true;

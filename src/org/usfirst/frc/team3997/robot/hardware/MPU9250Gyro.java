@@ -3,6 +3,8 @@
  */
 package org.usfirst.frc.team3997.robot.hardware;
 
+import org.usfirst.frc.team3997.robot.Params;
+
 import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -513,6 +515,7 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 	public double getAngle() {
 		return yaw - offset;
 	}
+
 	/*** Angular Acceleration ***/
 	@Override
 	public double getRate() {
@@ -545,29 +548,27 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		// Scale gz based on averaged samples
 		gz = sampleGyroData(gz);
 
-		double deltaTime = currentTimestamp - currentTime;
+		double deltaTime = Params.GYRO_UPDATE_MICRO_SECONDS / 1000;
 		// I have a bad feeling about having it exactly equal to 20
 		// Do I really need to have deltaTime be greater than or equal to 20?
 		SmartDashboard.putNumber("GZ ", gz);
-		if ((deltaTime >= 20)) {
-			/**
-			 * using this website {@link https://playground.arduino.cc/Main/Gyro}
-			 */
+		/**
+		 * using this website {@link https://playground.arduino.cc/Main/Gyro}
+		 */
 
-			gz /= (1000 / deltaTime);
-			// Increment yaw based off of gz
-			yaw += gz;
-			if (yaw < 0)
-				yaw += 360;
-			else if (yaw > 359)
-				yaw -= 360;
+		gz /= (1000 / deltaTime);
+		// Increment yaw based off of gz
+		yaw += gz;
+		if (yaw < 0)
+			yaw += 360;
+		else if (yaw > 359)
+			yaw -= 360;
 
-			if (yaw > 180) {
-				yaw = (yaw - 360);
-			}
-
-			currentTime = Timer.getFPGATimestamp() * 1000;
+		if (yaw > 180) {
+			yaw = (yaw - 360);
 		}
+
+		currentTime = Timer.getFPGATimestamp() * 1000;
 
 	}
 
@@ -623,5 +624,4 @@ public class MPU9250Gyro extends GyroBase implements PIDSource {
 		offset = getAngle();
 	}
 
-	
 }

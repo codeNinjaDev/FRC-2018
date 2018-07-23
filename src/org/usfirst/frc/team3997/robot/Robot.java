@@ -109,7 +109,7 @@ public class Robot extends IterativeRobot {
 				}
 			};
 			
-			scheduledExecutorService.scheduleAtFixedRate(gyroRunnable, 0, 20, TimeUnit.MICROSECONDS);
+			scheduledExecutorService.scheduleAtFixedRate(gyroRunnable, 0, Params.GYRO_UPDATE_MICRO_SECONDS, TimeUnit.MICROSECONDS);
         });
         t.start();
 		/*** Update Dashboard ***/
