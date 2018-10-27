@@ -4,19 +4,20 @@ import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.controllers.ArmController;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+/*** Logs robot data to SmartDashboard */
 public class DashboardLogger {
 	private RemoteControl humanControl;
-	private RobotModel robot;
+	private RobotHardware robot;
 	private ArmController arm;
 	private DriveController driveController;
 
-	public DashboardLogger(RobotModel robot, RemoteControl humanControl, DriveController driveController, ArmController arm) {
+	/*** Takes in robot subsystems and hardware and outputs diagnostics */
+	public DashboardLogger(RobotHardware robot, RemoteControl humanControl, DriveController driveController, ArmController arm) {
 		this.robot = robot;
 		this.humanControl = humanControl;
 		this.arm = arm;
@@ -25,18 +26,20 @@ public class DashboardLogger {
 			putMatchInfo();
 		}
 	}
-
+	/*** Displays Data to Dashboard  */
 	public void updateData() {
-		
+		//Match Data
 		SmartDashboard.putNumber("DEBUG_FPGATimestamp", robot.getTimestamp());
 		if(DriverStation.getInstance().isFMSAttached()) {
 			putMatchInfo();
 		}
+		//Robot Data
 		putRobotElectricalData();
 		putJoystickAxesData();
 		putMotorOutputs();
 		putSensors();
 		putPneumatics();
+		//DS Data
 		if(DriverStation.getInstance().isAutonomous()) {
 			SmartDashboard.putString("DS_MODE", "AUTONOMOUS");
 		}  else if(DriverStation.getInstance().isOperatorControl()) {
@@ -48,7 +51,7 @@ public class DashboardLogger {
 		
 	}
 
-
+	/*** Posts electrical data */
 	public void putRobotElectricalData() {
 		SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
 		SmartDashboard.putBoolean("Brown Out", RobotController.isBrownedOut());
@@ -65,6 +68,7 @@ public class DashboardLogger {
 
 
 	}
+	/*** Posts Match data */
 
 	public void putMatchInfo() {
 		SmartDashboard.putString("EVENT_NAME", DriverStation.getInstance().getEventName());
@@ -77,6 +81,7 @@ public class DashboardLogger {
 
 	}
 	
+	/*** Posts Joystick data */
 	public void putJoystickAxesData() {
 		SmartDashboard.putNumber("DRIVERJOY_operatorrLeftX",
 				humanControl.getJoystickValue(RemoteControl.Joysticks.kDriverJoy, RemoteControl.Axes.kLX));
@@ -97,7 +102,7 @@ public class DashboardLogger {
 	}
 
 	
-
+	/*** Posts motor outputs */
 	public void putMotorOutputs() {
 		
 		SmartDashboard.putBoolean("MOTOR_leftDriveMotorA_REVERSED", robot.leftDriveMotorA.getInverted());
@@ -135,7 +140,7 @@ public class DashboardLogger {
 		SmartDashboard.putData("INTAKE_WHEELS_SENDABLE", robot.intakeMotors);
 	}
 
-	
+	/*** Lists Parameters */
 	public void putParamData() {
 		SmartDashboard.putNumber("ARM_P", Params.arm_p);
 		SmartDashboard.putNumber("ARM_I", Params.arm_i);
@@ -165,7 +170,7 @@ public class DashboardLogger {
 	
 	
 	
-	
+	/*** List Sensor Data */
 	public void putSensors() {
 		SmartDashboard.putNumber("LEFT_ENC_DISTANCE", robot.leftDriveEncoder.getDistance());
 		SmartDashboard.putNumber("RIGHT_ENC_DISTANCE", robot.rightDriveEncoder.getDistance());
@@ -185,7 +190,7 @@ public class DashboardLogger {
 
 	}
 	
-	
+	/*** List pneumatic data */
 	public void putPneumatics() {
 		SmartDashboard.putData("WRIST_PISTON_SENDABLE", robot.wristSolenoid);
 		SmartDashboard.putData("INTAKE_PISTON_SENDABLE", robot.intakeSolenoid);

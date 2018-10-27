@@ -1,14 +1,14 @@
 package org.usfirst.frc.team3997.robot.pid;
 
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 /*** How PID output controls arm ***/
 public class ArmPIDOutput implements PIDOutput{
 	
-	RobotModel robot;
+	RobotHardware robot;
 	
-	public ArmPIDOutput(RobotModel robot) {
+	public ArmPIDOutput(RobotHardware robot) {
 		this.robot = robot;
 	}
 

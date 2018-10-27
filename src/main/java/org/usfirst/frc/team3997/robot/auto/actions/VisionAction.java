@@ -3,7 +3,7 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionAction extends Command{
 	private DriveController driveTrain;
-	private RobotModel robot;
+	private RobotHardware robot;
 	private VisionController vision;
 	
 	private int setpoint;

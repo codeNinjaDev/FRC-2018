@@ -1,14 +1,14 @@
 package org.usfirst.frc.team3997.robot.pid;
 
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 /*** PID Source for Driving with Encoders ***/
 public class DriveEncodersPIDSource implements PIDSource {
-	private RobotModel robot;
+	private RobotHardware robot;
 	/*** Averages encoder values and returns them to PID Controller ***/
-	public DriveEncodersPIDSource(RobotModel robot) {
+	public DriveEncodersPIDSource(RobotHardware robot) {
 		this.robot = robot;
 	}
 	

@@ -1,12 +1,13 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.Robot;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+/*** Autonomous action that closes intake ***/
 public class CloseAction extends Command{
-	RobotModel robot;
+	RobotHardware robot;
+	/*** Constructor that requires hardware */
 	public CloseAction() {
 		requires(Robot.robot);
 		this.robot = Robot.robot;

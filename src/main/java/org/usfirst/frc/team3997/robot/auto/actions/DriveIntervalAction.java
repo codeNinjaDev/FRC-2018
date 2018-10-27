@@ -6,7 +6,7 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.feed.DataWriter;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,13 +17,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 
-
+/*** Drive for a time interval. Includes code to log data to a file on the Roborio */
 public class DriveIntervalAction extends Command {
+	/*** Drivetrain */
 	private DriveController kDrive;
-	private RobotModel robot;
-	
+	/*** Hardware */
+	private RobotHardware robot;
+	/*** Global variables that control the movement of the robot. */
 	double goal_time, x_drive, y_drive, start_time;
+	/*** Variable that logs to CSV file on robot */
 	DataWriter<double[]> positionVsTimeCSV;
+	/***
+	 * Constructor for Driving for a time interval
+	 * @param seconds Number of seconds to drive
+	 * @param y Power [-1, 1] Forward 
+	 * @param x Power [-1, 1] Turning 
+	 */
 	public DriveIntervalAction(double seconds, double y, double x) {
 		
 		requires(Robot.driveController);
@@ -38,10 +47,12 @@ public class DriveIntervalAction extends Command {
 		positionVsTimeCSV = new DataWriter<double[]>("/home/lvuser/PositionTime.csv", double[].class);
 		System.out.println("Action Drive ");
 	}
-	
+	/*** Has time finished? */
+	@Override
 	public boolean isFinished() {
 		return (Timer.getFPGATimestamp() >= start_time + goal_time);
 	}
+
 
 	@Override
 	public void execute() {
@@ -70,10 +81,6 @@ public class DriveIntervalAction extends Command {
 		positionVsTimeCSV.add(startPos);
 		SmartDashboard.putNumber("reachedSTART", Timer.getFPGATimestamp());
 		start_time = Timer.getFPGATimestamp();
-	}
-	
-	public void interrupt() {
-		end();
 	}
 	
 	protected void interrupted() {

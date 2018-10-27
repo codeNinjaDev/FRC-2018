@@ -18,7 +18,7 @@ import org.usfirst.frc.team3997.robot.feed.DashboardInput;
 import org.usfirst.frc.team3997.robot.feed.DashboardLogger;
 import org.usfirst.frc.team3997.robot.hardware.ControlBoard;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
 	
 	/*** Initializes all classes ***/
 
-	public static RobotModel robot = new RobotModel();;
+	public static RobotHardware robot = new RobotHardware();;
 	public static RemoteControl humanControl = new ControlBoard();
 	public static DriveController driveController = new DriveController(robot, humanControl);
 	public static VisionController visionController = new VisionController();

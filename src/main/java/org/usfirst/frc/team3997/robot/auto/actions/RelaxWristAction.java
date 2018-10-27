@@ -1,12 +1,12 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.Robot;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RelaxWristAction extends Command {
-	RobotModel robot;
+	RobotHardware robot;
 
 	public RelaxWristAction() {
 		requires(Robot.robot);

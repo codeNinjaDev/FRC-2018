@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3997.robot.pid;
 
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 /*
  * TODO Learn how to make camera a pid source
 import edu.wpi.first.wpilibj.PIDSource;
@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.PIDSourceType;*/
 
 public class VisionPIDSource {
 	private VisionController vision;
-	private RobotModel robot;
-	public VisionPIDSource(VisionController vision, RobotModel robot) {
+	private RobotHardware robot;
+	public VisionPIDSource(VisionController vision, RobotHardware robot) {
 		this.vision = vision;
 		this.robot = robot;
 	}

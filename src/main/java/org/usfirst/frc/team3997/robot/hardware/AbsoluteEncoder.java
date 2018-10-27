@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.util.AllocationException;
-
+/*** Class for using an absolute encoder to measure arm angle (not used) */
 public class AbsoluteEncoder extends AnalogInput{
 	
 	  private static final int kAccumulatorSlot = 1;

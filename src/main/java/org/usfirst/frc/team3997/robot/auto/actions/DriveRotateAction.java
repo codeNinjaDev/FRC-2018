@@ -3,7 +3,7 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Rotate to a specified angle with encoders as sensor ***/
 public class DriveRotateAction extends Command{
 	private DriveController driveTrain;
-	private RobotModel robot;
+	private RobotHardware robot;
 	/*** Distance Setpoint (Converted from angle in degrees to inches) ***/
 	private double distance;
 	/*** Max time for action to complete ***/

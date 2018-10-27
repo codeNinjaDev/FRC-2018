@@ -3,7 +3,7 @@ package org.usfirst.frc.team3997.robot.controllers;
 import java.io.File;
 
 import org.usfirst.frc.team3997.robot.Params;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -27,7 +27,7 @@ import jaci.pathfinder.modifiers.TankModifier;
  * 
  **/
 public class MotionController extends Subsystem {
-	private RobotModel robot;
+	private RobotHardware robot;
 	boolean isProfileFinished = false;
 
 	/**
@@ -91,7 +91,7 @@ public class MotionController extends Subsystem {
 	private boolean isEnabled;
 	
 	/** Gets RobotModel object and sets boolean isEnabled to false **/
-	public MotionController(RobotModel robot) {
+	public MotionController(RobotHardware robot) {
 		this.robot = robot;
 		isEnabled = false;
 		

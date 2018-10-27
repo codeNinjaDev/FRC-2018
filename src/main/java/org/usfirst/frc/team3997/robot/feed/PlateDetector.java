@@ -6,6 +6,7 @@ package org.usfirst.frc.team3997.robot.feed;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
+ * Get's the color of the Switch and Scale
  * @author peter
  *
  */

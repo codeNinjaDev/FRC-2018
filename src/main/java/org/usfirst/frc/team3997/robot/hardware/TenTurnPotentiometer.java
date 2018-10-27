@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+/*** Reads angle from ten turn pot for arm angle. */
 public class TenTurnPotentiometer{
 	
 	  int port; // explicit no modifier, private and package accessible.

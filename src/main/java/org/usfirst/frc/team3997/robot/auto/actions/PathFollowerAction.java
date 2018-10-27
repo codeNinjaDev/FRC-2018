@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,7 +16,7 @@ import jaci.pathfinder.Trajectory;
 /*** Autonomous Action that follows trajectory ***/
 public class PathFollowerAction extends Command{
 	private MotionController motion;
-	private RobotModel robot;
+	private RobotHardware robot;
 	private double timeout, start_time;
 	/****
 	 * Constructor for PathFollower Action

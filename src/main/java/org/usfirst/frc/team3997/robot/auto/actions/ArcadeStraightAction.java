@@ -3,7 +3,7 @@ package org.usfirst.frc.team3997.robot.auto.actions;
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.Robot;
 import org.usfirst.frc.team3997.robot.controllers.DriveController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Drive Forward action that uses arcade drive **/
 public class ArcadeStraightAction extends Command {
 	private DriveController driveTrain;
-	private RobotModel robot;
+	private RobotHardware robot;
 	/*** Instance variable for desired distance ***/
 	private double distance;
 	/*** Instance variable or allowed timeout ***/

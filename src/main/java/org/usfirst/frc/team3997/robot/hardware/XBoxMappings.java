@@ -1,5 +1,5 @@
 package org.usfirst.frc.team3997.robot.hardware;
-
+/*** NUMBER MAPPINGS FOR XBOX CONTROLLERS */
 public class XBoxMappings {
 
 	static final int LEFT_X_AXIS = 0;

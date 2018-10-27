@@ -5,7 +5,7 @@ import org.usfirst.frc.team3997.robot.controllers.DriveController;
 import org.usfirst.frc.team3997.robot.controllers.LightController;
 import org.usfirst.frc.team3997.robot.controllers.MotionController;
 import org.usfirst.frc.team3997.robot.controllers.VisionController;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 /**
  * Getter and setter class that packages important classes for autonomous. e.g
@@ -35,7 +35,7 @@ public class MasterController {
 	/*** Light Controller ***/
 	private LightController lights;
 	/*** Robot Model ***/
-	private RobotModel robot;
+	private RobotHardware robot;
 	/*** Motion Profiling Controller ***/
 	private MotionController motion;
 	/*** Arm Controller ***/
@@ -56,7 +56,7 @@ public class MasterController {
 	 * @param lights
 	 *            Gets a LightConroller object
 	 */
-	public MasterController(DriveController driveTrain, RobotModel robot, MotionController motion,
+	public MasterController(DriveController driveTrain, RobotHardware robot, MotionController motion,
 			VisionController vision, LightController lights, ArmController armController) {
 
 		this.vision = vision;
@@ -79,7 +79,7 @@ public class MasterController {
 	 * Returns RobotModel object from Robot.java
 	 *
 	 **/
-	public RobotModel getRobotModel() {
+	public RobotHardware getRobotModel() {
 		return robot;
 	}
 

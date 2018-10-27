@@ -102,7 +102,7 @@ public class RobotHardware extends Subsystem {
 
 		// Initialize arm sensor
 		AnalogInput.setGlobalSampleRate(62500);
-		pot = new TenTurnPotentiometer(Ports.ARM_ENCODER);
+		pot = new TenTurnPotentiometer(Ports.ARM_POTENTIOMETER);
 
 		// Initialize drive encoders
 		leftDriveEncoder = new Encoder(Ports.LEFT_DRIVE_ENCODER_PORTS[0], Ports.LEFT_DRIVE_ENCODER_PORTS[1]);

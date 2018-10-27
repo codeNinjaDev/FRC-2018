@@ -3,7 +3,7 @@ package org.usfirst.frc.team3997.robot.controllers;
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl.Joysticks;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 import org.usfirst.frc.team3997.robot.pid.ArmPIDOutput;
 import org.usfirst.frc.team3997.robot.pid.PotentiometerPIDSource;
 
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  ***/
 public class ArmController extends Subsystem {
 	/*** Instance variable with Hardware class for arm and intake ***/
-	private RobotModel robot;
+	private RobotHardware robot;
 	/*** Instance variable for communicating with game pads ***/
 	private RemoteControl humanControl;
 	/*** PID controller for arm; purpose is to follow setpoints ***/
@@ -60,7 +60,7 @@ public class ArmController extends Subsystem {
 	 * <li>Sets ArmState to kInitialize</li>
 	 * </ul>
 	 * 
-	 * @param RobotModel
+	 * @param RobotHardware
 	 *            robot
 	 * @param RemoteControl
 	 *            humanControl
@@ -69,7 +69,7 @@ public class ArmController extends Subsystem {
 	 * 
 	 * 
 	 **/
-	public ArmController(RobotModel robot, RemoteControl humanControl) {
+	public ArmController(RobotHardware robot, RemoteControl humanControl) {
 		this.robot = robot;
 		this.humanControl = humanControl;
 
@@ -241,9 +241,10 @@ public class ArmController extends Subsystem {
 			} else {
 				robot.openIntake();
 			}
-		} else if(humanControl.outtakeWheels()){ 
+		// Just spins wheels, does not trigger pneumatics
+		} else if(humanControl.outtakeWheelsDesired()){ 
 			outtakeWheels();
-		} else if(humanControl.intakeWheels()){
+		} else if(humanControl.intakeWheelsDesired()){
 			intakeWheels();
 			
 		} else {

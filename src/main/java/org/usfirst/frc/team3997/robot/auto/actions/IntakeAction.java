@@ -1,14 +1,14 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.Robot;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class IntakeAction extends Command {
 	double speed, start_time, goal_time;
-	RobotModel robot;
+	RobotHardware robot;
 	public IntakeAction(double seconds, double speed) {
 		requires(Robot.robot);
 		

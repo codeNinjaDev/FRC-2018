@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3997.robot.pid;
 
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /*** Controls how a PID controller outputs to the robot in arcade drive ***/
 public class ArcadeStraightPIDOutput implements PIDOutput {
 	private DifferentialDrive drive;
-	private RobotModel robot;
+	private RobotHardware robot;
 	private double loopOutput;
 	//P for rotation
 	private double kPencoder; //0.625
-	public ArcadeStraightPIDOutput(DifferentialDrive drive, RobotModel robot) {
+	public ArcadeStraightPIDOutput(DifferentialDrive drive, RobotHardware robot) {
 		this.drive = drive;
 		this.robot = robot;
 		kPencoder = 0.625;

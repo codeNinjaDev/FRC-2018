@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3997.robot.auto.actions;
 
 import org.usfirst.frc.team3997.robot.Robot;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class OuttakeAction extends Command {
 	
 	double speed, goal_time, start_time;
-	RobotModel robot;
+	RobotHardware robot;
 	/***
 	 * Outtakes block given time and speeed
 	 * @param controllers Master Controller that gives access to all robot functionality

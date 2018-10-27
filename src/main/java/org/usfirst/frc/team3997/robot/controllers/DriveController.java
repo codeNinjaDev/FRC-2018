@@ -2,7 +2,7 @@ package org.usfirst.frc.team3997.robot.controllers;
 
 import org.usfirst.frc.team3997.robot.Params;
 import org.usfirst.frc.team3997.robot.hardware.RemoteControl;
-import org.usfirst.frc.team3997.robot.hardware.RobotModel;
+import org.usfirst.frc.team3997.robot.hardware.RobotHardware;
 import org.usfirst.frc.team3997.robot.pid.ArcadeStraightPIDOutput;
 import org.usfirst.frc.team3997.robot.pid.DriveEncodersPIDSource;
 import org.usfirst.frc.team3997.robot.pid.WheelsPIDOutput;
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  **/
 public class DriveController extends Subsystem {
 
-	private RobotModel robot;
+	private RobotHardware robot;
 	// Handles the math for arcade, curvature, and tank drive
 	private DifferentialDrive drive;
 	private RemoteControl humanControl;
@@ -80,7 +80,7 @@ public class DriveController extends Subsystem {
 	 * @param humanControl
 	 *            Get inputs from controllers
 	 **/
-	public DriveController(RobotModel robot, RemoteControl humanControl) {
+	public DriveController(RobotHardware robot, RemoteControl humanControl) {
 		this.robot = robot;
 		this.humanControl = humanControl;
 
@@ -93,7 +93,7 @@ public class DriveController extends Subsystem {
 		this.robot.rightDriveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		this.robot.rightDriveEncoder.setSamplesToAverage(Params.DRIVE_Y_PID_SAMPLES_AVERAGE);
 		// TODO I think that this is wrong
-		leftPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.LeftWheels, this.robot);
+		leftPIDOutput = new WheelsPIDOutput(RobotHardware.Wheels.LeftWheels, this.robot);
 		leftPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, this.robot.leftDriveEncoder,
 				leftPIDOutput);
 		// TODO Might change this to max power variable
@@ -102,7 +102,7 @@ public class DriveController extends Subsystem {
 		leftPID.disable();
 
 		// TODO I think that this is wrong
-		rightPIDOutput = new WheelsPIDOutput(RobotModel.Wheels.RightWheels, this.robot);
+		rightPIDOutput = new WheelsPIDOutput(RobotHardware.Wheels.RightWheels, this.robot);
 
 		rightPID = new PIDController(Params.drive_p, Params.drive_i, Params.drive_d, robot.rightDriveEncoder,
 				rightPIDOutput);
